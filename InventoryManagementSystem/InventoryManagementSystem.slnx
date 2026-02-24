@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="InventorySystem-API/InventorySystem-API.csproj" />
+  <Project Path="InventorySystem-MAUI/InventorySystem-MAUI.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+  <Project Path="InventorySystem-Shared/InventorySystem-Shared.csproj" />
+</Solution>
