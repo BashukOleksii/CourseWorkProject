@@ -15,10 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="wwwroot\Images\Defaults\" />
     <Folder Include="wwwroot\Images\Inventory\" />
     <Folder Include="wwwroot\Images\Users\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InventorySystem-Shared\InventorySystem-Shared.csproj" />
   </ItemGroup>
 
 </Project>

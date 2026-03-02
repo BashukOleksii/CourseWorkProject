@@ -1,4 +1,4 @@
-﻿namespace InventorySystem_API.Auth.Model
+﻿namespace InventorySystem_API.User.Model
 {
     public class JWTSettingOptions
     {

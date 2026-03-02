@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel;
 
 
-namespace InventorySystem_API.Auth.Model
+namespace InventorySystem_API.User.Model
 {
     public class UserModel
     {
