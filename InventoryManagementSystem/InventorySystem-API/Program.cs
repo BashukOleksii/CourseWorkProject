@@ -1,14 +1,29 @@
+using MongoDB.Driver;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
+#region MongoDB
+var stringConnection = builder.Configuration["MongoDB:ConnectionString"];
+var databaseName = builder.Configuration["MongoDB:DataBaseName"];
+
+builder.Services.AddSingleton<IMongoClient>(sp =>
+    new MongoClient(stringConnection)
+);
+builder.Services.AddSingleton<IMongoDatabase>(sp =>
+{
+    var client = sp.GetRequiredService<IMongoClient>();
+    return client.GetDatabase(databaseName);
+});
+
+#endregion
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
