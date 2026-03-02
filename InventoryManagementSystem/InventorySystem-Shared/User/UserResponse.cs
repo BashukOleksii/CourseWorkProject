@@ -11,6 +11,7 @@ namespace InventorySystem_Shared.User
         public string CompanyId { get; set; } = string.Empty;
         public UserRole UserRole { get; set; }
         public string Email { get; set; } = string.Empty;
+        public List<string>? WarehouseIds { get; set; }
         public string PhotoURI { get; set; } = string.Empty;
     }
 }

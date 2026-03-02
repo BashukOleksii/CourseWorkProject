@@ -1,4 +1,9 @@
+using InventorySystem_API.User.Model;
+using InventorySystem_API.User.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +21,33 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
     return client.GetDatabase(databaseName);
 });
 
+#endregion
+
+#region A&A
+builder.Services.Configure<JWTSettingOptions>(
+    builder.Configuration.GetSection("JWTSettings"));
+
+var jwtSettings = builder.Configuration.GetSection("JWTSettings").Get<JWTSettingOptions>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings!.Issuer,
+        ValidAudience = jwtSettings.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey!))
+    };
+});
+
+builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
 #endregion
 
 builder.Services.AddControllers();
