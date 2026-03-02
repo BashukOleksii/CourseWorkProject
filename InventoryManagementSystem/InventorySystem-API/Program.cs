@@ -48,6 +48,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+builder.Services.AddSingleton<TokenGenerator>();
 #endregion
 
 builder.Services.AddControllers();
@@ -61,6 +62,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
