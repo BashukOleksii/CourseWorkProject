@@ -1,6 +1,9 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using InventorySystem_API.User.Model;
 using InventorySystem_API.User.Repositories;
 using InventorySystem_API.User.Services;
+using InventorySystem_API.User.Validator;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
@@ -52,11 +55,17 @@ builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddSingleton<TokenGenerator>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<UserRegisterValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UserModelValidator>();
 
 #endregion
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddControllers();
-
 builder.Services.AddOpenApi();
 
 var app = builder.Build();

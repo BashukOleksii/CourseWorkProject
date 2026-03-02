@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace InventorySystem_Shared
+namespace InventorySystem_Shared.User
 {
     public class TokensDataResponse
     {
