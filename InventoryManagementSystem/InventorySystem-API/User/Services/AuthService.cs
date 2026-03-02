@@ -50,10 +50,10 @@ namespace InventorySystem_API.User.Services
             var user = await _userRepository.GetUserByEmailAsync(userLogin.Email);
 
             if (user is null)
-                new KeyNotFoundException("Невірна пошта або пароль");
+                new ArgumentException("Невірна пошта або пароль");
 
             if(!_passwordHasher.VerifyPassword(userLogin.Password,user!.PasswordHash))
-                new KeyNotFoundException("Невірна пошта або пароль");
+                new ArgumentException("Невірна пошта або пароль");
 
             return await GenerateTokens(user);
 
