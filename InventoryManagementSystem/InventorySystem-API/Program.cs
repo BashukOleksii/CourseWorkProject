@@ -1,4 +1,5 @@
 using InventorySystem_API.User.Model;
+using InventorySystem_API.User.Repositories;
 using InventorySystem_API.User.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -49,6 +50,9 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddSingleton<TokenGenerator>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 #endregion
 
 builder.Services.AddControllers();
