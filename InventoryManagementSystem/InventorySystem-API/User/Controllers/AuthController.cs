@@ -1,6 +1,5 @@
 ﻿using InventorySystem_API.User.Services;
 using InventorySystem_Shared.User;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventorySystem_API.User.Controllers

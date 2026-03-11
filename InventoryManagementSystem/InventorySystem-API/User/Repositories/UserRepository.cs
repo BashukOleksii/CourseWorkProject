@@ -1,4 +1,5 @@
 ﻿using InventorySystem_API.User.Model;
+using InventorySystem_Shared.User;
 using MongoDB.Driver;
 
 namespace InventorySystem_API.User.Repositories
@@ -21,7 +22,7 @@ namespace InventorySystem_API.User.Repositories
             await _mongoCollection.DeleteOneAsync(user => user.Id == id);
         
 
-        public async Task<List<UserModel>> GetUserByCompanyId(string companyId) =>
+        public async Task<List<UserModel>> GetUsersByCompanyId(string companyId) =>
             await _mongoCollection.Find(user => user.CompanyId == companyId).ToListAsync();
 
 
@@ -31,6 +32,10 @@ namespace InventorySystem_API.User.Repositories
 
         public async Task<UserModel?> GetUserByIdAsync(string id) =>
             await _mongoCollection.Find(user => user.Id == id).FirstOrDefaultAsync();
+
+        public async Task<List<UserModel>> GetUserByRole(UserRole userRole, string companyId) =>
+            await _mongoCollection.Find(user => user.CompanyId == companyId && user.UserRole == userRole).ToListAsync();
+        
 
         public async Task<bool> IsExistsAsync(string id) =>
             await _mongoCollection.Find(user => user.Id == id).AnyAsync();

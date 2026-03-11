@@ -1,4 +1,5 @@
 ﻿using InventorySystem_API.User.Model;
+using InventorySystem_Shared.User;
 
 namespace InventorySystem_API.User.Repositories
 {
@@ -14,6 +15,7 @@ namespace InventorySystem_API.User.Repositories
         public Task<bool> IsExistsAsync(string id);
 
 
-        public Task<List<UserModel>> GetUserByCompanyId(string companyId);
+        public Task<List<UserModel>> GetUsersByCompanyId(string companyId);
+        public Task<List<UserModel>> GetUserByRole(UserRole userRole, string companyId);
     }
 }
