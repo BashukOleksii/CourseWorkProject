@@ -1,5 +1,8 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using InventorySystem_API.Company.Repository;
+using InventorySystem_API.Company.Service;
+using InventorySystem_API.Company.Validation;
 using InventorySystem_API.User.Model;
 using InventorySystem_API.User.Repositories;
 using InventorySystem_API.User.Services;
@@ -67,7 +70,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 #endregion
 
 #region Company
-
+builder.Services.AddValidatorsFromAssemblyContaining<CompanyValidator>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 #endregion
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -77,11 +82,6 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
 app.UseAuthentication();
 app.UseAuthorization();
