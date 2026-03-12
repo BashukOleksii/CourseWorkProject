@@ -62,9 +62,14 @@ builder.Services.AddValidatorsFromAssemblyContaining<UserModelValidator>();
 
 #endregion
 
-#region
+#region User
 builder.Services.AddScoped<IUserService, UserService>();
 #endregion
+
+#region Company
+
+#endregion
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
