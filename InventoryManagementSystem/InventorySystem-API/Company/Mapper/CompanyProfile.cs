@@ -8,7 +8,7 @@ namespace InventorySystem_API.Company.Mapper
     {
         public CompanyProfile() 
         {
-            CreateMap<CompanyDTO, CompanyModel>();
+            CreateMap<CompanyDTO, CompanyModel>().ReverseMap();
             CreateMap<CompanyModel, CompanyResponse>();
         }
     }

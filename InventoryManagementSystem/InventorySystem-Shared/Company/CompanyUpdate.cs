@@ -5,7 +5,7 @@ using System.Text;
 
 namespace InventorySystem_Shared.Company
 {
-    internal class CompanyUpdate
+    public class CompanyUpdate
     {
         public string? Name { get; set; }
         public string? Description { get; set; }
