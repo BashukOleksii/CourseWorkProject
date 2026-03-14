@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InventorySystem_API.User.Model;
 using InventorySystem_API.User.Repositories;
+using InventorySystem_API.Warehouse.Service;
 using InventorySystem_Shared.User;
 using Microsoft.Extensions.Options;
 
@@ -13,19 +14,23 @@ namespace InventorySystem_API.User.Services
         private readonly IPasswordHasher _passwordHasher;
         private readonly IMapper _mapper;
         private readonly JWTSettingOptions _jWTSettingOptions;
+        private readonly IWarehouseService _warehouseService;
 
         public AuthService(
             IUserRepository userRepositorum,
             TokenGenerator tokenGenerator,
             IPasswordHasher passwordHasher,
             IMapper mapper,
-            IOptions<JWTSettingOptions> options)
+            IOptions<JWTSettingOptions> options,
+            IWarehouseService warehouseService
+            )
         {
             _userRepository = userRepositorum;
             _tokenGenerator = tokenGenerator;
             _passwordHasher = passwordHasher;
             _mapper = mapper;
             _jWTSettingOptions = options.Value;
+            _warehouseService = warehouseService;
         }
 
         private async Task<TokensDataResponse> GenerateTokens(UserModel user)
@@ -84,6 +89,10 @@ namespace InventorySystem_API.User.Services
                 throw new ArgumentException($"Користувач із електроною адресою:{userRegister.Email} вже є в системі");
 
             var userModel = _mapper.Map<UserModel>(userRegister);
+
+            if(userModel.UserRole == UserRole.admin)
+                userModel.WarehouseIds = await _warehouseService.GetIdsByCompanyId(userModel.CompanyId);
+            
 
             var response = await _userRepository.CreateAsync(userModel);
 
