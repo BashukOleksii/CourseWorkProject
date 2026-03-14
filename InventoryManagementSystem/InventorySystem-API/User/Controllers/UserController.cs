@@ -25,7 +25,7 @@ namespace InventorySystem_API.User.Controllers
         {
             try
             {
-                var user = await _userService.GetUserById(id, User.GetCompanyId());
+                var user = await _userService.GetById(id, User.GetCompanyId());
                 return Ok(user);
             }
             catch(KeyNotFoundException ex)
@@ -42,7 +42,7 @@ namespace InventorySystem_API.User.Controllers
         [Authorize(Roles = nameof(UserRole.admin))]
         public async Task<IActionResult> GetUsersByCompany()
         {
-            var user = await _userService.GetUsers(User.GetCompanyId());
+            var user = await _userService.Get(User.GetCompanyId());
             return Ok(user);
         }
 
@@ -52,7 +52,7 @@ namespace InventorySystem_API.User.Controllers
         {
             try
             {
-                await _userService.DeleteUser(id, User.GetCompanyId());
+                await _userService.Delete(id, User.GetCompanyId());
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
@@ -104,11 +104,11 @@ namespace InventorySystem_API.User.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateUser(string id, UserUpdate userUpdate)
+        public async Task<IActionResult> Update(string id, UserUpdate userUpdate)
         {
             try
             {
-                var updated = await _userService.UpdateUser(id, userUpdate, User.GetCompanyId());
+                var updated = await _userService.Update(id, userUpdate, User.GetCompanyId());
                 return Ok(updated);
             }
             catch (KeyNotFoundException ex)
@@ -125,7 +125,7 @@ namespace InventorySystem_API.User.Controllers
         public async Task<IActionResult> GetCurentUser()
         {
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userService.GetUserById(id!, User.GetCompanyId());
+            var user = await _userService.GetById(id!, User.GetCompanyId());
             return Ok(user);
         }
 

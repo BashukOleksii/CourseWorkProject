@@ -12,8 +12,6 @@ namespace InventorySystem_API.User.Repositories
         public Task<UserModel> UpdateAsync(UserModel userInfo);
         public Task DeleteAsync(string id);
 
-        public Task<bool> IsExistsAsync(string id);
-
 
         public Task<List<UserModel>> GetUsersByCompanyId(string companyId);
         public Task<List<UserModel>> GetUserByRole(UserRole userRole, string companyId);

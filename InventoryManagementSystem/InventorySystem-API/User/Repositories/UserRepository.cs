@@ -37,10 +37,6 @@ namespace InventorySystem_API.User.Repositories
             await _mongoCollection.Find(user => user.CompanyId == companyId && user.UserRole == userRole).ToListAsync();
         
 
-        public async Task<bool> IsExistsAsync(string id) =>
-            await _mongoCollection.Find(user => user.Id == id).AnyAsync();
-
-
         public async Task<UserModel> UpdateAsync(UserModel userInfo)
         {
             await _mongoCollection.ReplaceOneAsync(user => user.Id == userInfo.Id, userInfo);

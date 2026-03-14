@@ -26,7 +26,7 @@ namespace InventorySystem_API.User.Services
             _passwordHasher = bCryptPasswordHasher;
         }
 
-        private async Task<UserModel> GetUserById(string userId, string companyIdClient)
+        private async Task<UserModel> GetById(string userId, string companyIdClient)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
 
@@ -41,7 +41,7 @@ namespace InventorySystem_API.User.Services
 
         public async Task AddWarehouses(string userId, string[] warehouses, string companyIdClient)
         {
-            var user = await GetUserById(userId, companyIdClient);
+            var user = await GetById(userId, companyIdClient);
 
             if(user.WarehouseIds is null)
                 user.WarehouseIds = new List<string>();
@@ -51,14 +51,14 @@ namespace InventorySystem_API.User.Services
             await _userRepository.UpdateAsync(user);
         }
 
-        public async Task DeleteUser(string id, string companyIdClient)
+        public async Task Delete(string id, string companyIdClient)
         {
-            var user = await GetUserById(id, companyIdClient);
+            var user = await GetById(id, companyIdClient);
 
             await _userRepository.DeleteAsync(user.Id);
         }
 
-        public async Task<List<UserResponse>> GetUsers(string companyIdClient)
+        public async Task<List<UserResponse>> Get(string companyIdClient)
         {
             var users = await _userRepository.GetUsersByCompanyId(companyIdClient);
 
@@ -68,7 +68,7 @@ namespace InventorySystem_API.User.Services
 
         public async Task RemoveWarehouses(string userId, string[] warehouses, string companyIdClient)
         {
-            var user = await GetUserById(userId, companyIdClient);
+            var user = await GetById(userId, companyIdClient);
 
             foreach(var warehouse in warehouses)
             {
@@ -82,9 +82,9 @@ namespace InventorySystem_API.User.Services
 
         }
 
-        public async Task<UserResponse> UpdateUser(string userId, UserUpdate userUpdate, string companyIdClient)
+        public async Task<UserResponse> Update(string userId, UserUpdate userUpdate, string companyIdClient)
         {
-            var user = await GetUserById(userId, companyIdClient);
+            var user = await GetById(userId, companyIdClient);
 
             if(userUpdate.Name is not null)
                 user.Name = userUpdate.Name;
@@ -110,13 +110,32 @@ namespace InventorySystem_API.User.Services
             return _mapper.Map<UserResponse>(response);
         }
 
-        async Task<UserResponse> IUserService.GetUserById(string id, string companyIdClient)
+        async Task<UserResponse> IUserService.GetById(string id, string companyIdClient)
         {
-            var userModel = await GetUserById(id, companyIdClient);
+            var userModel = await GetById(id, companyIdClient);
 
             return _mapper.Map<UserResponse>(userModel);
         }
-     
 
+        public async Task AddWarehouseToAdmins(string warehouseId, string companyId)
+        {
+            var admins = await _userRepository.GetUserByRole(UserRole.admin, companyId);
+
+            foreach (var admin in admins) {
+                if (admin.WarehouseIds is null)
+                    admin.WarehouseIds = new List<string>();
+
+                admin.WarehouseIds.Add(warehouseId);
+            }
+        }
+
+        public async Task RemoveWarehouse(string warehouseId, string companyId)
+        {
+            var users = await _userRepository.GetUsersByCompanyId(companyId);
+
+            foreach (var user in users)
+                if (user.WarehouseIds is not null && user.WarehouseIds.Contains(warehouseId))
+                    user.WarehouseIds.Remove(warehouseId);
+        }
     }
 }

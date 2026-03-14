@@ -20,14 +20,16 @@ namespace InventorySystem_API.Warehouse.Repository
             await _collection.DeleteOneAsync(warehouse => warehouse.Id == id);
 
 
-        public async Task<WarehouseModel?> GeById(string id) =>
+        public async Task<WarehouseModel?> GetById(string id) =>
             await _collection.Find(warehouse => warehouse.Id == id).FirstOrDefaultAsync();
 
-
-        public async Task<List<WarehouseModel>?> GetByIds(string[] ids) =>
+        public async Task<List<string>> GetIdsByCompanyId(string companyId) =>
+            await _collection.Find(warehouse => warehouse.CompanyId == companyId)
+            .Project(warehouse => warehouse.Id).ToListAsync();
+        
+        public async Task<List<WarehouseModel>> GetByIds(string[] ids) =>
             await _collection.Find(warehouse => ids.Contains(warehouse.Id)).ToListAsync();
         
-
         public async Task<WarehouseModel> Update(WarehouseModel model)
         {
             await _collection.ReplaceOneAsync(warehouse => warehouse.Id == model.Id,model);
