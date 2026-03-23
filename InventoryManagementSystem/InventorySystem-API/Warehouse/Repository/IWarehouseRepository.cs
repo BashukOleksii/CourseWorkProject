@@ -1,9 +1,11 @@
 ﻿using InventorySystem_API.Warehouse.Models;
+using MongoDB.Driver;
 
 namespace InventorySystem_API.Warehouse.Repository
 {
     public interface IWarehouseRepository
     {
+        Task<List<WarehouseModel>> Get(FilterDefinition<WarehouseModel> filter, int pageSize, int page);
         Task<WarehouseModel?> GetById(string id);
         Task<List<WarehouseModel>> GetByIds(string[] id);
         Task<List<string>> GetIdsByCompanyId(string companyId); 

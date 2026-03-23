@@ -59,11 +59,18 @@ namespace InventorySystem_API.Warehouse.Conroller
 
         [HttpGet]
         [Authorize(Roles = nameof(UserRole.admin))]
-        public async Task<IActionResult> GetCompanyWarerhouuses()
+        public async Task<IActionResult> GetCompanyWarerhouuses([FromQuery] WarehouseQuery warehouseQuery)
         {
-            var companyId = User.GetCompanyId();
-            var warehouses = await _warehouseService.GetIdsByCompanyId(companyId);
-            return Ok(warehouses);
+            try
+            {
+                var companyId = User.GetCompanyId();
+                var warehouses = await _warehouseService.Get(companyId, warehouseQuery);
+                return Ok(warehouses);
+            }
+            catch(ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]

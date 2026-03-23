@@ -35,5 +35,12 @@ namespace InventorySystem_API.Warehouse.Repository
             await _collection.ReplaceOneAsync(warehouse => warehouse.Id == model.Id,model);
             return model;
         }
+
+        public async Task<List<WarehouseModel>> Get(FilterDefinition<WarehouseModel> filter, int pageSize, int page) =>
+            await _collection
+            .Find(filter)
+            .Skip((page - 1) * pageSize)
+            .Limit(pageSize)
+            .ToListAsync();        
     }
 }
