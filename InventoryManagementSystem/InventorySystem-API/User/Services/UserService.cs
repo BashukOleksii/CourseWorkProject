@@ -28,7 +28,7 @@ namespace InventorySystem_API.User.Services
 
         private async Task<UserModel> GetById(string userId, string companyIdClient)
         {
-            var user = await _userRepository.GetUserByIdAsync(userId);
+            var user = await _userRepository.GetById(userId);
 
             if (user is null)
                 throw new KeyNotFoundException($"Користувача із {userId} не знайдено");
@@ -48,19 +48,19 @@ namespace InventorySystem_API.User.Services
 
             user.WarehouseIds.AddRange(warehouses);
 
-            await _userRepository.UpdateAsync(user);
+            await _userRepository.Update(user);
         }
 
         public async Task Delete(string id, string companyIdClient)
         {
             var user = await GetById(id, companyIdClient);
 
-            await _userRepository.DeleteAsync(user.Id);
+            await _userRepository.Delete(user.Id);
         }
 
         public async Task<List<UserResponse>> Get(string companyIdClient)
         {
-            var users = await _userRepository.GetUsersByCompanyId(companyIdClient);
+            var users = await _userRepository.GetByCompanyId(companyIdClient);
 
            return _mapper.Map<List<UserResponse>>(users);
         }
@@ -78,7 +78,7 @@ namespace InventorySystem_API.User.Services
                 user.WarehouseIds.Remove(warehouse);
             }
 
-            await _userRepository.UpdateAsync(user);
+            await _userRepository.Update(user);
 
         }
 
@@ -105,7 +105,7 @@ namespace InventorySystem_API.User.Services
             if (!validationResult.IsValid)
                 throw new ArgumentException(validationResult.ToString());
 
-            var response = await _userRepository.UpdateAsync(user);
+            var response = await _userRepository.Update(user);
 
             return _mapper.Map<UserResponse>(response);
         }
@@ -119,7 +119,7 @@ namespace InventorySystem_API.User.Services
 
         public async Task AddWarehouseToAdmins(string warehouseId, string companyId)
         {
-            var admins = await _userRepository.GetUserByRole(UserRole.admin, companyId);
+            var admins = await _userRepository.GetByRole(UserRole.admin, companyId);
 
             foreach (var admin in admins) {
                 if (admin.WarehouseIds is null)
@@ -131,7 +131,7 @@ namespace InventorySystem_API.User.Services
 
         public async Task RemoveWarehouse(string warehouseId, string companyId)
         {
-            var users = await _userRepository.GetUsersByCompanyId(companyId);
+            var users = await _userRepository.GetByCompanyId(companyId);
 
             foreach (var user in users)
                 if (user.WarehouseIds is not null && user.WarehouseIds.Contains(warehouseId))

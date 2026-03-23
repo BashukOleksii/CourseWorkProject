@@ -39,7 +39,7 @@ namespace InventorySystem_API.User.Services
 
             user.RefeshToken = refreshToken;
 
-            await _userRepository.UpdateAsync(user);
+            await _userRepository.Update(user);
 
             return new TokensDataResponse
             {
@@ -52,7 +52,7 @@ namespace InventorySystem_API.User.Services
 
         public async Task<TokensDataResponse> LogIn(UserLogin userLogin)
         {
-            var user = await _userRepository.GetUserByEmailAsync(userLogin.Email);
+            var user = await _userRepository.GetByEmail(userLogin.Email);
 
             if (user is null)
                 throw new ArgumentException("Невірна пошта або пароль");
@@ -66,7 +66,7 @@ namespace InventorySystem_API.User.Services
 
         public async Task<TokensDataResponse> Refresh(UserRefresh userRefresh)
         {
-            var user = await _userRepository.GetUserByIdAsync(userRefresh.UserId);
+            var user = await _userRepository.GetById(userRefresh.UserId);
 
             if (user is null)
                 throw new KeyNotFoundException($"Користувача із id:{userRefresh.UserId} не знайдено");
@@ -83,7 +83,7 @@ namespace InventorySystem_API.User.Services
 
         public async Task<UserResponse> Register(UserRegister userRegister)
         {
-            var user = await _userRepository.GetUserByEmailAsync(userRegister.Email);
+            var user = await _userRepository.GetByEmail(userRegister.Email);
 
             if (user is not null)
                 throw new ArgumentException($"Користувач із електроною адресою:{userRegister.Email} вже є в системі");
@@ -96,7 +96,7 @@ namespace InventorySystem_API.User.Services
                 userModel.WarehouseIds = await _warehouseService.GetIdsByCompanyId(userModel.CompanyId);
             
 
-            var response = await _userRepository.CreateAsync(userModel);
+            var response = await _userRepository.Create(userModel);
 
             return _mapper.Map<UserResponse>(response);
         }

@@ -3,7 +3,6 @@ using InventorySystem_API.User.Extention;
 using InventorySystem_Shared.Company;
 using InventorySystem_Shared.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventorySystem_API.Company.Controller
@@ -67,7 +66,7 @@ namespace InventorySystem_API.Company.Controller
         {
             try
             {
-                await _companyService.DeleteById(User.GetCompanyId());
+                await _companyService.Delete(User.GetCompanyId());
                 return NoContent();
             }
             catch(KeyNotFoundException ex) 

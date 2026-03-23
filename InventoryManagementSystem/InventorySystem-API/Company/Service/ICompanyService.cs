@@ -7,6 +7,6 @@ namespace InventorySystem_API.Company.Service
         Task<CompanyResponse> GetById(string companyId);
         Task<CompanyResponse> Create(CompanyDTO companyDTO);
         Task<CompanyResponse> Update(string companyId,CompanyUpdate companyUpdate);
-        Task DeleteById(string companyId);
+        Task Delete(string companyId);
     }
 }

@@ -38,7 +38,7 @@ namespace InventorySystem_API.Company.Service
             return _companyMapper.Map<CompanyResponse>(companyModel);
         }
 
-        public async Task DeleteById(string companyId)
+        public async Task Delete(string companyId)
         {
             var companyModel = await GetModel(companyId);
 

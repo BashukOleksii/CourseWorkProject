@@ -3,8 +3,6 @@ using InventorySystem_API.Warehouse.Service;
 using InventorySystem_Shared.User;
 using InventorySystem_Shared.Warehouse;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventorySystem_API.Warehouse.Conroller
