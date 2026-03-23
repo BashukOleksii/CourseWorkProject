@@ -55,10 +55,10 @@ namespace InventorySystem_API.User.Services
             var user = await _userRepository.GetUserByEmailAsync(userLogin.Email);
 
             if (user is null)
-                new ArgumentException("Невірна пошта або пароль");
+                throw new ArgumentException("Невірна пошта або пароль");
 
             if(!_passwordHasher.VerifyPassword(userLogin.Password,user!.PasswordHash))
-                new ArgumentException("Невірна пошта або пароль");
+                throw new ArgumentException("Невірна пошта або пароль");
 
             return await GenerateTokens(user);
 
@@ -89,6 +89,8 @@ namespace InventorySystem_API.User.Services
                 throw new ArgumentException($"Користувач із електроною адресою:{userRegister.Email} вже є в системі");
 
             var userModel = _mapper.Map<UserModel>(userRegister);
+
+            userModel.PasswordHash = _passwordHasher.HashPassword(userRegister.Password);
 
             if(userModel.UserRole == UserRole.admin)
                 userModel.WarehouseIds = await _warehouseService.GetIdsByCompanyId(userModel.CompanyId);

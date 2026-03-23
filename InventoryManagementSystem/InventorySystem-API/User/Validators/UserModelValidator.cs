@@ -16,6 +16,7 @@ namespace InventorySystem_API.User.Validator
                 .NotEmpty().WithMessage("Email is required.")
                 .EmailAddress().WithMessage("Invalid email format.");
 
+
         }
     }
 }
