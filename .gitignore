@@ -418,3 +418,5 @@ FodyWeavers.xsd
 *.msp
 
 appsettings.Development.json
+*.Development.json
+InventoryManagementSystem\InventorySystem-API\appsettings.Development.json
