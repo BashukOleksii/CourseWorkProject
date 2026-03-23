@@ -1,14 +1,19 @@
 ﻿using InventorySystem_API.User.Model;
 using InventorySystem_Shared.User;
+using MongoDB.Driver;
 
 namespace InventorySystem_API.User.Repositories
 {
     public interface IUserRepository
     {
+
+        public Task<List<UserModel>> Get(
+            FilterDefinition<UserModel> filter, int pageSize, int page
+            );
         public Task<UserModel?> GetById(string id);
         public Task<UserModel?> GetByEmail(string email);
-        public Task<List<UserModel>> GetByCompanyId(string companyId);
         public Task<List<UserModel>> GetByRole(UserRole userRole, string companyId);
+        public Task<List<UserModel>> GetByCompanyId(string companyId);
 
 
         public Task<UserModel> Create(UserModel userInfo);

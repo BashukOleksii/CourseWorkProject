@@ -3,6 +3,7 @@ using InventorySystem_API.User.Model;
 using InventorySystem_API.User.Repositories;
 using InventorySystem_API.User.Validator;
 using InventorySystem_Shared.User;
+using MongoDB.Driver;
 using System.Text.RegularExpressions;
 
 namespace InventorySystem_API.User.Services
@@ -58,9 +59,24 @@ namespace InventorySystem_API.User.Services
             await _userRepository.Delete(user.Id);
         }
 
-        public async Task<List<UserResponse>> Get(string companyIdClient)
+        public async Task<List<UserResponse>> Get(string companyIdClient, UserQuery userQuery)
         {
-            var users = await _userRepository.GetByCompanyId(companyIdClient);
+            if (userQuery.Page < 0 || userQuery.PageSize < 0)
+                throw new ArgumentException("Значенн для пагінації не ожуть бути менше нуля");
+
+            var builder = new FilterDefinitionBuilder<UserModel>();
+            var filter = builder.Empty;
+
+            filter &= builder.Eq(user => user.CompanyId, companyIdClient);
+
+            if(userQuery.Name is not null)
+                filter &= builder.Regex(user => user.Name, new MongoDB.Bson.BsonRegularExpression(userQuery.Name,"i"));
+            if (userQuery.UserRole is not null)
+                filter &= builder.Eq(user => user.UserRole, userQuery.UserRole);
+            if (userQuery.WarehouseId is not null)
+                filter &= builder.AnyEq(user => user.WarehouseIds, userQuery.WarehouseId);
+
+            var users = await _userRepository.Get(filter,userQuery.PageSize, userQuery.Page);
 
            return _mapper.Map<List<UserResponse>>(users);
         }

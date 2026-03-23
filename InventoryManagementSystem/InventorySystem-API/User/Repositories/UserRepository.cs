@@ -20,6 +20,13 @@ namespace InventorySystem_API.User.Repositories
 
         public async Task Delete(string id) =>
             await _mongoCollection.DeleteOneAsync(user => user.Id == id);
+
+        public async Task<List<UserModel>> Get(FilterDefinition<UserModel> filter, int pageSize, int page) =>
+            await _mongoCollection
+            .Find(filter)
+            .Skip((page - 1) * pageSize)
+            .Limit(pageSize)
+            .ToListAsync();
         
 
         public async Task<List<UserModel>> GetByCompanyId(string companyId) =>

@@ -40,10 +40,17 @@ namespace InventorySystem_API.User.Controllers
 
         [HttpGet]
         [Authorize(Roles = nameof(UserRole.admin))]
-        public async Task<IActionResult> GetUsersByCompany()
+        public async Task<IActionResult> GetUsersByCompany([FromQuery] UserQuery userQuery)
         {
-            var user = await _userService.Get(User.GetCompanyId());
-            return Ok(user);
+            try
+            {
+                var user = await _userService.Get(User.GetCompanyId(), userQuery);
+                return Ok(user);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Authorize(Roles = nameof(UserRole.admin))]

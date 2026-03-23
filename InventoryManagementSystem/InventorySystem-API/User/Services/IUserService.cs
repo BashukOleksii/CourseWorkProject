@@ -5,7 +5,7 @@ namespace InventorySystem_API.User.Services
     public interface IUserService
     {
         Task<UserResponse> GetById(string id, string companyIdClient);
-        Task<List<UserResponse>> Get(string companyIdClient);
+        Task<List<UserResponse>> Get(string companyIdClient, UserQuery userQuery);
         Task<UserResponse> Update(string userId, UserUpdate userUpdate, string companyIdClient);
         Task Delete(string id, string companyIdClient);
 
