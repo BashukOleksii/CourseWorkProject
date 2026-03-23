@@ -420,3 +420,4 @@ FodyWeavers.xsd
 appsettings.Development.json
 *.Development.json
 InventoryManagementSystem\InventorySystem-API\appsettings.Development.json
+**\appsettings.Development.json
