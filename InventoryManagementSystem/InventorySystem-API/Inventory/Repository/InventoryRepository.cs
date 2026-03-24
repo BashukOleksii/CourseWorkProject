@@ -23,7 +23,7 @@ namespace InventorySystem_API.Inventory.Repository
             await _collection.DeleteOneAsync(inventory => inventory.Id == id);
 
 
-        public async Task DeleteByWarehouse(string warehouseId) =>
+        public async Task DeleteByWarehouseId(string warehouseId) =>
             await _collection.DeleteManyAsync(warehouse => warehouse.Id == warehouseId);
         
 
@@ -37,8 +37,10 @@ namespace InventorySystem_API.Inventory.Repository
 
         public async Task<InventoryModel?> GetById(string id) =>
             await _collection.Find(inventory => inventory.Id == id).FirstOrDefaultAsync();
-        
 
+        public async Task<List<InventoryModel>> GetByWarehouseId(string warehouseId) =>
+            await _collection.Find(inventory => inventory.WarehouseId == warehouseId).ToListAsync();
+        
         public async Task<InventoryModel> Update(InventoryModel model)
         {
             await _collection.ReplaceOneAsync(inventory => inventory.Id == model.Id, model);

@@ -6,13 +6,13 @@ namespace InventorySystem_API.Inventory.Repository
     public interface IInventoryRepository
     {
         Task<List<InventoryModel>> Get(FilterDefinition<InventoryModel> filter, int pageSize, int page);
-        Task<InventoryModel?> GetById(string Id);
+        Task<InventoryModel?> GetById(string id);
+        Task<List<InventoryModel>> GetByWarehouseId(string warehouseId);
 
         Task<InventoryModel> Create(InventoryModel model);
         Task<InventoryModel> Update(InventoryModel model);
 
         Task DeleteById(string id);
-        Task DeleteByWarehouse(string warehouseId);
-
+        Task DeleteByWarehouseId(string warehouseId);
     }
 }

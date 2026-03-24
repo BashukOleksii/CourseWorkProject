@@ -123,13 +123,16 @@ namespace InventorySystem_API.User.Services
                 user.PasswordHash = _passwordHasher.HashPassword(userUpdate.Password);
             }
 
-            if (photo is not null)
-                user.PhotoURI = await _imageService.SaveImage(photo, "User");
-
             var validationResult = _validationRules.Validate(user);
 
             if (!validationResult.IsValid)
                 throw new ArgumentException(validationResult.ToString());
+
+            if (photo is not null)
+            {
+                _imageService.DeleteImage(user.PhotoURI);
+                user.PhotoURI = await _imageService.SaveImage(photo, "User");
+            }
 
             var response = await _userRepository.Update(user);
 

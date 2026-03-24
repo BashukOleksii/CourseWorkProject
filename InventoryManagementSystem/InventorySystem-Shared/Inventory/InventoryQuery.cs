@@ -16,7 +16,7 @@ namespace InventorySystem_Shared.Inventory
 
 
         public double? MinPrice { get; set; }
-        public double? MsxPrice { get; set; }
+        public double? MaxPrice { get; set; }
 
         public int? MinQuantity { get; set; }
         public int? MaxQuantity { get; set; }

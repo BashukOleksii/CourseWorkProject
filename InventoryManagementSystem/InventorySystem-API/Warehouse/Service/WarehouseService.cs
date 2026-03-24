@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using InventorySystem_API.Inventory.Repository;
+using InventorySystem_API.Inventory.Service;
 using InventorySystem_API.User.Services;
 using InventorySystem_API.Warehouse.Models;
 using InventorySystem_API.Warehouse.Repository;
@@ -15,20 +17,24 @@ namespace InventorySystem_API.Warehouse.Service
     public class WarehouseService : IWarehouseService
     {
         private readonly IWarehouseRepository _warehouseRepository;
-        private readonly IUserService _userService;
         private readonly IMapper _warehouseMapper;
         private readonly WarehouseValidator _warehouseValidator;
+
+        private readonly IUserService _userService;
+        private readonly IInventoryService _inventoryService;
 
         public WarehouseService(
             IWarehouseRepository warehouseRepository, 
             IUserService userService, 
             IMapper warehouseMapper, 
-            WarehouseValidator warehouseValidator)
+            WarehouseValidator warehouseValidator,
+            IInventoryService inventoryService)
         {
             _warehouseRepository = warehouseRepository;
             _userService = userService;
             _warehouseMapper = warehouseMapper;
             _warehouseValidator = warehouseValidator;
+            _inventoryService = inventoryService;
         }
 
         private async Task<WarehouseModel> GetById(string warehouseId, string companyId)
@@ -60,6 +66,7 @@ namespace InventorySystem_API.Warehouse.Service
             var model = await GetById(id, companyId);
 
             await _userService.RemoveWarehouse(model.Id, model.CompanyId);
+            await _inventoryService.DeleteByWarehouseId(model.Id);
 
             await _warehouseRepository.Delete(model.Id);
         }

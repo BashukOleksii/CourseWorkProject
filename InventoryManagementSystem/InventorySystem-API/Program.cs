@@ -5,6 +5,7 @@ using InventorySystem_API.Company.Service;
 using InventorySystem_API.Company.Validation;
 using InventorySystem_API.External_API.Adress;
 using InventorySystem_API.Inventory.Repository;
+using InventorySystem_API.Inventory.Service;
 using InventorySystem_API.Inventory.Validator;
 using InventorySystem_API.Service.Image;
 using InventorySystem_API.User.Model;
@@ -82,6 +83,7 @@ builder.Services.AddScoped<ICompanyService, CompanyService>();
 #region Inventory
 builder.Services.AddValidatorsFromAssemblyContaining<InventoryValidator>();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 #endregion
 
 #region Services
