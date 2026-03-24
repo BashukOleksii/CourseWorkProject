@@ -6,7 +6,7 @@ namespace InventorySystem_API.Inventory.Service
 {
     public interface IInventoryService
     {
-        Task<List<InventoryResponse>> Get(InventoryQuery inventoryQuery, string warehouseId);
+        Task<List<InventoryResponse>> Get(InventoryQuery? inventoryQuery, string warehouseId);
         Task<InventoryResponse> GetById(string id);
 
         Task<InventoryResponse> Create(InventoryCreate dto, string warehouseId, IFormFile? photo);

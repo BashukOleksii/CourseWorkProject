@@ -79,38 +79,41 @@ namespace InventorySystem_API.Inventory.Service
         }
         
 
-        public async Task<List<InventoryResponse>> Get(InventoryQuery inventoryQuery, string warehouseId)
+        public async Task<List<InventoryResponse>> Get(InventoryQuery? inventoryQuery, string warehouseId)
         {
             var builder = new FilterDefinitionBuilder<InventoryModel>();
             var filter = builder.Eq(inventory => inventory.WarehouseId, warehouseId);
 
-            if(inventoryQuery.Name is not null)
-                 filter &= builder.Eq(inventory => inventory.Name, inventoryQuery.Name);
-            if (inventoryQuery.Description is not null)
-                filter &= builder.Regex(inventory => inventory.Description, new BsonRegularExpression(inventoryQuery.Description, "i"));
-
-            if(inventoryQuery.Manufacturer is not null)
+            if (inventoryQuery is not null)
             {
-                var manufacturer = inventoryQuery.Manufacturer;
+                if (inventoryQuery.Name is not null)
+                    filter &= builder.Eq(inventory => inventory.Name, inventoryQuery.Name);
+                if (inventoryQuery.Description is not null)
+                    filter &= builder.Regex(inventory => inventory.Description, new BsonRegularExpression(inventoryQuery.Description, "i"));
 
-                if(manufacturer.Name is not null)
-                    filter &= builder.Regex(inventory => inventory.Manufacturer.Name, new BsonRegularExpression(manufacturer.Name, "i"));
-                if (manufacturer.Country is not null)
-                    filter &= builder.Regex(inventory => inventory.Manufacturer.Country, new BsonRegularExpression(manufacturer.Country, "i"));
+                if (inventoryQuery.Manufacturer is not null)
+                {
+                    var manufacturer = inventoryQuery.Manufacturer;
+
+                    if (manufacturer.Name is not null)
+                        filter &= builder.Regex(inventory => inventory.Manufacturer.Name, new BsonRegularExpression(manufacturer.Name, "i"));
+                    if (manufacturer.Country is not null)
+                        filter &= builder.Regex(inventory => inventory.Manufacturer.Country, new BsonRegularExpression(manufacturer.Country, "i"));
+                }
+
+                if (inventoryQuery.InventoryType is not null)
+                    filter &= builder.Eq(inventory => inventory.InventoryType, inventoryQuery.InventoryType);
+
+                if (inventoryQuery.MinPrice is not null)
+                    filter &= builder.Gt(inventory => inventory.Price, inventoryQuery.MinPrice);
+                if (inventoryQuery.MaxPrice is not null)
+                    filter &= builder.Lt(inventory => inventory.Price, inventoryQuery.MaxPrice);
+
+                if (inventoryQuery.MinQuantity is not null)
+                    filter &= builder.Gt(inventory => inventory.Quantity, inventoryQuery.MinQuantity);
+                if (inventoryQuery.MaxQuantity is not null)
+                    filter &= builder.Lt(inventory => inventory.Quantity, inventoryQuery.MaxQuantity);
             }
-
-            if (inventoryQuery.InventoryType is not null)
-                filter &= builder.Eq(inventory => inventory.InventoryType,inventoryQuery.InventoryType);
-
-            if (inventoryQuery.MinPrice is not null)
-                filter &= builder.Gt(inventory => inventory.Price, inventoryQuery.MinPrice);
-            if (inventoryQuery.MaxPrice is not null)
-                filter &= builder.Lt(inventory => inventory.Price, inventoryQuery.MaxPrice);
-
-            if (inventoryQuery.MinQuantity is not null)
-                filter &= builder.Gt(inventory => inventory.Quantity, inventoryQuery.MinQuantity);
-            if (inventoryQuery.MaxQuantity is not null)
-                filter &= builder.Lt(inventory => inventory.Quantity, inventoryQuery.MaxQuantity);
 
             var response = await _inventoryRepository.Get(filter, inventoryQuery.PageSize, inventoryQuery.Page);
 

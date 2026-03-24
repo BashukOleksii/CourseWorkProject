@@ -15,7 +15,7 @@ namespace InventorySystem_API.Inventory.Validator
             RuleFor(inventory => inventory.Price)
                 .GreaterThan(0).WithMessage("Ціна товару має бути більша за нуль");
             RuleFor(inventory => inventory.InventoryType)
-                .IsInEnum().WithMessage("Категорія товару має бути в переліку категорій")
+                .IsInEnum().WithMessage("Категорія товару має бути в переліку категорій");
 
 
 
