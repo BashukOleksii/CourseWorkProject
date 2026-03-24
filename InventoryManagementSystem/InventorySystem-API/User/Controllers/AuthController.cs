@@ -14,11 +14,13 @@ namespace InventorySystem_API.User.Controllers
             _authService = authService;
 
         [HttpPost("sign-up")]
-        public async Task<IActionResult> SignUp(UserRegister userRegister)
+        public async Task<IActionResult> SignUp(
+            [FromForm] UserRegister userRegister,
+            IFormFile? photo)
         {
             try
             {
-                var response = await _authService.Register(userRegister);
+                var response = await _authService.Register(userRegister, photo);
                 return Ok(response);
             }
             catch (ArgumentException aex)

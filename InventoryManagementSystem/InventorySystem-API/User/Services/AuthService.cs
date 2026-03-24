@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InventorySystem_API.Service.Image;
 using InventorySystem_API.User.Model;
 using InventorySystem_API.User.Repositories;
 using InventorySystem_API.Warehouse.Service;
@@ -10,11 +11,14 @@ namespace InventorySystem_API.User.Services
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
+
         private readonly TokenGenerator _tokenGenerator;
         private readonly IPasswordHasher _passwordHasher;
-        private readonly IMapper _mapper;
         private readonly JWTSettingOptions _jWTSettingOptions;
+
         private readonly IWarehouseService _warehouseService;
+        private readonly IImageService _imageService;
 
         public AuthService(
             IUserRepository userRepositorum,
@@ -22,7 +26,8 @@ namespace InventorySystem_API.User.Services
             IPasswordHasher passwordHasher,
             IMapper mapper,
             IOptions<JWTSettingOptions> options,
-            IWarehouseService warehouseService
+            IWarehouseService warehouseService,
+            IImageService imageService
             )
         {
             _userRepository = userRepositorum;
@@ -31,6 +36,7 @@ namespace InventorySystem_API.User.Services
             _mapper = mapper;
             _jWTSettingOptions = options.Value;
             _warehouseService = warehouseService;
+            _imageService = imageService;
         }
 
         private async Task<TokensDataResponse> GenerateTokens(UserModel user)
@@ -81,7 +87,7 @@ namespace InventorySystem_API.User.Services
             return await GenerateTokens(user);
         }
 
-        public async Task<UserResponse> Register(UserRegister userRegister)
+        public async Task<UserResponse> Register(UserRegister userRegister, IFormFile? photo)
         {
             var user = await _userRepository.GetByEmail(userRegister.Email);
 
@@ -94,7 +100,11 @@ namespace InventorySystem_API.User.Services
 
             if(userModel.UserRole == UserRole.admin)
                 userModel.WarehouseIds = await _warehouseService.GetIdsByCompanyId(userModel.CompanyId);
-            
+
+            if (photo is null)
+                userModel.PhotoURI = _imageService.GetDefaultImage("User");
+            else
+                userModel.PhotoURI = await _imageService.SaveImage(photo, "User");
 
             var response = await _userRepository.Create(userModel);
 

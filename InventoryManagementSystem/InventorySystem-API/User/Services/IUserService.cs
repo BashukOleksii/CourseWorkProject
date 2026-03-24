@@ -6,7 +6,7 @@ namespace InventorySystem_API.User.Services
     {
         Task<UserResponse> GetById(string id, string companyIdClient);
         Task<List<UserResponse>> Get(string companyIdClient, UserQuery userQuery);
-        Task<UserResponse> Update(string userId, UserUpdate userUpdate, string companyIdClient);
+        Task<UserResponse> Update(string userId, UserUpdate userUpdate, string companyIdClient, IFormFile? formFile);
         Task Delete(string id, string companyIdClient);
 
         Task AddWarehouses(string userId, string[] warehouses, string companyIdClient);

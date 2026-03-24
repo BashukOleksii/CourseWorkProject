@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InventorySystem_API.Service.Image;
 using InventorySystem_API.User.Model;
 using InventorySystem_API.User.Repositories;
 using InventorySystem_API.User.Validator;
@@ -14,17 +15,21 @@ namespace InventorySystem_API.User.Services
         private readonly IMapper _mapper;
         private readonly UserModelValidator _validationRules;
         private readonly BCryptPasswordHasher _passwordHasher;
+        private readonly IImageService _imageService;
         
         public UserService(
             IUserRepository userRepository, 
             IMapper mapper,
             UserModelValidator validationRules,
-            BCryptPasswordHasher bCryptPasswordHasher)
+            BCryptPasswordHasher bCryptPasswordHasher,
+            IImageService imageService
+            )
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _validationRules = validationRules;
             _passwordHasher = bCryptPasswordHasher;
+            _imageService = imageService;
         }
 
         private async Task<UserModel> GetById(string userId, string companyIdClient)
@@ -55,6 +60,8 @@ namespace InventorySystem_API.User.Services
         public async Task Delete(string id, string companyIdClient)
         {
             var user = await GetById(id, companyIdClient);
+
+            _imageService.DeleteImage(user.PhotoURI);
 
             await _userRepository.Delete(user.Id);
         }
@@ -98,7 +105,7 @@ namespace InventorySystem_API.User.Services
 
         }
 
-        public async Task<UserResponse> Update(string userId, UserUpdate userUpdate, string companyIdClient)
+        public async Task<UserResponse> Update(string userId, UserUpdate userUpdate, string companyIdClient, IFormFile? photo)
         {
             var user = await GetById(userId, companyIdClient);
 
@@ -120,6 +127,12 @@ namespace InventorySystem_API.User.Services
 
             if (!validationResult.IsValid)
                 throw new ArgumentException(validationResult.ToString());
+
+            if (photo is not null)
+            {
+                _imageService.DeleteImage(user.PhotoURI);
+                user.PhotoURI = await _imageService.SaveImage(photo, "User");
+            }
 
             var response = await _userRepository.Update(user);
 
