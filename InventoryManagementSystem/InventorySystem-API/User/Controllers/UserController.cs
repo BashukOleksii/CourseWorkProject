@@ -111,11 +111,15 @@ namespace InventorySystem_API.User.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Update(string id, UserUpdate userUpdate)
+        public async Task<IActionResult> Update(
+            string id,
+            [FromForm] UserUpdate userUpdate,
+            IFormFile? photo
+            )
         {
             try
             {
-                var updated = await _userService.Update(id, userUpdate, User.GetCompanyId());
+                var updated = await _userService.Update(id, userUpdate, User.GetCompanyId(),photo);
                 return Ok(updated);
             }
             catch (KeyNotFoundException ex)
