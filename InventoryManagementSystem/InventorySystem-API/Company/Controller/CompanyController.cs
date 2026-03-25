@@ -1,6 +1,8 @@
 ﻿using InventorySystem_API.Company.Service;
+using InventorySystem_API.Loging.Service;
 using InventorySystem_API.User.Extention;
 using InventorySystem_Shared.Company;
+using InventorySystem_Shared.Loging;
 using InventorySystem_Shared.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +44,7 @@ namespace InventorySystem_API.Company.Controller
         }
 
         [HttpPatch]
+        [Audit(ActionType.Update,EntityType.Company)]
         [Authorize(Roles = nameof(UserRole.admin))]
         public async Task<IActionResult> UpdateMyCompany(CompanyUpdate companyUpdate)
         {

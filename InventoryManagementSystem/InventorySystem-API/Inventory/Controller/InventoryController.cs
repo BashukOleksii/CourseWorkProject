@@ -1,8 +1,9 @@
 ﻿using InventorySystem_API.Inventory.Service;
+using InventorySystem_API.Loging.Service;
 using InventorySystem_Shared.Inventory;
+using InventorySystem_Shared.Loging;
 using InventorySystem_Shared.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventorySystem_API.Inventory.Controller
@@ -18,6 +19,7 @@ namespace InventorySystem_API.Inventory.Controller
             _inventoryService = inventoryService;
 
         [HttpGet("{id}")]
+        [Audit(ActionType.ReadOne,EntityType.Inventory)]
         public async Task<IActionResult> GetById(string id)
         {
             try
@@ -31,32 +33,35 @@ namespace InventorySystem_API.Inventory.Controller
             }
         }
 
-        [HttpGet("warehouse/{id}")]
-        public async Task<IActionResult> Get([FromQuery] InventoryQuery? query, string id)
+        [HttpGet("warehouse/{warehoue_id}")]
+        [Audit(ActionType.ReadMany, EntityType.Inventory)]
+        public async Task<IActionResult> Get([FromQuery] InventoryQuery? query, string warehoue_id)
         {
-            var response = await _inventoryService.Get(query, id);
+            var response = await _inventoryService.Get(query, warehoue_id);
             return Ok(response);
         }
 
-        [HttpPost("warehouse/{id}")]
+        [HttpPost("warehouse/{warehouse_Id}")]
+        [Audit(ActionType.Create, EntityType.Inventory)]
         public async Task<IActionResult> Create(
-            string id, 
+            string warehouse_Id, 
             [FromForm]InventoryCreate inventoryCreate,
             IFormFile? photo)
         {
-            var response = await _inventoryService.Create(inventoryCreate,id,photo);
+            var response = await _inventoryService.Create(inventoryCreate, warehouse_Id, photo);
             return Ok(response);
         }
 
-        [HttpPatch("warehouse/{id}")]
+        [HttpPatch("warehouse/{warehoue_id}")]
+        [Audit(ActionType.Update, EntityType.Inventory)]
         public async Task<IActionResult> Update(
-            string id,
+            string warehoue_id,
             [FromForm]InventoryUpdate inventoryUpdate,
             IFormFile? photo)
         {
             try
             {
-                var response = await _inventoryService.Update(id, inventoryUpdate, photo);
+                var response = await _inventoryService.Update(warehoue_id, inventoryUpdate, photo);
                 return Ok(response);
             }
             catch(KeyNotFoundException ex)
@@ -70,6 +75,7 @@ namespace InventorySystem_API.Inventory.Controller
         }
 
         [HttpDelete("id")]
+        [Audit(ActionType.Delete, EntityType.Inventory)]
         public async Task<IActionResult> Delete(string id)
         {
             try

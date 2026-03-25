@@ -6,7 +6,8 @@ namespace InventorySystem_Shared.Loging
 {
     public enum ActionType
     {
-        Read,
+        ReadOne,
+        ReadMany,
         Create,
         Update,
         Delete
