@@ -5,10 +5,8 @@ using System.Text;
 
 namespace InventorySystem_Shared.Loging
 {
-    public class AuditLogResponse
+    public class AuditLogCreate
     {
-        public string Id { get; set; } = string.Empty;
-
         public string UserId { get; set; } = string.Empty;
         public string UserCompanyId { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
