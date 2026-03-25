@@ -91,6 +91,12 @@ builder.Services.AddScoped<IInventoryService, InventoryService>();
 #region Loging
 builder.Services.AddScoped<ILogRepository, LogRepository>();
 builder.Services.AddScoped<ILogService, LogService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<AuditActionFilter>();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<AuditActionFilter>();
+});
 #endregion
 
 #region Services
