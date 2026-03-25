@@ -7,6 +7,7 @@ using InventorySystem_API.External_API.Adress;
 using InventorySystem_API.Inventory.Repository;
 using InventorySystem_API.Inventory.Service;
 using InventorySystem_API.Inventory.Validator;
+using InventorySystem_API.Loging.Repository;
 using InventorySystem_API.Service.Image;
 using InventorySystem_API.User.Model;
 using InventorySystem_API.User.Repositories;
@@ -86,6 +87,10 @@ builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 #endregion
 
+#region Loging
+builder.Services.AddScoped<ILogRepository, LogRepository>();
+#endregion
+
 #region Services
 builder.Services.Configure<GeopifyAPIKeys>(
     builder.Configuration.GetSection("Geopify"));
@@ -93,6 +98,8 @@ builder.Services.Configure<GeopifyAPIKeys>(
 builder.Services.AddScoped<IAddressService, GeopifyAddressService>();
 builder.Services.AddSingleton<IImageService, ImageService>();
 #endregion
+
+
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddFluentValidationAutoValidation();
