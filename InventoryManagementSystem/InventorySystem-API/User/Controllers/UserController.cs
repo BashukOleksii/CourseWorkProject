@@ -1,5 +1,7 @@
-﻿using InventorySystem_API.User.Extention;
+﻿using InventorySystem_API.Loging.Service;
+using InventorySystem_API.User.Extention;
 using InventorySystem_API.User.Services;
+using InventorySystem_Shared.Loging;
 using InventorySystem_Shared.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +22,9 @@ namespace InventorySystem_API.User.Controllers
         }
 
         [HttpGet("{id}")]
+        [Audit(ActionType.ReadOne, EntityType.User)]
         [Authorize(Roles = nameof(UserRole.admin))]
-        public async Task<IActionResult> GetUserById(string id)
+        public async Task<IActionResult> GetById(string id)
         {
             try
             {
@@ -39,8 +42,9 @@ namespace InventorySystem_API.User.Controllers
         }
 
         [HttpGet]
+        [Audit(ActionType.ReadMany, EntityType.User)]
         [Authorize(Roles = nameof(UserRole.admin))]
-        public async Task<IActionResult> GetUsersByCompany([FromQuery] UserQuery userQuery)
+        public async Task<IActionResult> Get([FromQuery] UserQuery userQuery)
         {
             try
             {
@@ -55,7 +59,8 @@ namespace InventorySystem_API.User.Controllers
 
         [Authorize(Roles = nameof(UserRole.admin))]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(string id)
+        [Audit(ActionType.Delete, EntityType.User)]
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {
@@ -74,6 +79,7 @@ namespace InventorySystem_API.User.Controllers
 
         [Authorize(Roles = nameof(UserRole.admin))]
         [HttpPost("{id}/warehouses")]
+        [Audit(ActionType.Update, EntityType.User)]
         public async Task<IActionResult> AddWarehouses(string id, string[] warehouses)
         {
             try
@@ -93,6 +99,7 @@ namespace InventorySystem_API.User.Controllers
 
         [Authorize(Roles = nameof(UserRole.admin))]
         [HttpDelete("{id}/warehouses")]
+        [Audit(ActionType.Update, EntityType.User)]
         public async Task<IActionResult> DeleteWarehouses(string id, string[] warehouses)
         {
             try
@@ -111,6 +118,7 @@ namespace InventorySystem_API.User.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Audit(ActionType.Update, EntityType.User)]
         public async Task<IActionResult> Update(
             string id,
             [FromForm] UserUpdate userUpdate,

@@ -1,5 +1,7 @@
-﻿using InventorySystem_API.User.Extention;
+﻿using InventorySystem_API.Loging.Service;
+using InventorySystem_API.User.Extention;
 using InventorySystem_API.Warehouse.Service;
+using InventorySystem_Shared.Loging;
 using InventorySystem_Shared.User;
 using InventorySystem_Shared.Warehouse;
 using Microsoft.AspNetCore.Authorization;
@@ -20,6 +22,7 @@ namespace InventorySystem_API.Warehouse.Conroller
         }
 
         [HttpGet("{id}")]
+        [Audit(ActionType.ReadOne,EntityType.Warehouse)]
         public async Task<IActionResult> GetById(string id)
         {
             try
@@ -39,6 +42,7 @@ namespace InventorySystem_API.Warehouse.Conroller
         }
 
         [HttpGet]
+        [Audit(ActionType.ReadMany, EntityType.Warehouse)]
         public async Task<IActionResult> GetByIds([FromQuery] string[] ids)
         {
             try
@@ -58,6 +62,7 @@ namespace InventorySystem_API.Warehouse.Conroller
         }
 
         [HttpGet]
+        [Audit(ActionType.ReadMany, EntityType.Warehouse)]
         [Authorize(Roles = nameof(UserRole.admin))]
         public async Task<IActionResult> GetCompanyWarerhouuses([FromQuery] WarehouseQuery warehouseQuery)
         {
@@ -74,6 +79,7 @@ namespace InventorySystem_API.Warehouse.Conroller
         }
 
         [HttpPost]
+        [Audit(ActionType.Create, EntityType.Warehouse)]
         [Authorize(Roles = nameof(UserRole.admin))]
         public async Task<IActionResult> Create(WarehouseDTO dto)
         {
@@ -84,6 +90,7 @@ namespace InventorySystem_API.Warehouse.Conroller
 
         [HttpPut("{id}")]
         [Authorize(Roles = nameof(UserRole.admin))]
+        [Audit(ActionType.Update, EntityType.Warehouse)]
         public async Task<IActionResult> Update(string id, WarehouseUpdate update)
         {
             try
@@ -104,6 +111,7 @@ namespace InventorySystem_API.Warehouse.Conroller
         }
 
         [HttpDelete("{id}")]
+        [Audit(ActionType.Delete, EntityType.Warehouse)]
         [Authorize(Roles = nameof(UserRole.admin))]
         public async Task<IActionResult> Delete(string id)
         {
@@ -122,8 +130,6 @@ namespace InventorySystem_API.Warehouse.Conroller
                 return BadRequest(ex.Message);
             }
         }
-
-
 
     }
 }

@@ -19,6 +19,7 @@ namespace InventorySystem_API.User.Services
 
         private readonly IWarehouseService _warehouseService;
         private readonly IImageService _imageService;
+        
 
         public AuthService(
             IUserRepository userRepositorum,
