@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using System.ComponentModel.Design;
 
 namespace InventorySystem_API.Report.Service
 {
@@ -43,6 +44,28 @@ namespace InventorySystem_API.Report.Service
         private IContainer CellContentStyle(IContainer container) =>
             container.PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2);
 
+        private void AddHeader(PageDescriptor page, string middle)
+        {
+            page.Header().Row(row =>
+            {
+                row.RelativeItem().Column(column =>
+                {
+                    column.Item().Text("Звіт про товари").FontSize(20).SemiBold();
+                    column.Item().Text(middle).FontSize(12);
+                    column.Item().Text($"Створено: {DateTime.Now}").FontSize(12);
+                });
+            });
+        }
+
+        private void AddFooter(PageDescriptor page)
+        {
+            page.Footer().AlignCenter().Text(x =>
+            {
+                x.Span("Сторінка ");
+                x.CurrentPageNumber();
+                x.TotalPages().FontSize(10);
+            });
+        }
 
         public async Task<byte[]> GetInventoryReport(InventoryQuery? inventoryQuery, string warehouseId)
         {
@@ -66,15 +89,7 @@ namespace InventorySystem_API.Report.Service
                         page.Size(PageSizes.A4);
                         page.DefaultTextStyle(x => x.FontSize(10).FontFamily(Fonts.Verdana));
 
-                        page.Header().Row(row =>
-                        {
-                            row.RelativeItem().Column(column =>
-                            {
-                                column.Item().Text("Звіт про товари").FontSize(20).SemiBold();
-                                column.Item().Text($"Id складу: {warehouseId}").FontSize(12);
-                                column.Item().Text($"Створено: {DateTime.Now}").FontSize(12);
-                            });
-                        });
+                        AddHeader(page, $"Id складу: {warehouseId}");
 
                         page.Content().PaddingVertical(10).Column(column =>
                         {
@@ -129,12 +144,7 @@ namespace InventorySystem_API.Report.Service
 
                         });
 
-                        page.Footer().AlignCenter().Text(x =>
-                        {
-                            x.Span("Сторінка ");
-                            x.CurrentPageNumber();
-                            x.TotalPages().FontSize(10);
-                        });
+                        AddFooter(page);
 
                     });
                 }
@@ -168,15 +178,7 @@ namespace InventorySystem_API.Report.Service
                         page.Size(PageSizes.A4);
                         page.DefaultTextStyle(x => x.FontSize(10).FontFamily(Fonts.Verdana));
 
-                        page.Header().Row(row =>
-                        {
-                            row.RelativeItem().Column(column =>
-                            {
-                                column.Item().Text("Звіт про товари").FontSize(20).SemiBold();
-                                column.Item().Text($"Id компанії: {companyId}").FontSize(12);
-                                column.Item().Text($"Створено: {DateTime.Now}").FontSize(12);
-                            });
-                        });
+                        AddHeader(page, $"Id компанії: {companyId}");
 
                         page.Content().PaddingVertical(10).Column(column =>
                         {
@@ -234,12 +236,7 @@ namespace InventorySystem_API.Report.Service
 
                         });
 
-                        page.Footer().AlignCenter().Text(x =>
-                        {
-                            x.Span("Сторінка ");
-                            x.CurrentPageNumber();
-                            x.TotalPages().FontSize(10);
-                        });
+                        AddFooter(page);
 
                     });
                 }
@@ -248,14 +245,102 @@ namespace InventorySystem_API.Report.Service
             return documnent.GeneratePdf();
         }
 
-        public Task<byte[]> GetUserReport(UserQuery? userQuery, string companyId)
+        public async Task<byte[]> GetUserReport(UserQuery? userQuery, string companyId)
         {
-            throw new NotImplementedException();
-        }
+            var usersData = await _userService.Get(companyId, userQuery);
 
-        public Task<byte[]> GetAuditLogreport(AuditLogQuery? auditLogQuery, string companyId)
-        {
-            throw new NotImplementedException();
+            if (usersData.Count == 0)
+                throw new InvalidOperationException("Немає даних для генерації звіту.");
+
+            var totalCount = usersData.Count;
+
+            var allWarehouseIds = usersData
+                .Where(user => user.UserRole != UserRole.admin && user.WarehouseIds is not null)
+                .SelectMany(user => user.WarehouseIds)
+                .Distinct()
+                .ToArray();
+
+            var warehouseDict = (await _userService.Get(companyId, userQuery))
+                .ToDictionary(warehouse => warehouse.Id, warehouse => warehouse.Name);
+
+            var documnent = Document.Create(container =>
+            {
+                {
+                    container.Page(page =>
+                    {
+                        page.Margin(50);
+                        page.Size(PageSizes.A4);
+                        page.DefaultTextStyle(x => x.FontSize(10).FontFamily(Fonts.Verdana));
+
+                        AddHeader(page, $"Id компанії: {companyId}");
+
+                        page.Content().PaddingVertical(10).Column(column =>
+                        {
+                            column.Item().PaddingBottom(10).Table(table =>
+                            {
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.RelativeColumn();
+                                });
+
+                                table.Cell().Element(Block).Text($"Загальна кількість: {totalCount}");
+                            });
+
+                            column.Item().Table(table =>
+                            {
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.ConstantColumn(30);
+                                    columns.RelativeColumn(2);
+                                    columns.RelativeColumn(1.5f);
+                                    columns.RelativeColumn(3);
+                                });
+
+                                table.Header(header =>
+                                {
+                                    header.Cell().Element(CellHeaderStyle).Text("Id");
+                                    header.Cell().Element(CellHeaderStyle).Text("Ім'я");
+                                    header.Cell().Element(CellHeaderStyle).Text("Роль");
+                                    header.Cell().Element(CellHeaderStyle).Text("Список складів");
+                                });
+
+                                for (int i = 0; i < usersData.Count; i++)
+                                {
+                                    var user = usersData[i];
+                                    table.Cell().Element(CellContentStyle).Text(user.Id);
+                                    table.Cell().Element(CellContentStyle).Text(user.Name);
+                                    table.Cell().Element(CellContentStyle).Text(user.UserRole.ToString());
+
+                                    table.Cell().Element(CellContentStyle).PaddingVertical(2).Column(listStack =>
+                                    {
+                                        if (user.UserRole == UserRole.admin)
+                                            listStack.Item().Text("• Всі доступні");
+                                        else if(user.WarehouseIds is null)
+                                            listStack.Item().Text("• Немає переліку");
+                                        else
+                                        {
+                                            foreach (var warehouseId in user.WarehouseIds)
+                                            {
+                                                var warehouseName = warehouseDict.ContainsKey(warehouseId) ? warehouseDict[warehouseId] : "Невідомий склад";
+                                                listStack.Item().Text($"• {warehouseName}");
+                                            }
+                                        }
+
+                                    });
+                                }
+                            });
+
+
+
+                        });
+
+                        AddFooter(page);
+
+                    });
+                }
+            });
+
+            return documnent.GeneratePdf();
         }
     }
 }
