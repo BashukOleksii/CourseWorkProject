@@ -6,8 +6,7 @@ using InventorySystem_API.Service.Image;
 using InventorySystem_Shared.Inventory;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System.ComponentModel.DataAnnotations;
-using static System.Net.WebRequestMethods;
+using System.Security.Cryptography.X509Certificates;
 
 namespace InventorySystem_API.Inventory.Service
 {
@@ -79,46 +78,62 @@ namespace InventorySystem_API.Inventory.Service
         }
         
 
-        public async Task<List<InventoryResponse>> Get(InventoryQuery? inventoryQuery, string warehouseId)
-        {
-            var builder = new FilterDefinitionBuilder<InventoryModel>();
-            var filter = builder.Eq(inventory => inventory.WarehouseId, warehouseId);
+            public async Task<List<InventoryResponse>> Get(InventoryQuery? inventoryQuery, string warehouseId)
+            {
+                var builder = new FilterDefinitionBuilder<InventoryModel>();
+                var filter = builder.Eq(inventory => inventory.WarehouseId, warehouseId);
+                SortDefinition<InventoryModel>? sort = null;
+                int? pageSize = null;
+                int? page = null;
 
             if (inventoryQuery is not null)
-            {
-                if (inventoryQuery.Name is not null)
-                    filter &= builder.Eq(inventory => inventory.Name, inventoryQuery.Name);
-                if (inventoryQuery.Description is not null)
-                    filter &= builder.Regex(inventory => inventory.Description, new BsonRegularExpression(inventoryQuery.Description, "i"));
-
-                if (inventoryQuery.Manufacturer is not null)
                 {
-                    var manufacturer = inventoryQuery.Manufacturer;
+                    if (inventoryQuery.Name is not null)
+                        filter &= builder.Eq(inventory => inventory.Name, inventoryQuery.Name);
+                    if (inventoryQuery.Description is not null)
+                        filter &= builder.Regex(inventory => inventory.Description, new BsonRegularExpression(inventoryQuery.Description, "i"));
 
-                    if (manufacturer.Name is not null)
-                        filter &= builder.Regex(inventory => inventory.Manufacturer.Name, new BsonRegularExpression(manufacturer.Name, "i"));
-                    if (manufacturer.Country is not null)
-                        filter &= builder.Regex(inventory => inventory.Manufacturer.Country, new BsonRegularExpression(manufacturer.Country, "i"));
-                }
+                    if (inventoryQuery.Manufacturer is not null)
+                    {
+                        var manufacturer = inventoryQuery.Manufacturer;
 
-                if (inventoryQuery.InventoryType is not null)
-                    filter &= builder.Eq(inventory => inventory.InventoryType, inventoryQuery.InventoryType);
+                        if (manufacturer.Name is not null)
+                            filter &= builder.Regex(inventory => inventory.Manufacturer.Name, new BsonRegularExpression(manufacturer.Name, "i"));
+                        if (manufacturer.Country is not null)
+                            filter &= builder.Regex(inventory => inventory.Manufacturer.Country, new BsonRegularExpression(manufacturer.Country, "i"));
+                    }
 
-                if (inventoryQuery.MinPrice is not null)
-                    filter &= builder.Gt(inventory => inventory.Price, inventoryQuery.MinPrice);
-                if (inventoryQuery.MaxPrice is not null)
-                    filter &= builder.Lt(inventory => inventory.Price, inventoryQuery.MaxPrice);
+                    if (inventoryQuery.InventoryType is not null)
+                        filter &= builder.Eq(inventory => inventory.InventoryType, inventoryQuery.InventoryType);
 
-                if (inventoryQuery.MinQuantity is not null)
-                    filter &= builder.Gt(inventory => inventory.Quantity, inventoryQuery.MinQuantity);
-                if (inventoryQuery.MaxQuantity is not null)
-                    filter &= builder.Lt(inventory => inventory.Quantity, inventoryQuery.MaxQuantity);
+                    if (inventoryQuery.MinPrice is not null)
+                        filter &= builder.Gt(inventory => inventory.Price, inventoryQuery.MinPrice);
+                    if (inventoryQuery.MaxPrice is not null)
+                        filter &= builder.Lt(inventory => inventory.Price, inventoryQuery.MaxPrice);
+
+                    if (inventoryQuery.MinQuantity is not null)
+                        filter &= builder.Gt(inventory => inventory.Quantity, inventoryQuery.MinQuantity);
+                    if (inventoryQuery.MaxQuantity is not null)
+                        filter &= builder.Lt(inventory => inventory.Quantity, inventoryQuery.MaxQuantity);
+
+                    if(inventoryQuery.SortBy is not null)
+                    {
+                        var sortBuilder = Builders<InventoryModel>.Sort;
+
+                        sort = inventoryQuery.SortDescending
+                            ? sortBuilder.Descending(inventoryQuery.SortBy)
+                            : sortBuilder.Ascending(inventoryQuery.SortBy);
+                    }
+
+                    page = inventoryQuery.Page;
+                    pageSize = inventoryQuery.PageSize;
+
             }
 
-            var response = await _inventoryRepository.Get(filter, inventoryQuery.PageSize, inventoryQuery.Page);
+                var response = await _inventoryRepository.Get(filter, sort, pageSize, page);
 
-            return _inventoryMapper.Map<List<InventoryResponse>>(response);
-        }
+                return _inventoryMapper.Map<List<InventoryResponse>>(response);
+            }
 
         public async Task<InventoryResponse> GetById(string id)
         {

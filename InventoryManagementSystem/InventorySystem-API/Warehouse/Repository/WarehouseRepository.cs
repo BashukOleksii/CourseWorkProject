@@ -36,11 +36,12 @@ namespace InventorySystem_API.Warehouse.Repository
             return model;
         }
 
-        public async Task<List<WarehouseModel>> Get(FilterDefinition<WarehouseModel> filter, int pageSize, int page) =>
+        public async Task<List<WarehouseModel>> Get(FilterDefinition<WarehouseModel> filter, SortDefinition<WarehouseModel> sort, int pageSize, int page) =>
             await _collection
             .Find(filter)
             .Skip((page - 1) * pageSize)
             .Limit(pageSize)
+            .Sort(sort)
             .ToListAsync();        
     }
 }

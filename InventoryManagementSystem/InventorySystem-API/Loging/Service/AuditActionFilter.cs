@@ -25,13 +25,13 @@ namespace InventorySystem_API.Loging.Service
             ActionExecutingContext context, 
             ActionExecutionDelegate next)
         {
-            var executedContext = await next();
-
             var auditAttribute = context.ActionDescriptor.EndpointMetadata
-                .OfType<AuditAttribute>().FirstOrDefault();
+                 .OfType<AuditAttribute>().FirstOrDefault();
 
             if (auditAttribute is null)
                 return;
+
+            var executedContext = await next();
 
             var user = _contextAccessor.HttpContext.User;
 

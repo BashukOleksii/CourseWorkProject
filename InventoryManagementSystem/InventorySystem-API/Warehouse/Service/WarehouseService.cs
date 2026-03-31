@@ -136,6 +136,8 @@ namespace InventorySystem_API.Warehouse.Service
 
             var builder = new FilterDefinitionBuilder<WarehouseModel>();
             var filter = builder.Eq(warehouse => warehouse.CompanyId,companyId);
+            
+            SortDefinition<WarehouseModel> sort = null;
 
             if (warehouseQuery.Name is not null)
                 filter &= builder.Regex(warehouse => warehouse.Name, new BsonRegularExpression(warehouseQuery.Name, "i"));
@@ -169,7 +171,16 @@ namespace InventorySystem_API.Warehouse.Service
 
             }
 
-            var response = await _warehouseRepository.Get(filter, warehouseQuery.PageSize, warehouseQuery.Page);
+            if(warehouseQuery.SortBy is not null)
+            {
+                var sortBuilder = Builders<WarehouseModel>.Sort;
+
+                sort = warehouseQuery.OrderByDescending ?
+                    sortBuilder.Descending(warehouseQuery.SortBy) :
+                    sortBuilder.Ascending(warehouseQuery.SortBy);
+            }
+
+            var response = await _warehouseRepository.Get(filter, sort, warehouseQuery.PageSize, warehouseQuery.Page);
             return _warehouseMapper.Map<List<WarehouseResponse>>(response);
         }
     }

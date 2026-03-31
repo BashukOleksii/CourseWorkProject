@@ -8,7 +8,10 @@ namespace InventorySystem_API.User.Repositories
     {
 
         public Task<List<UserModel>> Get(
-            FilterDefinition<UserModel> filter, int pageSize, int page
+            FilterDefinition<UserModel> filter,
+            SortDefinition<UserModel> sort, 
+            int pageSize,
+            int page
             );
         public Task<UserModel?> GetById(string id);
         public Task<UserModel?> GetByEmail(string email);
