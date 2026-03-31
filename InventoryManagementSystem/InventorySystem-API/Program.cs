@@ -9,6 +9,7 @@ using InventorySystem_API.Inventory.Service;
 using InventorySystem_API.Inventory.Validator;
 using InventorySystem_API.Loging.Repository;
 using InventorySystem_API.Loging.Service;
+using InventorySystem_API.Report.Service;
 using InventorySystem_API.Service.Image;
 using InventorySystem_API.User.Model;
 using InventorySystem_API.User.Repositories;
@@ -105,6 +106,10 @@ builder.Services.Configure<GeopifyAPIKeys>(
 
 builder.Services.AddScoped<IAddressService, GeopifyAddressService>();
 builder.Services.AddSingleton<IImageService, ImageService>();
+#endregion
+
+#region
+builder.Services.AddScoped<IReportService, ReportService>();
 #endregion
 
 

@@ -193,7 +193,7 @@ namespace InventorySystem_API.Report.Service
 
                                 table.Cell().Element(Block).Text($"Загальна кількість: {totalCount}");
                                 table.Cell().Element(Block).Text($"Загальна площі: {totalArea:N2}");
-                                table.Cell().Element(Block).Text($"Загальна кількість працівників: {countEmployee.Length:N2}");
+                                table.Cell().Element(Block).Text($"Загальна кількість працівників: {countEmployee.Length}");
                             });
 
                             column.Item().Table(table =>
@@ -260,7 +260,7 @@ namespace InventorySystem_API.Report.Service
                 .Distinct()
                 .ToArray();
 
-            var warehouseDict = (await _userService.Get(companyId, userQuery))
+            var warehouseDict = (await _warehouseService.GetByIds(allWarehouseIds,companyId))
                 .ToDictionary(warehouse => warehouse.Id, warehouse => warehouse.Name);
 
             var documnent = Document.Create(container =>
