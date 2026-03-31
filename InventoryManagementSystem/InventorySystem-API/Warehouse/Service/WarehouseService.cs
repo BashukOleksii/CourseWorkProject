@@ -124,63 +124,74 @@ namespace InventorySystem_API.Warehouse.Service
             return _warehouseMapper.Map<WarehouseResponse>(model);
         }
 
-        public async Task<List<WarehouseResponse>> Get(string companyId, WarehouseQuery warehouseQuery)
+        public async Task<List<WarehouseResponse>> Get(string companyId, WarehouseQuery? warehouseQuery)
         {
-            if (warehouseQuery.PageSize < 0 || warehouseQuery.Page < 0)
-                throw new ArgumentException("Невірні параметри для пагінації");
-
-            if (warehouseQuery.MinArea.HasValue && warehouseQuery.MinArea < 0 ||
-                warehouseQuery.MaxArea.HasValue && warehouseQuery.MaxArea < 0 ||
-                warehouseQuery.MinArea.HasValue && warehouseQuery.MaxArea.HasValue && warehouseQuery.MaxArea < warehouseQuery.MinArea)
-                throw new ArgumentException("Невірно встановлені значення для площі");
+           
 
             var builder = new FilterDefinitionBuilder<WarehouseModel>();
             var filter = builder.Eq(warehouse => warehouse.CompanyId,companyId);
             
-            SortDefinition<WarehouseModel> sort = null;
+            SortDefinition<WarehouseModel>? sort = null;
 
-            if (warehouseQuery.Name is not null)
-                filter &= builder.Regex(warehouse => warehouse.Name, new BsonRegularExpression(warehouseQuery.Name, "i"));
-            if (warehouseQuery.PartDescription is not null)
-                filter &= builder.Regex(warehouse => warehouse.Description, new BsonRegularExpression(warehouseQuery.PartDescription, "i"));
-            if (warehouseQuery.MinArea.HasValue)
-                filter &= builder.Gt(warehouse => warehouse.Area, warehouseQuery.MinArea);
-            if (warehouseQuery.MaxArea.HasValue)
-                filter &= builder.Lt(warehouse => warehouse.Area, warehouseQuery.MaxArea);
+            int? pageSize = null;
+            int? page = null;
 
-            if (warehouseQuery.Address is not null)
+            if (warehouseQuery is not null)
             {
-                var address = warehouseQuery.Address;
+                if (warehouseQuery.PageSize < 0 || warehouseQuery.Page < 0)
+                    throw new ArgumentException("Невірні параметри для пагінації");
 
-                if (address.Name is not null)
-                    filter &= builder.Regex(warehouse => warehouse.Address.Name, new BsonRegularExpression(address.Name, "i"));
-                if (address.Country is not null)
-                    filter &= builder.Eq(warehouse => warehouse.Address.Country,address.Country);
-                if (address.State is not null)
-                    filter &= builder.Eq(warehouse => warehouse.Address.State, address.State);
-                if (address.District is not null)
-                    filter &= builder.Eq(warehouse => warehouse.Address.District, address.District);
-                if (address.City is not null)
-                    filter &= builder.Eq(warehouse => warehouse.Address.City, address.City);
-                if (address.Street is not null)
-                    filter &= builder.Eq(warehouse => warehouse.Address.Street, address.Street);
-                if (address.HouseNumber is not null)
-                    filter &= builder.Eq(warehouse => warehouse.Address.HouseNumber, address.HouseNumber);
-                if (address.Postcode is not null)
-                    filter &= builder.Eq(warehouse => warehouse.Address.Postcode, address.Postcode);
+                if (warehouseQuery.MinArea.HasValue && warehouseQuery.MinArea < 0 ||
+                    warehouseQuery.MaxArea.HasValue && warehouseQuery.MaxArea < 0 ||
+                    warehouseQuery.MinArea.HasValue && warehouseQuery.MaxArea.HasValue && warehouseQuery.MaxArea < warehouseQuery.MinArea)
+                    throw new ArgumentException("Невірно встановлені значення для площі");
 
+                if (warehouseQuery.Name is not null)
+                    filter &= builder.Regex(warehouse => warehouse.Name, new BsonRegularExpression(warehouseQuery.Name, "i"));
+                if (warehouseQuery.PartDescription is not null)
+                    filter &= builder.Regex(warehouse => warehouse.Description, new BsonRegularExpression(warehouseQuery.PartDescription, "i"));
+                if (warehouseQuery.MinArea.HasValue)
+                    filter &= builder.Gt(warehouse => warehouse.Area, warehouseQuery.MinArea);
+                if (warehouseQuery.MaxArea.HasValue)
+                    filter &= builder.Lt(warehouse => warehouse.Area, warehouseQuery.MaxArea);
+
+                if (warehouseQuery.Address is not null)
+                {
+                    var address = warehouseQuery.Address;
+
+                    if (address.Name is not null)
+                        filter &= builder.Regex(warehouse => warehouse.Address.Name, new BsonRegularExpression(address.Name, "i"));
+                    if (address.Country is not null)
+                        filter &= builder.Eq(warehouse => warehouse.Address.Country, address.Country);
+                    if (address.State is not null)
+                        filter &= builder.Eq(warehouse => warehouse.Address.State, address.State);
+                    if (address.District is not null)
+                        filter &= builder.Eq(warehouse => warehouse.Address.District, address.District);
+                    if (address.City is not null)
+                        filter &= builder.Eq(warehouse => warehouse.Address.City, address.City);
+                    if (address.Street is not null)
+                        filter &= builder.Eq(warehouse => warehouse.Address.Street, address.Street);
+                    if (address.HouseNumber is not null)
+                        filter &= builder.Eq(warehouse => warehouse.Address.HouseNumber, address.HouseNumber);
+                    if (address.Postcode is not null)
+                        filter &= builder.Eq(warehouse => warehouse.Address.Postcode, address.Postcode);
+
+                }
+
+                if (warehouseQuery.SortBy is not null)
+                {
+                    var sortBuilder = Builders<WarehouseModel>.Sort;
+
+                    sort = warehouseQuery.OrderByDescending ?
+                        sortBuilder.Descending(warehouseQuery.SortBy) :
+                        sortBuilder.Ascending(warehouseQuery.SortBy);
+                }
+
+                page = warehouseQuery.Page;
+                pageSize = warehouseQuery.PageSize;
             }
 
-            if(warehouseQuery.SortBy is not null)
-            {
-                var sortBuilder = Builders<WarehouseModel>.Sort;
-
-                sort = warehouseQuery.OrderByDescending ?
-                    sortBuilder.Descending(warehouseQuery.SortBy) :
-                    sortBuilder.Ascending(warehouseQuery.SortBy);
-            }
-
-            var response = await _warehouseRepository.Get(filter, sort, warehouseQuery.PageSize, warehouseQuery.Page);
+            var response = await _warehouseRepository.Get(filter, sort, pageSize, page);
             return _warehouseMapper.Map<List<WarehouseResponse>>(response);
         }
     }

@@ -18,7 +18,7 @@ namespace InventorySystem_Shared.Warehouse
         public string? SortBy { get; set; }
         public bool OrderByDescending { get; set; }
 
-        public int PageSize { get; set; } = 5;
-        public int Page { get; set; } = 1;
+        public int? PageSize { get; set; } = 5;
+        public int? Page { get; set; } = 1;
     }
 }

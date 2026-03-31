@@ -64,7 +64,7 @@ namespace InventorySystem_API.Warehouse.Conroller
         [HttpGet]
         [Audit(ActionType.ReadMany, EntityType.Warehouse)]
         [Authorize(Roles = nameof(UserRole.admin))]
-        public async Task<IActionResult> GetCompanyWarerhouuses([FromQuery] WarehouseQuery warehouseQuery)
+        public async Task<IActionResult> GetCompanyWarerhouuses([FromQuery] WarehouseQuery? warehouseQuery)
         {
             try
             {

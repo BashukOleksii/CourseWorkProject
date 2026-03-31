@@ -44,7 +44,7 @@ namespace InventorySystem_API.Report.Service
             container.PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2);
 
 
-        public async Task<byte[]> GetInventoryReport(InventoryQuery inventoryQuery, string warehouseId)
+        public async Task<byte[]> GetInventoryReport(InventoryQuery? inventoryQuery, string warehouseId)
         {
             var inventoryData = await _inventoryService.Get(inventoryQuery, warehouseId);
 
@@ -143,17 +143,117 @@ namespace InventorySystem_API.Report.Service
             return documnent.GeneratePdf();
         }
 
-        public Task<byte[]> GetUserReport(UserQuery userQuery, string companyId)
+        public async Task<byte[]> GetWarehouseReport(WarehouseQuery? warehouseQuery, string companyId)
+        {
+            var warehouseData = await _warehouseService.Get(companyId,warehouseQuery);
+
+            if (warehouseData.Count == 0)
+                throw new InvalidOperationException("Немає даних для генерації звіту.");
+
+            var totalCount = warehouseData.Count;
+            var totalArea = warehouseData.Sum(w => w.Area);
+            int totalEmployees = 0;
+
+            long[] countEmployee = new long[warehouseData.Count];
+            for(int i = 0; i < warehouseData.Count; i++)
+                countEmployee[i] = await _userService.GetCountInWarehouse(warehouseData[i].Id);
+            
+
+            var documnent = Document.Create(container =>
+            {
+                {
+                    container.Page(page =>
+                    {
+                        page.Margin(50);
+                        page.Size(PageSizes.A4);
+                        page.DefaultTextStyle(x => x.FontSize(10).FontFamily(Fonts.Verdana));
+
+                        page.Header().Row(row =>
+                        {
+                            row.RelativeItem().Column(column =>
+                            {
+                                column.Item().Text("Звіт про товари").FontSize(20).SemiBold();
+                                column.Item().Text($"Id компанії: {companyId}").FontSize(12);
+                                column.Item().Text($"Створено: {DateTime.Now}").FontSize(12);
+                            });
+                        });
+
+                        page.Content().PaddingVertical(10).Column(column =>
+                        {
+                            column.Item().PaddingBottom(10).Table(table =>
+                            {
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                });
+
+                                table.Cell().Element(Block).Text($"Загальна кількість: {totalCount}");
+                                table.Cell().Element(Block).Text($"Загальна площі: {totalArea:N2}");
+                                table.Cell().Element(Block).Text($"Загальна кількість працівників: {countEmployee.Length:N2}");
+                            });
+
+                            column.Item().Table(table =>
+                            {
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.ConstantColumn(30);
+                                    columns.RelativeColumn(2);
+                                    columns.RelativeColumn(2);
+                                    columns.RelativeColumn(2);
+                                    columns.RelativeColumn(1);
+                                    columns.RelativeColumn(1);
+                                    columns.RelativeColumn(1);
+                                });
+
+                                table.Header(header =>
+                                {
+                                    header.Cell().Element(CellHeaderStyle).Text("Id");
+                                    header.Cell().Element(CellHeaderStyle).Text("Назва");
+                                    header.Cell().Element(CellHeaderStyle).Text("Місто");
+                                    header.Cell().Element(CellHeaderStyle).Text("Вулиця");
+                                    header.Cell().Element(CellHeaderStyle).Text("Будинок");
+                                    header.Cell().Element(CellHeaderStyle).Text("Площа");
+                                    header.Cell().Element(CellHeaderStyle).Text("К-ть працівників");
+                                });
+
+                                for(int i = 0; i< warehouseData.Count; i++)
+                                {
+                                    table.Cell().Element(CellContentStyle).Text(warehouseData[i].Id);
+                                    table.Cell().Element(CellContentStyle).Text(warehouseData[i].Name);
+                                    table.Cell().Element(CellContentStyle).Text(warehouseData[i].Address.City);
+                                    table.Cell().Element(CellContentStyle).Text(warehouseData[i].Address.Street);
+                                    table.Cell().Element(CellContentStyle).Text(warehouseData[i].Address.HouseNumber);
+                                    table.Cell().Element(CellContentStyle).Text(warehouseData[i].Area.ToString());
+                                    table.Cell().Element(CellContentStyle).Text(countEmployee[i].ToString());
+                                }
+                            });
+
+
+
+                        });
+
+                        page.Footer().AlignCenter().Text(x =>
+                        {
+                            x.Span("Сторінка ");
+                            x.CurrentPageNumber();
+                            x.TotalPages().FontSize(10);
+                        });
+
+                    });
+                }
+            });
+
+            return documnent.GeneratePdf();
+        }
+
+        public Task<byte[]> GetUserReport(UserQuery? userQuery, string companyId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<byte[]> GetWarehouseReport(WarehouseQuery warehouseQuery, string companyId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<byte[]> GetWarehouseReport(AuditLogQuery auditLogQuery, string companyId)
+        public Task<byte[]> GetAuditLogreport(AuditLogQuery? auditLogQuery, string companyId)
         {
             throw new NotImplementedException();
         }

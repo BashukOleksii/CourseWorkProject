@@ -9,15 +9,16 @@ namespace InventorySystem_API.User.Repositories
 
         public Task<List<UserModel>> Get(
             FilterDefinition<UserModel> filter,
-            SortDefinition<UserModel> sort, 
-            int pageSize,
-            int page
+            SortDefinition<UserModel>? sort, 
+            int? pageSize,
+            int? page
             );
         public Task<UserModel?> GetById(string id);
         public Task<UserModel?> GetByEmail(string email);
         public Task<List<UserModel>> GetByRole(UserRole userRole, string companyId);
         public Task<List<UserModel>> GetByCompanyId(string companyId);
 
+        public Task<long> GetCountInWarehouse(string warehouseId);
 
         public Task<UserModel> Create(UserModel userInfo);
         public Task<UserModel> Update(UserModel userInfo);

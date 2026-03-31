@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace InventorySystem_API.User.Repositories
 {
-    public class UserRepository: IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly IMongoCollection<UserModel> _mongoCollection;
 
@@ -21,14 +21,19 @@ namespace InventorySystem_API.User.Repositories
         public async Task Delete(string id) =>
             await _mongoCollection.DeleteOneAsync(user => user.Id == id);
 
-        public async Task<List<UserModel>> Get(FilterDefinition<UserModel> filter, SortDefinition<UserModel> sort, int pageSize, int page) =>
-            await _mongoCollection
-            .Find(filter)
-            .Skip((page - 1) * pageSize)
-            .Limit(pageSize)
-            .Sort(sort)
-            .ToListAsync();
-        
+        public async Task<List<UserModel>> Get(FilterDefinition<UserModel> filter, SortDefinition<UserModel>? sort, int? pageSize, int? page)
+        {
+            var query = _mongoCollection.Find(filter);
+
+            if(sort is not null)
+                query = query.Sort(sort);
+
+            if (pageSize.HasValue)
+                query = query.Skip(page - 1 ?? 0) .Limit(pageSize.Value);
+
+            return await query.ToListAsync();
+        }
+
 
         public async Task<List<UserModel>> GetByCompanyId(string companyId) =>
             await _mongoCollection.Find(user => user.CompanyId == companyId).ToListAsync();
@@ -43,7 +48,11 @@ namespace InventorySystem_API.User.Repositories
 
         public async Task<List<UserModel>> GetByRole(UserRole userRole, string companyId) =>
             await _mongoCollection.Find(user => user.CompanyId == companyId && user.UserRole == userRole).ToListAsync();
-        
+
+        public async Task<long> GetCountInWarehouse(string warehouseId) =>
+            await _mongoCollection
+            .CountDocumentsAsync(user => user.WarehouseIds != null && user.WarehouseIds.Contains(warehouseId));
+
 
         public async Task<UserModel> Update(UserModel userInfo)
         {

@@ -4,7 +4,7 @@ namespace InventorySystem_API.Warehouse.Service
 {
     public interface IWarehouseService
     {
-        Task<List<WarehouseResponse>> Get(string companyId, WarehouseQuery warehouseQuery);
+        Task<List<WarehouseResponse>> Get(string companyId, WarehouseQuery? warehouseQuery);
         Task<WarehouseResponse> GetById(string warehouseId, string companyId);
         Task<List<WarehouseResponse>> GetByIds(string[] id, string companyId);
         Task<List<string>> GetIdsByCompanyId(string companyId);

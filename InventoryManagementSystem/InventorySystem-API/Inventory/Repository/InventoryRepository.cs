@@ -40,7 +40,7 @@ namespace InventorySystem_API.Inventory.Repository
                 query = query.Sort(sort);
 
             if(pageSize is not null)
-                query = query.Skip((page ?? 0) * pageSize.Value).Limit(pageSize.Value);
+                query = query.Skip((page - 1 ?? 0) * pageSize.Value).Limit(pageSize.Value);
             
             return await query.ToListAsync();
         }
