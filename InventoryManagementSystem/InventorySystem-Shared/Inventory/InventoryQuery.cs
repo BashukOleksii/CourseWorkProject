@@ -21,8 +21,11 @@ namespace InventorySystem_Shared.Inventory
         public int? MinQuantity { get; set; }
         public int? MaxQuantity { get; set; }
 
-        public int PageSize { get; set; } = 15;
-        public int Page { get; set; } = 1;
+        public string? SortBy { get; set; }
+        public bool SortDescending { get; set; }
+
+        public int? PageSize { get; set; } = 15;
+        public int? Page { get; set; } = 1;
 
     }
 }

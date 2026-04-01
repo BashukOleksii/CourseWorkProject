@@ -66,24 +66,44 @@ namespace InventorySystem_API.User.Services
             await _userRepository.Delete(user.Id);
         }
 
-        public async Task<List<UserResponse>> Get(string companyIdClient, UserQuery userQuery)
+        public async Task<List<UserResponse>> Get(string companyIdClient, UserQuery? userQuery)
         {
-            if (userQuery.Page < 0 || userQuery.PageSize < 0)
-                throw new ArgumentException("Значенн для пагінації не ожуть бути менше нуля");
-
             var builder = new FilterDefinitionBuilder<UserModel>();
             var filter = builder.Empty;
 
-            filter &= builder.Eq(user => user.CompanyId, companyIdClient);
+            SortDefinition<UserModel>? sort = null;
 
-            if(userQuery.Name is not null)
-                filter &= builder.Regex(user => user.Name, new MongoDB.Bson.BsonRegularExpression(userQuery.Name,"i"));
-            if (userQuery.UserRole is not null)
-                filter &= builder.Eq(user => user.UserRole, userQuery.UserRole);
-            if (userQuery.WarehouseId is not null)
-                filter &= builder.AnyEq(user => user.WarehouseIds, userQuery.WarehouseId);
+            int? pageSize = null;
+            int? page = null;
 
-            var users = await _userRepository.Get(filter,userQuery.PageSize, userQuery.Page);
+            if (userQuery is not null)
+            {
+                if (userQuery.Page < 0 || userQuery.PageSize < 0)
+                    throw new ArgumentException("Значенн для пагінації не ожуть бути менше нуля");
+
+                filter &= builder.Eq(user => user.CompanyId, companyIdClient);
+
+                if (userQuery.Name is not null)
+                    filter &= builder.Regex(user => user.Name, new MongoDB.Bson.BsonRegularExpression(userQuery.Name, "i"));
+                if (userQuery.UserRole is not null)
+                    filter &= builder.Eq(user => user.UserRole, userQuery.UserRole);
+                if (userQuery.WarehouseId is not null)
+                    filter &= builder.AnyEq(user => user.WarehouseIds, userQuery.WarehouseId);
+
+                if(userQuery.SortBy is not null)
+                {
+                    var sortBuilder = Builders<UserModel>.Sort;
+
+                    sort = userQuery.SortDescending ?
+                        sort.Descending(userQuery.SortBy):
+                        sort.Ascending(userQuery.SortBy);
+                }
+
+                pageSize = userQuery.PageSize; 
+                page = userQuery.Page;
+            }
+
+            var users = await _userRepository.Get(filter, sort, pageSize, page);
 
            return _mapper.Map<List<UserResponse>>(users);
         }
@@ -166,5 +186,9 @@ namespace InventorySystem_API.User.Services
                 if (user.WarehouseIds is not null && user.WarehouseIds.Contains(warehouseId))
                     user.WarehouseIds.Remove(warehouseId);
         }
+
+        public async Task<long> GetCountInWarehouse(string warehouseId) =>
+            await _userRepository.GetCountInWarehouse(warehouseId);
+
     }
 }

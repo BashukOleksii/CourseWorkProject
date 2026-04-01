@@ -36,11 +36,17 @@ namespace InventorySystem_API.Warehouse.Repository
             return model;
         }
 
-        public async Task<List<WarehouseModel>> Get(FilterDefinition<WarehouseModel> filter, int pageSize, int page) =>
-            await _collection
-            .Find(filter)
-            .Skip((page - 1) * pageSize)
-            .Limit(pageSize)
-            .ToListAsync();        
+        public async Task<List<WarehouseModel>> Get(FilterDefinition<WarehouseModel> filter, SortDefinition<WarehouseModel>? sort, int? pageSize, int? page)
+        {
+            var query = _collection.Find(filter);
+            
+            if (sort != null)
+                query = query.Sort(sort);
+
+            if (pageSize.HasValue)
+                query = query.Skip((page == null ? 0 : page.Value - 1) * pageSize.Value).Limit(pageSize.Value);
+
+            return await query.ToListAsync();
+        }   
     }
 }

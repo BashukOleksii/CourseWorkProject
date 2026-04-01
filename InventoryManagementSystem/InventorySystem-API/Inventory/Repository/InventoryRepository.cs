@@ -1,5 +1,6 @@
 ﻿using InventorySystem_API.Inventory.Models;
 using InventorySystem_API.Warehouse.Repository;
+using Microsoft.IdentityModel.Abstractions;
 using MongoDB.Driver;
 
 namespace InventorySystem_API.Inventory.Repository
@@ -25,14 +26,24 @@ namespace InventorySystem_API.Inventory.Repository
 
         public async Task DeleteByWarehouseId(string warehouseId) =>
             await _collection.DeleteManyAsync(warehouse => warehouse.Id == warehouseId);
-        
 
-        public async Task<List<InventoryModel>> Get(FilterDefinition<InventoryModel> filter, int pageSize, int page) =>
-            await _collection
-            .Find(filter)
-            .Skip((page - 1)*pageSize)
-            .Limit(pageSize)
-            .ToListAsync();
+
+        public async Task<List<InventoryModel>> Get(
+            FilterDefinition<InventoryModel> filter,
+            SortDefinition<InventoryModel>? sort,
+            int? pageSize,
+            int? page)
+        {
+            var query = _collection.Find(filter);
+
+            if(sort is not null)
+                query = query.Sort(sort);
+
+            if(pageSize is not null)
+                query = query.Skip((page - 1 ?? 0) * pageSize.Value).Limit(pageSize.Value);
+            
+            return await query.ToListAsync();
+        }
 
 
         public async Task<InventoryModel?> GetById(string id) =>

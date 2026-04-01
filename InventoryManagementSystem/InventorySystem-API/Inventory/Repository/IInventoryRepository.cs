@@ -5,7 +5,11 @@ namespace InventorySystem_API.Inventory.Repository
 {
     public interface IInventoryRepository
     {
-        Task<List<InventoryModel>> Get(FilterDefinition<InventoryModel> filter, int pageSize, int page);
+        Task<List<InventoryModel>> Get(FilterDefinition<InventoryModel> filter,
+            SortDefinition<InventoryModel>? sort,
+            int? pageSize,
+            int? page);
+
         Task<InventoryModel?> GetById(string id);
         Task<List<InventoryModel>> GetByWarehouseId(string warehouseId);
 
