@@ -20,6 +20,10 @@ namespace InventorySystem_API.Inventory.Repository
             return model;
         }
 
+        public async Task CreateMany(List<InventoryModel> inventoryModels) =>
+            await _collection.InsertManyAsync(inventoryModels);
+
+
         public async Task DeleteById(string id) =>
             await _collection.DeleteOneAsync(inventory => inventory.Id == id);
 

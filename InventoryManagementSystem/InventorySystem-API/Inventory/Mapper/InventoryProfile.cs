@@ -9,7 +9,7 @@ namespace InventorySystem_API.Inventory.Mapper
         public InventoryProfile() 
         {
             CreateMap<InventoryCreate, InventoryModel>().ReverseMap();
-            CreateMap<InventoryProfile, InventoryResponse>();
+            CreateMap<InventoryModel, InventoryResponse>().ReverseMap();
         }
     }
 }

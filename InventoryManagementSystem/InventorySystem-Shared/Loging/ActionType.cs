@@ -9,6 +9,7 @@ namespace InventorySystem_Shared.Loging
         ReadOne,
         ReadMany,
         Create,
+        CreateMany,
         Update,
         Delete
     }
