@@ -5,5 +5,6 @@
         Task<string> SaveImage(IFormFile file, string folder);
         void DeleteImage(string path);
         string GetDefaultImage(string folder);
+        Task<string> CopyImage(string path);
     }
 }

@@ -1,8 +1,6 @@
 ﻿using InventorySystem_API.Inventory.Models;
 using InventorySystem_Shared.Inventory.Manufacturer;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace InventorySystem_Shared.Inventory
 {
