@@ -15,6 +15,8 @@ using InventorySystem_API.User.Model;
 using InventorySystem_API.User.Repositories;
 using InventorySystem_API.User.Services;
 using InventorySystem_API.User.Validator;
+using InventorySystem_API.Warehouse.Repository;
+using InventorySystem_API.Warehouse.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
@@ -83,6 +85,11 @@ builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 #endregion
 
+#region Warehouse
+builder.Services.AddScoped<IWarehouseRepository, WarehouseRepository>();
+builder.Services.AddScoped<IWarehouseService, WarehouseService>();
+#endregion
+
 #region Inventory
 builder.Services.AddValidatorsFromAssemblyContaining<InventoryValidator>();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
@@ -108,7 +115,7 @@ builder.Services.AddScoped<IAddressService, GeopifyAddressService>();
 builder.Services.AddSingleton<IImageService, ImageService>();
 #endregion
 
-#region
+#region Report
 builder.Services.AddScoped<IReportService, ReportService>();
 #endregion
 
