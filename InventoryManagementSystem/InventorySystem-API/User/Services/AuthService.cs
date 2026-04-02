@@ -14,7 +14,7 @@ namespace InventorySystem_API.User.Services
         private readonly IMapper _mapper;
 
         private readonly TokenGenerator _tokenGenerator;
-        private readonly IPasswordHasher _passwordHasher;
+        private readonly IHasher _passwordHasher;
         private readonly JWTSettingOptions _jWTSettingOptions;
 
         private readonly IWarehouseService _warehouseService;
@@ -24,7 +24,7 @@ namespace InventorySystem_API.User.Services
         public AuthService(
             IUserRepository userRepositorum,
             TokenGenerator tokenGenerator,
-            IPasswordHasher passwordHasher,
+            IHasher passwordHasher,
             IMapper mapper,
             IOptions<JWTSettingOptions> options,
             IWarehouseService warehouseService,

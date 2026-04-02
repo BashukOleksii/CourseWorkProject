@@ -1,6 +1,6 @@
 ﻿namespace InventorySystem_API.User.Services
 {
-    public class BCryptPasswordHasher : IPasswordHasher
+    public class BCryptHasher : IHasher
     {
         public string HashPassword(string password) =>
             BCrypt.Net.BCrypt.HashPassword(password);

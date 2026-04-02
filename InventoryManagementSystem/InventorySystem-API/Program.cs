@@ -12,6 +12,7 @@ using InventorySystem_API.Loging.Service;
 using InventorySystem_API.Report.Service;
 using InventorySystem_API.Service.Image;
 using InventorySystem_API.User.Model;
+using InventorySystem_API.User.Models;
 using InventorySystem_API.User.Repositories;
 using InventorySystem_API.User.Services;
 using InventorySystem_API.User.Validator;
@@ -44,6 +45,9 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 builder.Services.Configure<JWTSettingOptions>(
     builder.Configuration.GetSection("JWTSettings"));
 
+builder.Services.Configure<EmailSettingOptions>(
+    builder.Configuration.GetSection("Email"));
+
 var jwtSettings = builder.Configuration.GetSection("JWTSettings").Get<JWTSettingOptions>();
 builder.Services.AddAuthentication(options =>
 {
@@ -64,7 +68,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+builder.Services.AddSingleton<IHasher, BCryptHasher>();
 builder.Services.AddSingleton<TokenGenerator>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -73,6 +77,9 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddValidatorsFromAssemblyContaining<UserRegisterValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UserModelValidator>();
 
+builder.Services.AddScoped<IHasher, BCryptHasher>();
+
+builder.Services.AddScoped<IPasswordResetRepository, PasswordResetRepository>();
 #endregion
 
 #region User
