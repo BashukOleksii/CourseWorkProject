@@ -14,14 +14,14 @@ namespace InventorySystem_API.User.Services
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly UserModelValidator _validationRules;
-        private readonly BCryptPasswordHasher _passwordHasher;
+        private readonly IHasher _passwordHasher;
         private readonly IImageService _imageService;
         
         public UserService(
             IUserRepository userRepository, 
             IMapper mapper,
             UserModelValidator validationRules,
-            BCryptPasswordHasher bCryptPasswordHasher,
+            IHasher bCryptPasswordHasher,
             IImageService imageService
             )
         {
