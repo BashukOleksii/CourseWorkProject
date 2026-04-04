@@ -1,5 +1,4 @@
 ﻿using InventorySystem_MAUI.Helper;
-using Microsoft.Extensions.Logging;
 
 namespace InventorySystem_MAUI
 {
@@ -18,10 +17,16 @@ namespace InventorySystem_MAUI
 
             builder.Services.AddSingleton<UserContextService>();
 
+            #region API-Requests
             builder.Services.AddHttpClient("AuthClient", client =>
             {
                 client.BaseAddress = new Uri(Conection.BaseURI);
             });
+            builder.Services.AddHttpClient("APIClient", client =>
+            {
+                client.BaseAddress = new Uri(Conection.BaseURI);
+            }).AddHttpMessageHandler<AuthHandler>();
+            #endregion
 
             return builder.Build();
         }
