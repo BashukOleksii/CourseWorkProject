@@ -2,7 +2,7 @@
 {
     public interface IHasher
     {
-        public string HashPassword(string password);
-        public bool VerifyPassword(string password, string passwordHash);
+        public string Hash(string password);
+        public bool Verify(string password, string passwordHash);
     }
 }

@@ -64,7 +64,7 @@ namespace InventorySystem_API.User.Services
             if (user is null)
                 throw new ArgumentException("Невірна пошта або пароль");
 
-            if(!_passwordHasher.VerifyPassword(userLogin.Password,user!.PasswordHash))
+            if(!_passwordHasher.Verify(userLogin.Password,user!.PasswordHash))
                 throw new ArgumentException("Невірна пошта або пароль");
 
             return await GenerateTokens(user);
@@ -97,7 +97,7 @@ namespace InventorySystem_API.User.Services
 
             var userModel = _mapper.Map<UserModel>(userRegister);
 
-            userModel.PasswordHash = _passwordHasher.HashPassword(userRegister.Password);
+            userModel.PasswordHash = _passwordHasher.Hash(userRegister.Password);
 
             if(userModel.UserRole == UserRole.admin)
                 userModel.WarehouseIds = await _warehouseService.GetIdsByCompanyId(userModel.CompanyId);
