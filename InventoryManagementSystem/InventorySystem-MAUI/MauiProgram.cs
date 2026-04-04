@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using InventorySystem_MAUI.Helper;
+using Microsoft.Extensions.Logging;
 
 namespace InventorySystem_MAUI
 {
@@ -15,9 +16,12 @@ namespace InventorySystem_MAUI
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-#if DEBUG
-    		builder.Logging.AddDebug();
-#endif
+            builder.Services.AddSingleton<UserContextService>();
+
+            builder.Services.AddHttpClient("AuthClient", client =>
+            {
+                client.BaseAddress = new Uri(Conection.BaseURI);
+            });
 
             return builder.Build();
         }
