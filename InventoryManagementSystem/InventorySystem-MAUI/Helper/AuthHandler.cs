@@ -59,7 +59,7 @@ namespace InventorySystem_MAUI.Helper
                     RefreshToken = _userContextService.RefreshToken
                 };
 
-                var response = await client.PostAsJsonAsync("auth/refresh", userRefresh);
+                var response = await client.PostAsJsonAsync("api/auth/refresh", userRefresh);
 
                 var tokens = await response.Content.ReadFromJsonAsync<TokensDataResponse>();
 

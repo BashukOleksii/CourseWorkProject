@@ -8,7 +8,7 @@
         {
             public static string BaseURI =>
                 DeviceInfo.Platform == DevicePlatform.Android ?
-                    "http://10.0.0.2:5011/api/" :
-                    "http://localhost:5011/api/";
+                    "http://10.0.0.2:5011/" :
+                    "http://localhost:5011/";
         }
     }
