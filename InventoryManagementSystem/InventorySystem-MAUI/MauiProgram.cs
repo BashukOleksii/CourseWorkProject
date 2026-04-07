@@ -1,4 +1,5 @@
 ﻿using InventorySystem_MAUI.Helper;
+using InventorySystem_MAUI.ViewModel;
 
 namespace InventorySystem_MAUI
 {
@@ -27,6 +28,9 @@ namespace InventorySystem_MAUI
                 client.BaseAddress = new Uri(Conection.BaseURI);
             }).AddHttpMessageHandler<AuthHandler>();
             #endregion
+
+            builder.Services.AddSingleton<AppShellViewModel>();
+            builder.Services.AddSingleton<AppShell>();
 
             return builder.Build();
         }
