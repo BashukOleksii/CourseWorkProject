@@ -13,11 +13,13 @@ namespace InventorySystem_MAUI.Service
         private readonly HttpClient _httpClient;
         private readonly UserContextService _userContextService;
 
-        public AuthService(HttpClient httpClient, UserContextService userContextService)
+        public AuthService(IHttpClientFactory httpClientFactory, UserContextService userContextService)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient("APIClient");
             _userContextService = userContextService;
         }
+
+        
 
         public async Task Login(string email, string password)
         {

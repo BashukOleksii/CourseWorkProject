@@ -8,7 +8,6 @@ namespace InventorySystem_MAUI.Helper
     public class UserContextService
     {
         public UserResponse? CurrentUser { get; private set; }
-
         public string? AccessToken { get; private set; }
         public string? RefreshToken { get; private set; }
 
