@@ -6,7 +6,7 @@ using InventorySystem_Shared.AddressClass;
 
 namespace InventorySystem_MAUI.ViewModel
 {
-    public partial class AddressViewModel : ObservableObject
+    public partial class AddressCreateViewModel : ObservableObject
     {
         private readonly AddressService _addressService;
 
@@ -19,7 +19,7 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private double? longitude;
         [ObservableProperty] private bool isBusy;
 
-        public AddressViewModel(AddressService addressService)
+        public AddressCreateViewModel(AddressService addressService)
         {
             _addressService = addressService;
         }
