@@ -1,4 +1,5 @@
 ﻿using InventorySystem_MAUI.Helper;
+using InventorySystem_MAUI.Service;
 using InventorySystem_MAUI.ViewModel;
 
 namespace InventorySystem_MAUI
@@ -29,8 +30,13 @@ namespace InventorySystem_MAUI
             }).AddHttpMessageHandler<AuthHandler>();
             #endregion
 
+            builder.Services.AddSingleton<AddressService>();
+            builder.Services.AddSingleton<CompanyService>();
+
             builder.Services.AddSingleton<AppShellViewModel>();
             builder.Services.AddSingleton<AppShell>();
+
+           
 
             return builder.Build();
         }

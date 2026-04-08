@@ -6,19 +6,29 @@ namespace InventorySystem_MAUI.Helper
 {
     public static class ShellService
     {
-        public static async Task NavigateTo(string route)
+        public static async Task NavigateTo(string route, Dictionary<string, object> paramters = null)
         {
-            await Shell.Current.GoToAsync(route);
+            if(paramters is null)
+                await Shell.Current.GoToAsync(route);
+            else
+                await Shell.Current.GoToAsync(route,paramters);
+
         }
 
-        public static async Task GoBack()
+        public static async Task GoBack(Dictionary<string, object> paramters = null)
         {
-            await Shell.Current.GoToAsync("..");
+            if(paramters is null)
+                await Shell.Current.GoToAsync("..");
+            else
+                await Shell.Current.GoToAsync("..", paramters);
         }
 
-        public static async Task AbsoluteOpenPage(string route)
+        public static async Task AbsoluteOpenPage(string route, Dictionary<string, object> paramters = null)
         {
-            await Shell.Current.GoToAsync($"//{route}");
+            if (paramters is null)
+                 await Shell.Current.GoToAsync($"//{route}");
+            else
+                await Shell.Current.GoToAsync($"//{route}",paramters);
         } 
     }
 }
