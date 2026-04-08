@@ -1,3 +1,5 @@
+using InventorySystem_MAUI.Helper;
+
 namespace InventorySystem_MAUI.View;
 
 public partial class WelcomePage : ContentPage
@@ -9,6 +11,6 @@ public partial class WelcomePage : ContentPage
 
 	public async void OnGetStartedClicked(object sender, EventArgs e)
 	{
-		await Shell.Current.DisplayAlertAsync("Кнопка","Перехід на сторінку входу","OK");
+		await ShellService.NavigateTo(nameof(CompanyCreatePage));
     }
 }

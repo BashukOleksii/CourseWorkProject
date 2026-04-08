@@ -20,6 +20,7 @@ namespace InventorySystem_MAUI
             builder.Services.AddSingleton<UserContextService>();
 
             #region API-Requests
+            builder.Services.AddTransient<AuthHandler>();
             builder.Services.AddHttpClient("AuthClient", client =>
             {
                 client.BaseAddress = new Uri(Conection.BaseURI);

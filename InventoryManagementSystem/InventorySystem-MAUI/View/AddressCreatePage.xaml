@@ -4,39 +4,95 @@
              x:Class="InventorySystem_MAUI.View.AddressCreatePage"
              xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
              x:DataType="vm:AddressCreateViewModel"
-             Title="AddressCreatePage"
              Shell.PresentationMode="Modal">
-    
-    
-    <ScrollView Padding="20">
-        <VerticalStackLayout Spacing="15">
-            <Label Text="Пошук за координатами" Style="{StaticResource SubHeadline}"/>
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                <Entry Placeholder="Широта (Lat)" Text="{Binding Latitude}" Keyboard="Numeric"/>
-                <Entry Grid.Column="1" Placeholder="Довгота (Lon)" Text="{Binding Longitude}" Keyboard="Numeric"/>
-            </Grid>
-            <Button Text="Знайти за координатами" Command="{Binding GetByCoordsCommand}" BackgroundColor="{StaticResource Secondary}"/>
 
-            <BoxView HeightRequest="1" Margin="0,10"/>
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0" BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark={StaticResource OffBlack}}">
+            <VerticalStackLayout Padding="20" Spacing="25">
 
-            <Label Text="Пошук за адресою" Style="{StaticResource SubHeadline}"/>
-            <Entry Placeholder="Країна" Text="{Binding Country}"/>
-            <Entry Placeholder="Область" Text="{Binding State}"/>
-            <Entry Placeholder="Місто" Text="{Binding City}"/>
-            <Entry Placeholder="Вулиця" Text="{Binding Street}"/>
-            <Entry Placeholder="Номер будинку" Text="{Binding HouseNumber}"/>
+                <Label Text="Локація" 
+                       Style="{StaticResource Headline}" 
+                       HorizontalOptions="Start" />
 
-            <Button Text="Перевірити адресу" Command="{Binding GetByTextCommand}" IsEnabled="{Binding IsNotBusy}"/>
+                <Border Style="{StaticResource CardBorderStyle}">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Геокоординати" Style="{StaticResource SubHeadline}" FontSize="18"/>
 
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                            <VerticalStackLayout Spacing="5">
+                                <Label Text="Широта" FontSize="12" TextColor="{StaticResource Gray500}" Margin="5,0"/>
+                                <Border Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Text="{Binding Latitude}" Keyboard="Numeric" HorizontalTextAlignment="Center"/>
+                                </Border>
+                            </VerticalStackLayout>
 
-            <Button Text="Підтвердити" 
-                    Command="{Binding SaveAndCloseCommand}"
-                    Margin="0,20,0,0"
-                    HeightRequest="50"
-                    FontAttributes="Bold"
-                    IsEnabled="{Binding IsNotBusy}"/>
-        </VerticalStackLayout>
-    </ScrollView>
-    
+                            <VerticalStackLayout Grid.Column="1" Spacing="5">
+                                <Label Text="Довгота" FontSize="12" TextColor="{StaticResource Gray500}" Margin="5,0"/>
+                                <Border Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Text="{Binding Longitude}" Keyboard="Numeric" HorizontalTextAlignment="Center"/>
+                                </Border>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <Button Text="Знайти за координатами" 
+                                Command="{Binding GetByCoordsCommand}"
+                                BackgroundColor="{StaticResource Gray950}"
+                                TextColor="White"
+                                HeightRequest="40"
+                                IsEnabled="{Binding IsNotBusy}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardBorderStyle}">
+                    <VerticalStackLayout Spacing="15">
+                            <Label Text="Пошук за адресою" Style="{StaticResource SubHeadline}" FontSize="18"/>
+
+
+                        <VerticalStackLayout Spacing="12">
+                            <Border Style="{StaticResource InputWrapperStyle}">
+                                <Entry Placeholder="Країна" Text="{Binding Country}"/>
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                                <Border Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Placeholder="Область" Text="{Binding State}"/>
+                                </Border>
+                                <Border Grid.Column="1" Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Placeholder="Місто" Text="{Binding City}"/>
+                                </Border>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="2*,*" ColumnSpacing="15">
+                                <Border Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Placeholder="Вулиця" Text="{Binding Street}"/>
+                                </Border>
+                                <Border Grid.Column="1" Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Placeholder="Буд." Text="{Binding HouseNumber}"/>
+                                </Border>
+                            </Grid>
+                        </VerticalStackLayout>
+
+                        <Button Text="Знайти за адресою" 
+                                Command="{Binding GetByTextCommand}"
+                                IsEnabled="{Binding IsNotBusy}"
+                                HeightRequest="40"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" VerticalOptions="Center"/>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="1" 
+                Padding="20,15" 
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray950}}">
+                <Button Grid.Column="1"
+                            Text="Зберегти" 
+                            Command="{Binding SaveAndCloseCommand}"
+                            IsEnabled="{Binding IsNotBusy}"
+                            FontAttributes="Bold"
+                            BackgroundColor="{StaticResource Primary}"
+                />
+        </Border>   
+    </Grid>
 </ContentPage>
