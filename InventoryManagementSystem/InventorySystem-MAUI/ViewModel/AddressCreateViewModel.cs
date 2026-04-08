@@ -6,7 +6,7 @@ using InventorySystem_Shared.AddressClass;
 
 namespace InventorySystem_MAUI.ViewModel
 {
-    public partial class AddressCreateViewModel : ObservableObject
+    public partial class AddressCreateViewModel : BaseViewModel
     {
         private readonly AddressService _addressService;
 
@@ -17,7 +17,6 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private string houseNumber;
         [ObservableProperty] private double? latitude;
         [ObservableProperty] private double? longitude;
-        [ObservableProperty] private bool isBusy;
 
         public AddressCreateViewModel(AddressService addressService)
         {
@@ -25,24 +24,27 @@ namespace InventorySystem_MAUI.ViewModel
         }
 
         [RelayCommand]
-        private async Task GetByText()
-        {
-            IsBusy = true;
-            var request = new Address { Country = Country, State = State, City = City, Street = Street, HouseNumber = HouseNumber };
-            var result = await _addressService.GetByAddress(request, "address"); 
-            UpdateFields(result);
-            IsBusy = false;
-        }
+        private async Task GetByText() {
+            await RunBusyTask(async () =>
+            {
+                var request = new Address { Country = Country, State = State, City = City, Street = Street, HouseNumber = HouseNumber };
+                var result = await _addressService.GetByAddress(request, "address");
+                UpdateFields(result);
+            });
+       }
+
+        
 
         [RelayCommand]
         private async Task GetByCoords()
         {
-            if (Latitude == null || Longitude == null) return;
-            IsBusy = true;
-            var request = new Address(Latitude.Value, Longitude.Value);
-            var result = await _addressService.GetByAddress(request, "location");
-            UpdateFields(result);
-            IsBusy = false;
+            await RunBusyTask(async () =>
+            {
+                if (Latitude == null || Longitude == null) return;
+                var request = new Address(Latitude.Value, Longitude.Value);
+                var result = await _addressService.GetByAddress(request, "location");
+                UpdateFields(result);
+            });
         }
 
         private void UpdateFields(Address addr)
@@ -60,19 +62,22 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task SaveAndClose()
         {
-            var finalAddress = new Address
+            await RunBusyTask(async () =>
             {
-                Country = Country,
-                State = State,
-                City = City,
-                Street = Street,
-                HouseNumber = HouseNumber,
-                Latitude = Latitude,
-                Longitude = Longitude
-            };
-            finalAddress.Normalize();
+                var finalAddress = new Address
+                {
+                    Country = Country,
+                    State = State,
+                    City = City,
+                    Street = Street,
+                    HouseNumber = HouseNumber,
+                    Latitude = Latitude,
+                    Longitude = Longitude
+                };
+                finalAddress.Normalize();
 
-            await ShellService.GoBack(new Dictionary<string, object> { { "SelectedAddress", finalAddress } } );
+                await ShellService.GoBack(new Dictionary<string, object> { { "SelectedAddress", finalAddress } });
+            });
         }
     }
 }

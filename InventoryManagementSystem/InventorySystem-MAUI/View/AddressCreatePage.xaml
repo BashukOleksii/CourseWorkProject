@@ -24,7 +24,7 @@
             <Entry Placeholder="Вулиця" Text="{Binding Street}"/>
             <Entry Placeholder="Номер будинку" Text="{Binding HouseNumber}"/>
 
-            <Button Text="Перевірити адресу" Command="{Binding GetByTextCommand}"/>
+            <Button Text="Перевірити адресу" Command="{Binding GetByTextCommand}" IsEnabled="{Binding IsNotBusy}"/>
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
 
@@ -32,7 +32,8 @@
                     Command="{Binding SaveAndCloseCommand}"
                     Margin="0,20,0,0"
                     HeightRequest="50"
-                    FontAttributes="Bold"/>
+                    FontAttributes="Bold"
+                    IsEnabled="{Binding IsNotBusy}"/>
         </VerticalStackLayout>
     </ScrollView>
     

@@ -2,7 +2,9 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:InventorySystem_MAUI"
-             x:Class="InventorySystem_MAUI.App">
+             xmlns:converters="clr-namespace:InventorySystem_MAUI.Converters"
+             x:Class="InventorySystem_MAUI.App"
+             >
     <Application.Resources>
         <ResourceDictionary>
             
@@ -12,7 +14,7 @@
                 <ResourceDictionary Source="Resources/Styles/BaseStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
 
         </ResourceDictionary>
     </Application.Resources>

@@ -38,6 +38,7 @@ namespace InventorySystem_MAUI
 
             builder.Services.AddTransient<AddressCreateViewModel>();
 
+            builder.Services.AddTransient<CompanyCreateViewModel>();
 
 
             return builder.Build();
