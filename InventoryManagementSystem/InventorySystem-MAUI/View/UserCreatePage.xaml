@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.UserCreatePage"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             x:DataType="vm:RegisterViewModel"
+             Shell.NavBarIsVisible="False">
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <ScrollView>
+            <VerticalStackLayout Padding="25" Spacing="0" VerticalOptions="Center">
+
+                <Label Text="Реєстрація адміна"
+                       FontSize="30"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"/>
+
+                <Label Text="Створіть профіль для керування компанією"
+                       FontSize="14"
+                       TextColor="#E0E0E0"
+                       HorizontalOptions="Center"
+                       Margin="0,5,0,25"/>
+
+                <Border StrokeShape="RoundRectangle 25"
+                        BackgroundColor="White"
+                        Padding="25"
+                        Margin="0,0,0,20">
+                    <Border.Shadow>
+                        <Shadow Brush="#000000" Opacity="0.2" Offset="0,5" Radius="15"/>
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="15">
+
+                        <VerticalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,0,0,10">
+                            <Frame CornerRadius="50" 
+                                   HeightRequest="100" 
+                                   WidthRequest="100" 
+                                   Padding="0" 
+                                   IsClippedToBounds="True"
+                                   BorderColor="#E5E7EB">
+                                <Image Source="{Binding PreviewImage}" Aspect="AspectFill"/>
+                            </Frame>
+                            <Label Text="Змінити фото" 
+                                   TextColor="#6366F1" 
+                                   HorizontalOptions="Center"
+                                   FontAttributes="Bold">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding PickPhotoCommand}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Повне ім'я" FontAttributes="Bold" TextColor="#333"/>
+                            <Border Stroke="#E5E7EB" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="10">
+                                <Entry Text="{Binding Name}" Placeholder="Іван Іванов"/>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Email" FontAttributes="Bold" TextColor="#333"/>
+                            <Border Stroke="#E5E7EB" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="10">
+                                <Entry Text="{Binding Email}" Placeholder="admin@company.com" Keyboard="Email"/>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Пароль" FontAttributes="Bold" TextColor="#333"/>
+                            <Border Stroke="#E5E7EB" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="10">
+                                <Entry Text="{Binding Password}" Placeholder="*********" IsPassword="True"/>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <Button Text="Створити акаунт"
+                                Command="{Binding RegisterCommand}"
+                                HeightRequest="55"
+                                CornerRadius="18"
+                                FontAttributes="Bold"
+                                TextColor="White"
+                                BackgroundColor="#6366F1"
+                                Margin="0,15,0,0"
+                                IsEnabled="{Binding IsNotBusy}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label Text="Вже маєте акаунт? Увійти"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToLoginCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid BackgroundColor="#80000000" IsVisible="{Binding IsBusy}">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="15">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" Color="White" HeightRequest="60" WidthRequest="60"/>
+                <Label Text="Створюємо профіль..." TextColor="White" FontAttributes="Bold"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

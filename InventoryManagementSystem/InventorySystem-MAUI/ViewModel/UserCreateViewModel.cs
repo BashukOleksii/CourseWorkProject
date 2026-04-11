@@ -70,5 +70,11 @@ namespace InventorySystem_MAUI.ViewModel
 
             });
         }
+
+        [RelayCommand]
+        private async Task GoToLogin()
+        {
+            await ShellService.NavigateTo(nameof(LoginPage));
+        }
     }
 }
