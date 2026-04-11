@@ -1,89 +1,136 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventorySystem_MAUI.View.LoginPage"
              xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
              x:DataType="vm:LoginViewModel"
-             Shell.NavBarIsVisible="False"
-             Shell.PresentationMode="Modal">
+             Shell.NavBarIsVisible="False">
 
     <Grid>
-        <ScrollView BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark={StaticResource OffBlack}}">
-            <VerticalStackLayout Padding="30" Spacing="0" VerticalOptions="Center">
 
-                <Label Text="Вітаємо!" 
-                       Style="{StaticResource TitleLabel}" 
-                       Margin="0,0,0,10"/>
-                <Label Text="Увійдіть у свій акаунт, щоб продовжити роботу" 
-                       Style="{StaticResource SubtitleLabel}" 
-                       Margin="0,0,0,40"/>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
 
-                <Border Style="{StaticResource CardBorderStyle}">
-                    <VerticalStackLayout Spacing="20">
+        <ScrollView>
+            <VerticalStackLayout Padding="25" Spacing="0" VerticalOptions="Center">
+
+
+                <Label Text="Ласкаво просимо"
+                       FontSize="30"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"/>
+
+                <Label Text="Увійдіть, щоб керувати інвентарем"
+                       FontSize="14"
+                       TextColor="#E0E0E0"
+                       HorizontalOptions="Center"
+                       Margin="0,5,0,30"/>
+
+                <Border StrokeShape="RoundRectangle 25"
+                        BackgroundColor="White"
+                        Padding="25"
+                        Margin="0,0,0,20">
+
+                    <Border.Shadow>
+                        <Shadow Brush="#000000"
+                                Opacity="0.2"
+                                Offset="0,5"
+                                Radius="15"/>
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="18">
 
                         <VerticalStackLayout Spacing="5">
-                            <Label Text="Електронна пошта" Style="{StaticResource BodyLabel}" Margin="5,0"/>
-                            <Border Style="{StaticResource InputWrapperStyle}">
-                                <Entry Text="{Binding Email}" 
-                                       Placeholder="example@mail.com"
-                                       Keyboard="Email"
-                                       VerticalOptions="Center"/>
+                            <Label Text="Email"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"/>
+
+                            <Border Stroke="#E5E7EB"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 12"
+                                    Padding="10">
+                                <Entry Text="{Binding Email}"
+                                       Placeholder="your@email.com"
+                                       Keyboard="Email"/>
                             </Border>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Spacing="5">
-                            <Label Text="Пароль" Style="{StaticResource BodyLabel}" Margin="5,0"/>
-                            <Border Style="{StaticResource InputWrapperStyle}">
-                                <Entry Text="{Binding Password}" 
-                                       Placeholder="••••••••"
-                                       IsPassword="True"
-                                       VerticalOptions="Center"/>
+                            <Label Text="Пароль"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"/>
+
+                            <Border Stroke="#E5E7EB"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 12"
+                                    Padding="10">
+                                <Entry Text="{Binding Password}"
+                                       Placeholder="*********"
+                                       IsPassword="True"/>
                             </Border>
                         </VerticalStackLayout>
 
-                        <Button Text="Забули пароль?" 
-                                Command="{Binding ForgotPasswordCommand}"
-                                BackgroundColor="Transparent"
-                                TextColor="{StaticResource PrimaryColor}"
-                                HorizontalOptions="End"
-                                HeightRequest="35"
-                                FontSize="13"
-                                Padding="0"/>
+                        <Label Text="Забули пароль?"
+                               TextColor="#6366F1"
+                               FontSize="13"
+                               HorizontalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
 
-                        <Button Text="Увійти" 
+                        <Button Text="Увійти"
                                 Command="{Binding LoginCommand}"
-                                Margin="0,10,0,0"
+                                HeightRequest="55"
+                                CornerRadius="18"
+                                FontAttributes="Bold"
+                                TextColor="White"
+                                BackgroundColor="#6366F1"
+                                Margin="0,10,0,5"
                                 IsEnabled="{Binding IsNotBusy}"/>
+
                     </VerticalStackLayout>
                 </Border>
 
-                <HorizontalStackLayout HorizontalOptions="Center" Margin="0,30,0,0" Spacing="5">
-                    <Label Text="Ще не маєте акаунту?" VerticalOptions="Center" Style="{StaticResource BodyLabel}"/>
-                    <Button Text="Зареєструватися" 
-                            Command="{Binding GoToRegisterCommand}"
-                            BackgroundColor="Transparent"
-                            TextColor="{StaticResource PrimaryColor}"
-                            FontAttributes="Bold"
-                            Padding="0"
-                            HeightRequest="40"/>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                    <Label Text="Немає облікового запису?"
+                           TextColor="White"
+                           FontSize="14"/>
+
+                    <Label Text="Створити акаунт"
+                           TextColor="#C7D2FE"
+                           FontAttributes="Bold"
+                           FontSize="14">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToRegisterCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
                 </HorizontalStackLayout>
 
             </VerticalStackLayout>
         </ScrollView>
 
-        <Grid BackgroundColor="{AppThemeBinding Light=#80FFFFFF, Dark=#80000000}"
-              IsVisible="{Binding IsBusy}"
-              InputTransparent="False">
-            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+        <Grid BackgroundColor="#80000000"
+              IsVisible="{Binding IsBusy}">
+
+            <VerticalStackLayout VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 Spacing="15">
+
                 <ActivityIndicator IsRunning="{Binding IsBusy}"
-                                   Color="{StaticResource PrimaryColor}"
-                                   HeightRequest="50"
-                                   WidthRequest="50" />
-                <Label Text="Авторизація..." 
-                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                       FontSize="14"
-                       HorizontalOptions="Center"/>
+                                   Color="White"
+                                   HeightRequest="60"
+                                   WidthRequest="60"/>
+
+                <Label Text="Перевірка даних..."
+                       TextColor="White"
+                       FontAttributes="Bold"/>
             </VerticalStackLayout>
         </Grid>
+
     </Grid>
 </ContentPage>

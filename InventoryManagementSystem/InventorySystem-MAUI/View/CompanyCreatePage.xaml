@@ -7,6 +7,14 @@
              Shell.PresentationMode="Modal">
 
     <Grid>
+
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
         <ScrollView Padding="25">
             <VerticalStackLayout Spacing="20">
                 <Label Text="Створення компанії" Style="{StaticResource Headline}"/>
@@ -27,8 +35,8 @@
 
                 <VerticalStackLayout Spacing="5">
                     <Label Text="Опис" Margin="5,0"/>
-                    <Border StrokeShape="RoundRectangle 8" HeightRequest="100">
-                        <Editor Placeholder="Короткий опис діяльності" Text="{Binding Description}"/>
+                    <Border StrokeShape="RoundRectangle 8" HeightRequest="100"  BackgroundColor="{AppThemeBinding Light=#F8F8F8, Dark=#202020}">
+                        <Editor Placeholder="Короткий опис діяльності" Text="{Binding Description} "/>
                     </Border>
                 </VerticalStackLayout>
 

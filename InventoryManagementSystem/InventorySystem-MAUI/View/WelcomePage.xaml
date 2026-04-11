@@ -6,6 +6,14 @@
              BackgroundColor="{StaticResource CardColor}">
     
     <Grid RowDefinitions="*, Auto">
+
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
         <VerticalStackLayout Grid.Row="0" 
                              VerticalOptions="Center" 
                              Spacing="10" 
