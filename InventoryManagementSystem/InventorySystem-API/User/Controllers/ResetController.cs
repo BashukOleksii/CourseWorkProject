@@ -16,7 +16,7 @@ namespace InventorySystem_API.User.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ResetPassword([FromBody] string email)
+        public async Task<IActionResult> ResetPassword([FromQuery] string email)
         {
             try
             {

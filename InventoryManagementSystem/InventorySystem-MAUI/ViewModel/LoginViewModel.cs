@@ -47,7 +47,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task ForgotPassword()
         {
-            await Shell.Current.DisplayAlertAsync("Відновлення", "Функція відновлення паролю буде доступна незабаром", "OK");
+            await ShellService.NavigateTo(nameof(ForgotPasswordPage));
         }
     }
 }
