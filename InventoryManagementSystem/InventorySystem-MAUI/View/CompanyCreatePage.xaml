@@ -3,53 +3,69 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventorySystem_MAUI.View.CompanyCreatePage"
              xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
-             x:DataType="vm:CompanyCreateViewModel">
+             x:DataType="vm:CompanyCreateViewModel"
+             Shell.PresentationMode="Modal">
 
-    <ScrollView Padding="25">
-        <VerticalStackLayout Spacing="20">
-            <Label Text="Створення компанії" Style="{StaticResource Headline}"/>
+    <Grid>
+        <ScrollView Padding="25">
+            <VerticalStackLayout Spacing="20">
+                <Label Text="Створення компанії" Style="{StaticResource Headline}"/>
 
-            <VerticalStackLayout Spacing="5">
-                <Label Text="Назва компанії" Margin="5,0"/>
-                <Border StrokeShape="RoundRectangle 8">
-                    <Entry Placeholder="Введіть назву" Text="{Binding Name}"/>
-                </Border>
-            </VerticalStackLayout>
-
-            <VerticalStackLayout Spacing="5">
-                <Label Text="Телефон" Margin="5,0"/>
-                <Border StrokeShape="RoundRectangle 8">
-                    <Entry Placeholder="Введіть телефон" Text="{Binding Phone}" Keyboard="Telephone"/>
-                </Border>
-            </VerticalStackLayout>
-
-            <VerticalStackLayout Spacing="5">
-                <Label Text="Опис" Margin="5,0"/>
-                <Border StrokeShape="RoundRectangle 8" HeightRequest="100">
-                    <Editor Placeholder="Короткий опис діяльності" Text="{Binding Description}"/>
-                </Border>
-            </VerticalStackLayout>
-
-            <Label Text="Локація" Margin="5,0"/>
-            <Border StrokeShape="RoundRectangle 12" Padding="15" BackgroundColor="{AppThemeBinding Light=#F8F8F8, Dark=#202020}">
-
-                <VerticalStackLayout VerticalOptions="Center">
-                    <Label Text="{Binding AddressDisplay}" FontAttributes="Bold"/>
-                    <Label Text="Натисніть, щоб змінити" FontSize="12" Opacity="0.6"/>
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Назва компанії" Margin="5,0"/>
+                    <Border StrokeShape="RoundRectangle 8">
+                        <Entry Placeholder="Введіть назву" Text="{Binding Name}"/>
+                    </Border>
                 </VerticalStackLayout>
 
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding OpenAddressPickerCommand}"/>
-                </Border.GestureRecognizers>
-            </Border>
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Телефон" Margin="5,0"/>
+                    <Border StrokeShape="RoundRectangle 8">
+                        <Entry Placeholder="Введіть телефон" Text="{Binding Phone}" Keyboard="Telephone"/>
+                    </Border>
+                </VerticalStackLayout>
 
-            <Button Text="Створити компанію" 
-                    Command="{Binding SaveCompanyCommand}"
-                    HeightRequest="55"
-                    FontSize="16"
-                    FontAttributes="Bold"
-                    Margin="0,30,0,0"
-                    IsEnabled="{Binding IsNotBusy}"/>
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Опис" Margin="5,0"/>
+                    <Border StrokeShape="RoundRectangle 8" HeightRequest="100">
+                        <Editor Placeholder="Короткий опис діяльності" Text="{Binding Description}"/>
+                    </Border>
+                </VerticalStackLayout>
+
+                <Label Text="Локація" Margin="5,0"/>
+                <Border StrokeShape="RoundRectangle 12" Padding="15" BackgroundColor="{AppThemeBinding Light=#F8F8F8, Dark=#202020}">
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="{Binding AddressDisplay}" FontAttributes="Bold"/>
+                        <Label Text="Натисніть, щоб змінити" FontSize="12" Opacity="0.6"/>
+                    </VerticalStackLayout>
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenAddressPickerCommand}"/>
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <Button Text="Створити компанію" 
+                        Command="{Binding SaveCompanyCommand}"
+                        HeightRequest="55"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        Margin="0,30,0,0"
+                        IsEnabled="{Binding IsNotBusy}"/>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <VerticalStackLayout IsVisible="{Binding IsBusy}"
+                             BackgroundColor="#80000000"
+                             HorizontalOptions="Fill"
+                             VerticalOptions="Fill"
+                             InputTransparent="False">
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               Color="{StaticResource Primary}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               HeightRequest="100"
+                               WidthRequest="100"
+                               Margin="0,200,0,0"/>
         </VerticalStackLayout>
-    </ScrollView>
+    </Grid>
 </ContentPage>

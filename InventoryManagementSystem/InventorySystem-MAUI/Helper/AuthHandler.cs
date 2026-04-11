@@ -18,7 +18,7 @@ namespace InventorySystem_MAUI.Helper
             _userContextService = userContextService;
             _httpClientFactory = httpClientFactory;
         }
-
+        
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
