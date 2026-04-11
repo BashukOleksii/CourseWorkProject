@@ -33,10 +33,6 @@ namespace InventorySystem_MAUI.Helper
             {
                 await Shell.Current.DisplayAlertAsync("Мережа", "Не вдалося з'єднатися з сервером", "OK");
             }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlertAsync("Критична помилка", ex.Message, "OK");
-            }
             finally
             {
                 IsBusy = false;

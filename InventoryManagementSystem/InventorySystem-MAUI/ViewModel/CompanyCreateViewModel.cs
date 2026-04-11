@@ -59,9 +59,12 @@ namespace InventorySystem_MAUI.ViewModel
                     Address = SelectedAddress
                 };
 
-                // Додати перехід на створення користувача із id
                 var id = await _companyService.CreateCompany(dto);
                 await Shell.Current.DisplayAlertAsync("Success", "Успіх", "OK");
+                await ShellService.NavigateTo(nameof(UserCreatePage),new Dictionary<string, object>
+                    {
+                        { "CompanyId", id }
+                    });
             });
         }
     }

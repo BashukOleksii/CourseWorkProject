@@ -27,18 +27,36 @@ namespace InventorySystem_MAUI.Service
 
             var tokens = await response.Content.ReadFromJsonAsync<TokensDataResponse>();
 
-            var user = await _httpClient.GetFromJsonAsync<UserResponse>("api/user/whoami");
 
             await _userContextService.SetUserContextAsync(
-                   user,
+                   null,
                    tokens.AccessToken,
                    tokens.RefreshToken
             );
+
+
+            var user = await _httpClient.GetFromJsonAsync<UserResponse>("api/user/whoami");
         }
 
-        public async Task Register(UserRegister userRegister)
+        public async Task Register(UserRegister userRegister, FileResult? photo)
         {
-            await _httpClient.PostAsJsonAsync("api/auth/sign-up", userRegister);
+            using var content = new MultipartFormDataContent();
+
+            content.Add(new StringContent(userRegister.CompanyId), "CompanyId");
+            content.Add(new StringContent(userRegister.Name), "Name");
+            content.Add(new StringContent(userRegister.Email), "Email");
+            content.Add(new StringContent(((int)userRegister.UserRole).ToString()), "UserRole");
+            content.Add(new StringContent(userRegister.Password), "Password");
+
+            if (photo != null)
+            {
+                var stream = await photo.OpenReadAsync();
+                var fileContent = new StreamContent(stream);
+                fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(photo.ContentType);
+                content.Add(fileContent, "photo", photo.FileName);
+            }
+
+            var response = await _httpClient.PostAsync("api/auth/sign-up", content);
         }
     }
 }
