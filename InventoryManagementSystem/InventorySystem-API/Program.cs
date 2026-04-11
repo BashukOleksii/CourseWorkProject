@@ -85,6 +85,8 @@ builder.Services.AddScoped<IPasswordResetRepository, PasswordResetRepository>();
 
 #region User
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
+builder.Services.AddScoped<IPasswordResetRepository, PasswordResetRepository>();
 #endregion
 
 #region Address
@@ -94,6 +96,7 @@ builder.Services.Configure<GeopifyAPIKeys>(
 builder.Services.AddScoped<IAddressService, GeopifyAddressService>();
 
 #endregion
+
 #region Company
 builder.Services.AddValidatorsFromAssemblyContaining<CompanyValidator>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();

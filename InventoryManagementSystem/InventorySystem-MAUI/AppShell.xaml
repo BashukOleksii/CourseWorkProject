@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:InventorySystem_MAUI"
     xmlns:views="clr-namespace:InventorySystem_MAUI.View"
+    xmlns:viewmodels="clr-namespace:InventorySystem_MAUI.ViewModel"
+    x:DataType="viewmodels:AppShellViewModel"
     FlyoutBehavior="{Binding FlyoutBehavior}">
 
     <Shell.TitleView>

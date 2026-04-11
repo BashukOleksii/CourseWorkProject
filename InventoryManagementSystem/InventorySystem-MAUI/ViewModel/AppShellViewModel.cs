@@ -13,35 +13,36 @@ namespace InventorySystem_MAUI.ViewModel
     {
         private readonly UserContextService _userContext;
 
-        public AppShellViewModel(UserContextService userContext) =>
+        public AppShellViewModel(UserContextService userContext)
+        {
             _userContext = userContext;
-        
+            userContext.UserContextChanged += UpdateAuthenticationState;
+            UpdateAuthenticationState();
+        }
 
-        public bool IsAuthenticated => _userContext.IsAuthenticated;
-        public bool IsNotAuthenticated => !_userContext.IsAuthenticated;
+        [ObservableProperty] public bool isAuthenticated;
+        [ObservableProperty] public bool isNotAuthenticated;
+        [ObservableProperty] public bool isAdmin;
+        [ObservableProperty] public bool isManager;
+        [ObservableProperty] public FlyoutBehavior flyoutBehavior;
+        [ObservableProperty] private string userPhoto;
 
-        public bool IsAdmin => _userContext.CurrentUser.UserRole == UserRole.admin;
-        public bool IsManager => _userContext.CurrentUser.UserRole == UserRole.manager;
+        private void UpdateAuthenticationState()
+        {
+            IsAuthenticated = _userContext.AccessToken is not null;
+            IsNotAuthenticated = _userContext.AccessToken is null;
+            IsAdmin = _userContext.CurrentUser?.UserRole == UserRole.admin;
+            IsManager = _userContext.CurrentUser?.UserRole == UserRole.manager;
+            FlyoutBehavior = IsAuthenticated ? FlyoutBehavior.Flyout : FlyoutBehavior.Disabled;
+            UserPhoto = _userContext.CurrentUser?.PhotoURI ?? "default_user.png";
+        }
 
-        public bool IsManagerOrAdmin => IsAdmin || IsManager;
-
-        public FlyoutBehavior FlyoutBehavior =>
-            IsAuthenticated ? FlyoutBehavior.Flyout : FlyoutBehavior.Disabled;
-
-        [ObservableProperty]
-        private string userPhoto;
-
-        public void UpdateHeader() =>
-            UserPhoto = Conection.BaseURI + _userContext.CurrentUser.PhotoURI.TrimStart('/');
-        
 
         [RelayCommand]
         async Task Logout()
         {
             _userContext.LogOut();
-            OnPropertyChanged(nameof(IsAuthenticated));
-            OnPropertyChanged(nameof(IsNotAuthenticated));
-            OnPropertyChanged(nameof(FlyoutBehavior));
+            UpdateAuthenticationState();
             await ShellService.AbsoluteOpenPage(nameof(WelcomePage));
         }
 

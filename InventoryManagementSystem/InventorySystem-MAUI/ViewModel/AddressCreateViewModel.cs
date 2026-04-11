@@ -46,7 +46,6 @@ namespace InventorySystem_MAUI.ViewModel
                 var request = new Address(Latitude.Value, Longitude.Value);
                 var result = await _addressService.GetByAddress(request, "location");
                 UpdateFields(result);
-
                 await Shell.Current.DisplayAlertAsync("Адреса", "Адресу знайдено за вказаними координатами", "OK");
             });
         }

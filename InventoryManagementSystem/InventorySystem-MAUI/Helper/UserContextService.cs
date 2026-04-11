@@ -11,7 +11,7 @@ namespace InventorySystem_MAUI.Helper
         public string? AccessToken { get; private set; }
         public string? RefreshToken { get; private set; }
 
-        public bool IsAuthenticated => !string.IsNullOrEmpty(AccessToken);
+        public event Action? UserContextChanged;
 
         public async Task SetUserContextAsync(UserResponse user, string accessToken, string refreshToken)
         {
@@ -24,6 +24,8 @@ namespace InventorySystem_MAUI.Helper
             await SecureStorage.SetAsync("CurrentUser", userData);
             await SecureStorage.SetAsync("AccessToken", accessToken);
             await SecureStorage.SetAsync("RefreshToken", refreshToken);
+
+            UserContextChanged?.Invoke();
         }
 
         public async Task LoadUserContextAsync()
@@ -38,17 +40,20 @@ namespace InventorySystem_MAUI.Helper
                 {
                     CurrentUser = System.Text.Json.JsonSerializer.Deserialize<UserResponse>(userData);
                 }
+                UserContextChanged?.Invoke();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Помилка отримання інформації із Secret Store: {ex.Message}");
             }
         }
+
         public void LogOut()
         {
             CurrentUser = null;
             AccessToken = RefreshToken = null;
             SecureStorage.Default.RemoveAll();
+            UserContextChanged?.Invoke();
         }
     }
 }
