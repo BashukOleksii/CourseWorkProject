@@ -27,13 +27,15 @@ namespace InventorySystem_MAUI.Service
 
             var tokens = await response.Content.ReadFromJsonAsync<TokensDataResponse>();
 
-            var user = await _httpClient.GetFromJsonAsync<UserResponse>("api/user/whoami");
 
             await _userContextService.SetUserContextAsync(
-                   user,
+                   null,
                    tokens.AccessToken,
                    tokens.RefreshToken
             );
+
+
+            var user = await _httpClient.GetFromJsonAsync<UserResponse>("api/user/whoami");
         }
 
         public async Task Register(UserRegister userRegister, FileResult? photo)

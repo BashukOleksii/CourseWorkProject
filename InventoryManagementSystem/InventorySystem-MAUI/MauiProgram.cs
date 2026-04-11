@@ -45,6 +45,7 @@ namespace InventorySystem_MAUI
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<AddressCreateViewModel>();
             builder.Services.AddTransient<CompanyCreateViewModel>();
+            builder.Services.AddTransient<UserCreateViewModel>();
             #endregion
 
             return builder.Build();

@@ -8,7 +8,7 @@ using InventorySystem_Shared.User;
 namespace InventorySystem_MAUI.ViewModel
 {
     [QueryProperty(nameof(CompanyId), "CompanyId")] 
-    public partial class RegisterViewModel : BaseViewModel
+    public partial class UserCreateViewModel : BaseViewModel
     {
         private readonly AuthService _authService;
 
@@ -19,7 +19,7 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private FileResult? selectedPhoto;
         [ObservableProperty] private ImageSource? previewImage = "default_user.png";
 
-        public RegisterViewModel(AuthService authService)
+        public UserCreateViewModel(AuthService authService)
         {
             _authService = authService;
         }

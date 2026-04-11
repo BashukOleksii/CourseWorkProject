@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventorySystem_MAUI.View.UserCreatePage"
              xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
-             x:DataType="vm:RegisterViewModel"
+             x:DataType="vm:UserCreateViewModel"
              Shell.NavBarIsVisible="False">
 
     <Grid>
@@ -40,14 +40,19 @@
                     <VerticalStackLayout Spacing="15">
 
                         <VerticalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,0,0,10">
-                            <Frame CornerRadius="50" 
-                                   HeightRequest="100" 
-                                   WidthRequest="100" 
-                                   Padding="0" 
-                                   IsClippedToBounds="True"
-                                   BorderColor="#E5E7EB">
-                                <Image Source="{Binding PreviewImage}" Aspect="AspectFill"/>
-                            </Frame>
+                            <Border StrokeShape="RoundRectangle 50" 
+                                    HeightRequest="100" 
+                                    WidthRequest="100" 
+                                    StrokeThickness="1"
+                                    Stroke="#E5E7EB"
+                                    BackgroundColor="#F3F4F6">
+
+                                <Image Source="{Binding PreviewImage}" 
+                                       Aspect="AspectFill"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"/>
+                            </Border>
+
                             <Label Text="Змінити фото" 
                                    TextColor="#6366F1" 
                                    HorizontalOptions="Center"
@@ -61,7 +66,7 @@
                         <VerticalStackLayout Spacing="5">
                             <Label Text="Повне ім'я" FontAttributes="Bold" TextColor="#333"/>
                             <Border Stroke="#E5E7EB" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="10">
-                                <Entry Text="{Binding Name}" Placeholder="Іван Іванов"/>
+                                <Entry Text="{Binding Name}" Placeholder="Прізвище Ім'я"/>
                             </Border>
                         </VerticalStackLayout>
 

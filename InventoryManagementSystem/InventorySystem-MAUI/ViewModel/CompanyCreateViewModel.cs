@@ -63,7 +63,7 @@ namespace InventorySystem_MAUI.ViewModel
                 await Shell.Current.DisplayAlertAsync("Success", "Успіх", "OK");
                 await ShellService.NavigateTo(nameof(UserCreatePage),new Dictionary<string, object>
                     {
-                        { "NewCompanyId", id }
+                        { "CompanyId", id }
                     });
             });
         }
