@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.LoginPage"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             x:DataType="vm:LoginViewModel"
+             Shell.NavBarIsVisible="False"
+             Shell.PresentationMode="Modal">
+
+    <Grid>
+        <ScrollView BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark={StaticResource OffBlack}}">
+            <VerticalStackLayout Padding="30" Spacing="0" VerticalOptions="Center">
+
+                <Label Text="Вітаємо!" 
+                       Style="{StaticResource TitleLabel}" 
+                       Margin="0,0,0,10"/>
+                <Label Text="Увійдіть у свій акаунт, щоб продовжити роботу" 
+                       Style="{StaticResource SubtitleLabel}" 
+                       Margin="0,0,0,40"/>
+
+                <Border Style="{StaticResource CardBorderStyle}">
+                    <VerticalStackLayout Spacing="20">
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Електронна пошта" Style="{StaticResource BodyLabel}" Margin="5,0"/>
+                            <Border Style="{StaticResource InputWrapperStyle}">
+                                <Entry Text="{Binding Email}" 
+                                       Placeholder="example@mail.com"
+                                       Keyboard="Email"
+                                       VerticalOptions="Center"/>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Пароль" Style="{StaticResource BodyLabel}" Margin="5,0"/>
+                            <Border Style="{StaticResource InputWrapperStyle}">
+                                <Entry Text="{Binding Password}" 
+                                       Placeholder="••••••••"
+                                       IsPassword="True"
+                                       VerticalOptions="Center"/>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <Button Text="Забули пароль?" 
+                                Command="{Binding ForgotPasswordCommand}"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource PrimaryColor}"
+                                HorizontalOptions="End"
+                                HeightRequest="35"
+                                FontSize="13"
+                                Padding="0"/>
+
+                        <Button Text="Увійти" 
+                                Command="{Binding LoginCommand}"
+                                Margin="0,10,0,0"
+                                IsEnabled="{Binding IsNotBusy}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <HorizontalStackLayout HorizontalOptions="Center" Margin="0,30,0,0" Spacing="5">
+                    <Label Text="Ще не маєте акаунту?" VerticalOptions="Center" Style="{StaticResource BodyLabel}"/>
+                    <Button Text="Зареєструватися" 
+                            Command="{Binding GoToRegisterCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource PrimaryColor}"
+                            FontAttributes="Bold"
+                            Padding="0"
+                            HeightRequest="40"/>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid BackgroundColor="{AppThemeBinding Light=#80FFFFFF, Dark=#80000000}"
+              IsVisible="{Binding IsBusy}"
+              InputTransparent="False">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                   Color="{StaticResource PrimaryColor}"
+                                   HeightRequest="50"
+                                   WidthRequest="50" />
+                <Label Text="Авторизація..." 
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                       FontSize="14"
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

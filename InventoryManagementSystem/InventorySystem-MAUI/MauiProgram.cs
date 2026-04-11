@@ -37,8 +37,8 @@ namespace InventorySystem_MAUI
             builder.Services.AddSingleton<AppShellViewModel>();
             builder.Services.AddSingleton<AppShell>();
 
+            builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<AddressCreateViewModel>();
-
             builder.Services.AddTransient<CompanyCreateViewModel>();
 
 
