@@ -36,9 +36,25 @@ namespace InventorySystem_MAUI.Service
             );
         }
 
-        public async Task Register(UserRegister userRegister)
+        public async Task Register(UserRegister userRegister, FileResult? photo)
         {
-            await _httpClient.PostAsJsonAsync("api/auth/sign-up", userRegister);
+            using var content = new MultipartFormDataContent();
+
+            content.Add(new StringContent(userRegister.CompanyId), "CompanyId");
+            content.Add(new StringContent(userRegister.Name), "Name");
+            content.Add(new StringContent(userRegister.Email), "Email");
+            content.Add(new StringContent(((int)userRegister.UserRole).ToString()), "UserRole");
+            content.Add(new StringContent(userRegister.Password), "Password");
+
+            if (photo != null)
+            {
+                var stream = await photo.OpenReadAsync();
+                var fileContent = new StreamContent(stream);
+                fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(photo.ContentType);
+                content.Add(fileContent, "photo", photo.FileName);
+            }
+
+            var response = await _httpClient.PostAsync("api/auth/sign-up", content);
         }
     }
 }
