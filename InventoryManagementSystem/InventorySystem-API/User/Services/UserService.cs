@@ -140,7 +140,7 @@ namespace InventorySystem_API.User.Services
                 (@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,}$")))
                     throw new ArgumentException("Оновлений пароль не відповідає вимогам");
 
-                user.PasswordHash = _passwordHasher.HashPassword(userUpdate.Password);
+                user.PasswordHash = _passwordHasher.Hash(userUpdate.Password);
             }
 
             var validationResult = _validationRules.Validate(user);

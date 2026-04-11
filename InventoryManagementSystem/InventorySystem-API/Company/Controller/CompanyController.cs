@@ -37,7 +37,7 @@ namespace InventorySystem_API.Company.Controller
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateCompany(CompanyDTO companyDTO)
+        public async Task<IActionResult> CreateCompany([FromBody]CompanyDTO companyDTO)
         {
             var companyResponse = await _companyService.Create(companyDTO);
             return Ok(companyResponse);

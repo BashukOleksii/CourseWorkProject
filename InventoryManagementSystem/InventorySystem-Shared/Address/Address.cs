@@ -9,14 +9,12 @@ namespace InventorySystem_Shared.AddressClass
 {
     public class Address
     {
-        [JsonPropertyName("name")] public string? Name { get; set; }
         [JsonPropertyName("country")] public string? Country { get; set; }
         [JsonPropertyName("state")] public string? State { get; set; }
         [JsonPropertyName("district")] public string? District { get; set; }
         [JsonPropertyName("city")] public string? City { get; set; }
         [JsonPropertyName("street")] public string? Street { get; set; }
         [JsonPropertyName("housenumber")] public string? HouseNumber { get; set; }
-        [JsonPropertyName("postcode")] public int? Postcode { get; set; }
 
         [JsonPropertyName("lat")] public double? Latitude { get; set; }
         [JsonPropertyName("lon")] public double? Longitude { get; set; }
@@ -29,8 +27,7 @@ namespace InventorySystem_Shared.AddressClass
             string district,
             string city,
             string street,
-            string housenumber,
-            int postcode)
+            string housenumber)
         {
             Country = country;
             State = state;
@@ -38,7 +35,6 @@ namespace InventorySystem_Shared.AddressClass
             City = city;
             Street = street;
             HouseNumber = housenumber;
-            Postcode = postcode;
         }
 
         public Address(
@@ -65,10 +61,9 @@ namespace InventorySystem_Shared.AddressClass
 
         private string NormilizeStringInfo(string str, string? add = null)
         {
-            string normal = Regex.Replace(str, @"\s+", "").ToLower();
 
             var textInfo = CultureInfo.CurrentCulture.TextInfo;
-            normal = textInfo.ToTitleCase(normal);
+            var normal = textInfo.ToTitleCase(str);
 
             if (add is not null && normal.Contains(add))
                 normal = normal.Replace(add, "");

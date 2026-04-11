@@ -4,11 +4,30 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:InventorySystem_MAUI"
-    Title="InventorySystem_MAUI">
+    xmlns:views="clr-namespace:InventorySystem_MAUI.View"
+    FlyoutBehavior="{Binding FlyoutBehavior}">
+
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="*,Auto" Padding="10">
+            <Label Text="Warehouse System" Style="{DynamicResource TitleLabel}"/>
+
+            <HorizontalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
+                <ImageButton Source="{Binding UserPhoto}"
+                      Command="{Binding GoToProfileCommand}"
+                      HeightRequest="40"
+                      WidthRequest="40"
+                      Aspect="AspectFit">
+                    <ImageButton.Clip>
+                        <EllipseGeometry Center="20,20" RadiusX="20" RadiusY="20" />
+                    </ImageButton.Clip>
+                </ImageButton>
+            </HorizontalStackLayout>
+        </Grid>
+    </Shell.TitleView>
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="WelcomePage"
+        ContentTemplate="{DataTemplate views:WelcomePage}"
+        IsVisible="{Binding IsNotAuthenticated}" />
 
 </Shell>

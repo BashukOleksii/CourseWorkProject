@@ -12,7 +12,6 @@ namespace InventorySystem_API.User.Services
         private readonly IPasswordResetRepository _passwordResetRepository;
         private readonly IHasher _bCryptHasher;
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
         private readonly EmailSettingOptions _emailData;
 
         public PasswordResetService
@@ -41,9 +40,9 @@ namespace InventorySystem_API.User.Services
             var user = await _userRepository.GetByEmail(email);
 
             if(user is null)
-                throw new Exception($"Не знайдено коритувача із вказаною поштою: {email}");
+                throw new ArgumentException($"Не знайдено коритувача із вказаною поштою: {email}");
 
-            user.PasswordHash = _bCryptHasher.HashPassword(newPassword);
+            user.PasswordHash = _bCryptHasher.Hash(newPassword);
 
             await _userRepository.Update(user);
 
@@ -51,18 +50,24 @@ namespace InventorySystem_API.User.Services
 
         }
 
-        public async Task<bool> CheckCode(string email, string code)
+        public async Task CheckCode(string email, string code)
         {
             var resetModel = await _passwordResetRepository.Get(email);
 
             if (resetModel is null)
-                throw new KeyNotFoundException("Час вийшов, зробіть новий запит");
+                throw new ArgumentException("Час вийшов, зробіть новий запит");
 
-            return _bCryptHasher.VerifyPassword(code, resetModel.CodeHash);
+            if(!_bCryptHasher.Verify(code, resetModel.CodeHash))
+                throw new ArgumentException("Невірний код");
         }
 
         public async Task GenerateResetCode(string email)
         {
+            var user = await _userRepository.GetByEmail(email);
+
+            if (user is null)
+                throw new ArgumentException($"Не знайдено коритувача із вказаною поштою: {email}");
+
             var message = new MimeMessage();
 
             message.From.Add(new MailboxAddress("InventorySystem", _emailData.From));
@@ -82,5 +87,6 @@ namespace InventorySystem_API.User.Services
             await smtp.SendAsync(message);
             await smtp.DisconnectAsync(true);
         }
+
     }
 }

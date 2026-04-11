@@ -26,17 +26,19 @@ namespace InventorySystem_API.External_API.Adress
             try
             {
                 var query =
-                    $"search?country={Uri.EscapeDataString(address.Country)}" +
+                    $"search?country={Uri.EscapeDataString(address.Country)}" + 
                     $"&state={Uri.EscapeDataString(address.State)}" +
-                    $"&city={Uri.UnescapeDataString(address.City)}" +
-                    $"&postcode={address.Postcode}" +
+                    $"&city={Uri.EscapeDataString(address.City)}" +
                     $"&district={Uri.EscapeDataString(address.District)}" +
-                    $"&street={Uri.UnescapeDataString(address.Street)}" +
+                    $"&street={Uri.EscapeDataString(address.Street)}" +
                     $"&housenumber={Uri.EscapeDataString(address.HouseNumber)}" +
                     $"&apiKey={_apiKeys.AdressAPIKey}" +
                     $"&lang=uk&limit=1";
 
+                Console.WriteLine("HELLO");
+
                 var reponse = await _httpClient.GetFromJsonAsync<GeopifyResponse>(query);
+
 
                 return reponse.Features[0].Address;
 
@@ -60,8 +62,11 @@ namespace InventorySystem_API.External_API.Adress
                     $"&apiKey={_apiKeys.LocationAPIKey}" +
                     $"&lang=uk&limit=1";
 
+
                 var reponse = await _httpClient.GetFromJsonAsync<GeopifyResponse>(query);
 
+
+                
                 return reponse.Features[0].Address;
 
             }

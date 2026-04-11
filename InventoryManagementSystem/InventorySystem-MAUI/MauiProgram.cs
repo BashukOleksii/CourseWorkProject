@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using InventorySystem_MAUI.Helper;
+using InventorySystem_MAUI.Service;
+using InventorySystem_MAUI.ViewModel;
 
 namespace InventorySystem_MAUI
 {
@@ -15,9 +17,30 @@ namespace InventorySystem_MAUI
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-#if DEBUG
-    		builder.Logging.AddDebug();
-#endif
+            builder.Services.AddSingleton<UserContextService>();
+
+            #region API-Requests
+            builder.Services.AddTransient<AuthHandler>();
+            builder.Services.AddHttpClient("AuthClient", client =>
+            {
+                client.BaseAddress = new Uri(Conection.BaseURI);
+            });
+            builder.Services.AddHttpClient("APIClient", client =>
+            {
+                client.BaseAddress = new Uri(Conection.BaseURI);
+            }).AddHttpMessageHandler<AuthHandler>();
+            #endregion
+
+            builder.Services.AddSingleton<AddressService>();
+            builder.Services.AddSingleton<CompanyService>();
+
+            builder.Services.AddSingleton<AppShellViewModel>();
+            builder.Services.AddSingleton<AppShell>();
+
+            builder.Services.AddTransient<AddressCreateViewModel>();
+
+            builder.Services.AddTransient<CompanyCreateViewModel>();
+
 
             return builder.Build();
         }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.AddressCreatePage"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             x:DataType="vm:AddressCreateViewModel"
+             Shell.PresentationMode="Modal">
+
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0" BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark={StaticResource OffBlack}}">
+            <VerticalStackLayout Padding="20" Spacing="25">
+
+                <Label Text="Локація" 
+                       Style="{StaticResource Headline}" 
+                       HorizontalOptions="Start" />
+
+                <Border Style="{StaticResource CardBorderStyle}">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Геокоординати" Style="{StaticResource SubHeadline}" FontSize="18"/>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                            <VerticalStackLayout Spacing="5">
+                                <Label Text="Широта" FontSize="12" TextColor="{StaticResource Gray500}" Margin="5,0"/>
+                                <Border Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Text="{Binding Latitude}" Keyboard="Numeric" HorizontalTextAlignment="Center"/>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="5">
+                                <Label Text="Довгота" FontSize="12" TextColor="{StaticResource Gray500}" Margin="5,0"/>
+                                <Border Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Text="{Binding Longitude}" Keyboard="Numeric" HorizontalTextAlignment="Center"/>
+                                </Border>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <Button Text="Знайти за координатами" 
+                                Command="{Binding GetByCoordsCommand}"
+                                BackgroundColor="{StaticResource Gray950}"
+                                TextColor="White"
+                                HeightRequest="40"
+                                IsEnabled="{Binding IsNotBusy}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardBorderStyle}">
+                    <VerticalStackLayout Spacing="15">
+                            <Label Text="Пошук за адресою" Style="{StaticResource SubHeadline}" FontSize="18"/>
+
+
+                        <VerticalStackLayout Spacing="12">
+                            
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                                <Border Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Placeholder="Країна" Text="{Binding Country}"/>
+                                </Border>
+                                <Border Grid.Column="1" Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Placeholder="Область" Text="{Binding State}"/>
+                                </Border>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                                <Border Grid.Column="1" Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Placeholder="Місто" Text="{Binding City}"/>
+                                </Border>
+                                <Border Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Placeholder="Район" Text="{Binding District}"/>
+                                </Border>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="2*,*" ColumnSpacing="15">
+                                <Border Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Placeholder="Вулиця" Text="{Binding Street}"/>
+                                </Border>
+                                <Border Grid.Column="1" Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Placeholder="Буд." Text="{Binding HouseNumber}"/>
+                                </Border>
+                            </Grid>
+                        </VerticalStackLayout>
+
+                        <Button Text="Знайти за адресою" 
+                                Command="{Binding GetByTextCommand}"
+                                IsEnabled="{Binding IsNotBusy}"
+                                HeightRequest="40"
+                                BackgroundColor="{StaticResource Gray950}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" VerticalOptions="Center"/>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="1" 
+                Padding="20,15" 
+                BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray950}}">
+                <Button Grid.Column="1"
+                            Text="Зберегти" 
+                            Command="{Binding SaveAndCloseCommand}"
+                            IsEnabled="{Binding IsNotBusy}"
+                            FontAttributes="Bold"
+                            BackgroundColor="{StaticResource Primary}"
+                />
+        </Border>   
+    </Grid>
+</ContentPage>
