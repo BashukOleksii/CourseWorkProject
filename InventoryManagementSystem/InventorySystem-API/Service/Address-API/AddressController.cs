@@ -19,6 +19,7 @@ namespace InventorySystem_API.Service.Address_API
         [HttpPost("address")]
         public async Task<IActionResult> GetByAddress([FromBody] Address address)
         {
+
             var result = await _addressService.GetByAddress(address);
             if (result != null)
                 return Ok(result);

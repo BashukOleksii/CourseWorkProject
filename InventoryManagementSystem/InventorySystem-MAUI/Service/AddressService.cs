@@ -18,15 +18,23 @@ namespace InventorySystem_MAUI.Service
 
         public async Task<Address> GetByAddress(Address address, string route)
         {
-            var response = await _httpClient.PostAsJsonAsync($"address/{route}", address);
-
-            if (!response.IsSuccessStatusCode)
-                await ApiException.ShowException(response);
+            var response = await _httpClient.PostAsJsonAsync($"api/address/{route}", address);
 
             return await response.Content.ReadFromJsonAsync<Address>();
 
         }
 
-
+        public Address GetAddress() => new Address
+        {
+            Country = "India",
+            State = "Maharashtra",
+            District = "Pune",
+            City = "Pune",
+            Street = "Kothrud",
+            HouseNumber = "123",
+            Latitude = 18.5204,
+            Longitude = 73.8567
+        };
     }
+
 }

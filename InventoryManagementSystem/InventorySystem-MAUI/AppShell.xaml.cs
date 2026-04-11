@@ -9,7 +9,6 @@ namespace InventorySystem_MAUI
         {
             InitializeComponent();
             BindingContext = appShellViewModel;
-            Routing.RegisterRoute(nameof(WelcomePage), typeof(WelcomePage));
             Routing.RegisterRoute(nameof(AddressCreatePage), typeof(AddressCreatePage));
             Routing.RegisterRoute(nameof(CompanyCreatePage), typeof(CompanyCreatePage));
         }

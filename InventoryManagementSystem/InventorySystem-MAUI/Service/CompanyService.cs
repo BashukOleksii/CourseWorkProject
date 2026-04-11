@@ -21,9 +21,6 @@ namespace InventorySystem_MAUI.Service
         {
             var response = await _httpClient.PostAsJsonAsync("api/company", company);
 
-            if(!response.IsSuccessStatusCode)
-                await ApiException.ShowException(response);
-
             var companyResponse = await response.Content.ReadFromJsonAsync<CompanyResponse>();
 
             return companyResponse!.Id;

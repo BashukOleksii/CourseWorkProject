@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using System.Text;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,6 +87,13 @@ builder.Services.AddScoped<IPasswordResetRepository, PasswordResetRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 #endregion
 
+#region Address
+builder.Services.Configure<GeopifyAPIKeys>(
+    builder.Configuration.GetSection("Geopify"));
+
+builder.Services.AddScoped<IAddressService, GeopifyAddressService>();
+
+#endregion
 #region Company
 builder.Services.AddValidatorsFromAssemblyContaining<CompanyValidator>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
@@ -131,7 +139,12 @@ builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();

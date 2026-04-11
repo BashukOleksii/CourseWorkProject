@@ -21,7 +21,7 @@
             <VerticalStackLayout Spacing="5">
                 <Label Text="Телефон" Margin="5,0"/>
                 <Border StrokeShape="RoundRectangle 8">
-                    <Entry Placeholder="+Введіть телефон" Text="{Binding Phone}" Keyboard="Telephone"/>
+                    <Entry Placeholder="Введіть телефон" Text="{Binding Phone}" Keyboard="Telephone"/>
                 </Border>
             </VerticalStackLayout>
 

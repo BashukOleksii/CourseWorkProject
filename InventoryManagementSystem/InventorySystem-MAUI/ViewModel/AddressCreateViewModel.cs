@@ -62,22 +62,33 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task SaveAndClose()
         {
-            await RunBusyTask(async () =>
-            {
-                var finalAddress = new Address
-                {
-                    Country = Country,
-                    State = State,
-                    City = City,
-                    Street = Street,
-                    HouseNumber = HouseNumber,
-                    Latitude = Latitude,
-                    Longitude = Longitude
-                };
-                finalAddress.Normalize();
+            //await RunBusyTask(async () =>
+            //{
+            //    if(string.IsNullOrWhiteSpace(Country) ||
+            //    string.IsNullOrWhiteSpace(State) ||
+            //    string.IsNullOrWhiteSpace(City) ||
+            //    string.IsNullOrWhiteSpace(Street) || 
+            //    string.IsNullOrWhiteSpace(HouseNumber) ||
+            //    string.IsNullOrWhiteSpace(Latitude?.ToString()) ||
+            //    string.IsNullOrWhiteSpace(Longitude?.ToString()))
+            //        return;
+            //    var finalAddress = new Address
+            //    {
+            //        Country = Country,
+            //        State = State,
+            //        City = City,
+            //        Street = Street,
+            //        HouseNumber = HouseNumber,
+            //        Latitude = Latitude,
+            //        Longitude = Longitude
+            //    };
+            //    finalAddress.Normalize();
 
-                await ShellService.GoBack(new Dictionary<string, object> { { "SelectedAddress", finalAddress } });
-            });
+            //    await ShellService.GoBack(new Dictionary<string, object> { { "SelectedAddress", finalAddress } });
+            //});
+            
+            await ShellService.GoBack(new Dictionary<string, object> { { "SelectedAddress", _addressService.GetAddress() } });
+
         }
     }
 }

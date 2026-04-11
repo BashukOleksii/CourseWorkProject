@@ -75,7 +75,8 @@
                         <Button Text="Знайти за адресою" 
                                 Command="{Binding GetByTextCommand}"
                                 IsEnabled="{Binding IsNotBusy}"
-                                HeightRequest="40"/>
+                                HeightRequest="40"
+                                BackgroundColor="{StaticResource Gray950}"/>
                     </VerticalStackLayout>
                 </Border>
 

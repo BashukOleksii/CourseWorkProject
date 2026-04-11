@@ -14,8 +14,7 @@ namespace InventorySystem_MAUI.Helper
 
         protected async Task RunBusyTask(Func<Task> task)
         {
-            if (IsBusy)
-                return;
+            if (IsBusy) return;
 
             try
             {
@@ -24,7 +23,19 @@ namespace InventorySystem_MAUI.Helper
             }
             catch (ApiException ex)
             {
-                await Shell.Current.DisplayAlertAsync ("Error", ex.Content, "OK");
+                await Shell.Current.DisplayAlertAsync("Помилка API", ex.Content, "OK");
+            }
+            catch (ApiEmptyResponseException ex)
+            {
+                await Shell.Current.DisplayAlertAsync("Помилка даних", ex.Message, "OK");
+            }
+            catch (HttpRequestException ex)
+            {
+                await Shell.Current.DisplayAlertAsync("Мережа", "Не вдалося з'єднатися з сервером", "OK");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlertAsync("Критична помилка", ex.Message, "OK");
             }
             finally
             {

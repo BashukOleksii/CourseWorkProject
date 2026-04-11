@@ -9,7 +9,7 @@ using InventorySystem_Shared.Company;
 
 namespace InventorySystem_MAUI.ViewModel
 {
-    [QueryProperty(nameof(Address), "SelectedAddress")]
+    [QueryProperty(nameof(SelectedAddress), "SelectedAddress")]
     public partial class CompanyCreateViewModel : BaseViewModel
     {
         private readonly CompanyService _companyService;

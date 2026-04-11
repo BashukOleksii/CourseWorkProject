@@ -29,7 +29,10 @@ namespace InventorySystem_API.Loging.Service
                  .OfType<AuditAttribute>().FirstOrDefault();
 
             if (auditAttribute is null)
+            {
+                await next();
                 return;
+            }
 
             var executedContext = await next();
 

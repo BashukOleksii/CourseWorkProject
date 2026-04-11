@@ -1,4 +1,5 @@
-﻿using InventorySystem_Shared.User;
+﻿using InventorySystem_MAUI.Helper.Exceptions;
+using InventorySystem_Shared.User;
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
@@ -21,14 +22,15 @@ namespace InventorySystem_MAUI.Helper
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if(!string.IsNullOrEmpty(_userContextService.AccessToken))
+
+            if (!string.IsNullOrEmpty(_userContextService.AccessToken))
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _userContextService.AccessToken);
 
             var response = await base.SendAsync(request, cancellationToken);
 
-            if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                if(await RefreshTokenAsync())
+                if (await RefreshTokenAsync())
                 {
                     request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _userContextService.AccessToken);
                     response = await base.SendAsync(request, cancellationToken);
@@ -36,11 +38,25 @@ namespace InventorySystem_MAUI.Helper
                 else
                 {
                     _userContextService.LogOut();
+                    throw new ApiException(System.Net.HttpStatusCode.Unauthorized, "Сесія вичерпана. Увійдіть знову.");
                 }
             }
 
-            return response;
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new ApiException(response.StatusCode, errorContent);
+            }
 
+
+            if (response.StatusCode != System.Net.HttpStatusCode.NoContent)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(content))
+                    throw new ApiEmptyResponseException();
+            }
+
+            return response;
         }
 
         private async Task<bool> RefreshTokenAsync()

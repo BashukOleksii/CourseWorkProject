@@ -25,9 +25,6 @@ namespace InventorySystem_MAUI.Service
         {
             var response = await _httpClient.PostAsJsonAsync("api/auth/sign-in", new UserLogin { Email = email, Password = password });
 
-            if (!response.IsSuccessStatusCode)
-                await ApiException.ShowException(response);
-
             var tokens = await response.Content.ReadFromJsonAsync<TokensDataResponse>();
 
             var user = await _httpClient.GetFromJsonAsync<UserResponse>("api/user/whoami");
@@ -41,10 +38,7 @@ namespace InventorySystem_MAUI.Service
 
         public async Task Register(UserRegister userRegister)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/auth/sign-up", userRegister);
-
-            if(!response.IsSuccessStatusCode)
-                await ApiException.ShowException(response);
+            await _httpClient.PostAsJsonAsync("api/auth/sign-up", userRegister);
         }
     }
 }

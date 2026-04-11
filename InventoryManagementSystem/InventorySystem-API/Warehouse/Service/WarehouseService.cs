@@ -159,8 +159,6 @@ namespace InventorySystem_API.Warehouse.Service
                 {
                     var address = warehouseQuery.Address;
 
-                    if (address.Name is not null)
-                        filter &= builder.Regex(warehouse => warehouse.Address.Name, new BsonRegularExpression(address.Name, "i"));
                     if (address.Country is not null)
                         filter &= builder.Eq(warehouse => warehouse.Address.Country, address.Country);
                     if (address.State is not null)
@@ -173,8 +171,6 @@ namespace InventorySystem_API.Warehouse.Service
                         filter &= builder.Eq(warehouse => warehouse.Address.Street, address.Street);
                     if (address.HouseNumber is not null)
                         filter &= builder.Eq(warehouse => warehouse.Address.HouseNumber, address.HouseNumber);
-                    if (address.Postcode is not null)
-                        filter &= builder.Eq(warehouse => warehouse.Address.Postcode, address.Postcode);
 
                 }
 
