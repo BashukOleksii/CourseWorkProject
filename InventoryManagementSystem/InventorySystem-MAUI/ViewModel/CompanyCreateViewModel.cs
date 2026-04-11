@@ -40,17 +40,17 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task SaveCompany()
         {
+            if (string.IsNullOrEmpty(Name) ||
+                   SelectedAddress == null ||
+                   string.IsNullOrEmpty(Description) ||
+                   string.IsNullOrEmpty(Phone))
+            {
+                await Shell.Current.DisplayAlertAsync("Error", "Заповніть всі поля", "OK");
+                return;
+            }
+
             await RunBusyTask(async () =>
             {
-                if (string.IsNullOrEmpty(Name) ||
-                    SelectedAddress == null ||
-                    string.IsNullOrEmpty(Description) ||
-                    string.IsNullOrEmpty(Phone))
-                {
-                    await Shell.Current.DisplayAlertAsync("Error", "Заповніть всі поля", "OK");
-                    return;
-                }
-
                 var dto = new CompanyDTO
                 {
                     Name = Name,

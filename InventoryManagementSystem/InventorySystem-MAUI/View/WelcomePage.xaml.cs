@@ -11,6 +11,6 @@ public partial class WelcomePage : ContentPage
 
 	public async void OnGetStartedClicked(object sender, EventArgs e)
 	{
-		await ShellService.NavigateTo(nameof(CompanyCreatePage));
+		await ShellService.NavigateTo(nameof(LoginPage));
     }
 }

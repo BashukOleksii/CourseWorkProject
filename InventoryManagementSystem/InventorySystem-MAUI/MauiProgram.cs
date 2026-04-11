@@ -17,8 +17,6 @@ namespace InventorySystem_MAUI
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddSingleton<UserContextService>();
-
             #region API-Requests
             builder.Services.AddTransient<AuthHandler>();
             builder.Services.AddHttpClient("AuthClient", client =>
@@ -31,16 +29,23 @@ namespace InventorySystem_MAUI
             }).AddHttpMessageHandler<AuthHandler>();
             #endregion
 
+            #region Service
+            builder.Services.AddSingleton<UserContextService>();
             builder.Services.AddSingleton<AddressService>();
             builder.Services.AddSingleton<CompanyService>();
+            builder.Services.AddSingleton<AuthService>();
+            #endregion
 
+            #region AppShell
             builder.Services.AddSingleton<AppShellViewModel>();
             builder.Services.AddSingleton<AppShell>();
+            #endregion
 
+            #region ViewModel
+            builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<AddressCreateViewModel>();
-
             builder.Services.AddTransient<CompanyCreateViewModel>();
-
+            #endregion
 
             return builder.Build();
         }
