@@ -24,17 +24,6 @@ namespace InventorySystem_MAUI.Service
 
         }
 
-        public Address GetAddress() => new Address
-        {
-            Country = "India",
-            State = "Maharashtra",
-            District = "Pune",
-            City = "Pune",
-            Street = "Kothrud",
-            HouseNumber = "123",
-            Latitude = 18.5204,
-            Longitude = 73.8567
-        };
     }
 
 }

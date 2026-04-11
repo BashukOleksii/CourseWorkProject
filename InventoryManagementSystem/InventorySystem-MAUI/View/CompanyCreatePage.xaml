@@ -3,10 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventorySystem_MAUI.View.CompanyCreatePage"
              xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
-             x:DataType="vm:CompanyCreateViewModel"
+             x:DataType="vm:CompanyCreateViewModel">
 
-             Title="CompanyCreateViewModel">
-    
     <ScrollView Padding="25">
         <VerticalStackLayout Spacing="20">
             <Label Text="Створення компанії" Style="{StaticResource Headline}"/>

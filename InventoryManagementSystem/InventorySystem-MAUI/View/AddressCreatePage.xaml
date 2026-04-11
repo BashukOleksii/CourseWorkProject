@@ -49,16 +49,23 @@
 
 
                         <VerticalStackLayout Spacing="12">
-                            <Border Style="{StaticResource InputWrapperStyle}">
-                                <Entry Placeholder="Країна" Text="{Binding Country}"/>
-                            </Border>
+                            
 
                             <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
                                 <Border Style="{StaticResource InputWrapperStyle}">
-                                    <Entry Placeholder="Область" Text="{Binding State}"/>
+                                    <Entry Placeholder="Країна" Text="{Binding Country}"/>
                                 </Border>
                                 <Border Grid.Column="1" Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Placeholder="Область" Text="{Binding State}"/>
+                                </Border>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                                <Border Grid.Column="1" Style="{StaticResource InputWrapperStyle}">
                                     <Entry Placeholder="Місто" Text="{Binding City}"/>
+                                </Border>
+                                <Border Style="{StaticResource InputWrapperStyle}">
+                                    <Entry Placeholder="Район" Text="{Binding District}"/>
                                 </Border>
                             </Grid>
 
