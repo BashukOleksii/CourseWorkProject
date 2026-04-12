@@ -10,20 +10,31 @@
     FlyoutBehavior="{Binding FlyoutBehavior}">
 
     <Shell.TitleView>
-        <Grid ColumnDefinitions="*,Auto" Padding="10">
-            <Label Text="Warehouse System" Style="{DynamicResource TitleLabel}"/>
+        <Grid HorizontalOptions="Fill" 
+          VerticalOptions="Fill" 
+          BackgroundColor="#4F46E5">
 
-            <HorizontalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
-                <ImageButton Source="{Binding UserPhoto}"
-                      Command="{Binding GoToProfileCommand}"
-                      HeightRequest="40"
-                      WidthRequest="40"
-                      Aspect="AspectFit">
-                    <ImageButton.Clip>
-                        <EllipseGeometry Center="20,20" RadiusX="20" RadiusY="20" />
-                    </ImageButton.Clip>
-                </ImageButton>
-            </HorizontalStackLayout>
+            <Label Text="Warehouse System" 
+               TextColor="White"
+               FontSize="20"
+               FontAttributes="Bold"
+               VerticalOptions="Center"
+               HorizontalOptions="Start"/>
+
+            <Border HorizontalOptions="End"
+                VerticalOptions="Center"
+                HeightRequest="38"
+                WidthRequest="38"
+                StrokeShape="RoundRectangle 19"
+                StrokeThickness="1.5"
+                Stroke="White"
+                BackgroundColor="Transparent">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToProfileCommand}"/>
+                </Border.GestureRecognizers>
+                <Image Source="{Binding UserPhoto}" 
+                   Aspect="AspectFill"/>
+            </Border>
         </Grid>
     </Shell.TitleView>
 
@@ -32,8 +43,9 @@
         ContentTemplate="{DataTemplate views:WelcomePage}"
         IsVisible="{Binding IsNotAuthenticated}" />
 
+    
     <FlyoutItem Title="Склади"
-            IsVisible="{Binding IsAdmin}">
+            IsVisible="{Binding IsAuthenticated}">
         <ShellContent 
         Route="WarehouseListPage" 
         ContentTemplate="{DataTemplate views:WarehouseListPage}" />
