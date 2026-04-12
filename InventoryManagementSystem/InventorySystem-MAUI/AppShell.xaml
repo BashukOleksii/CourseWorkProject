@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:InventorySystem_MAUI"
     xmlns:views="clr-namespace:InventorySystem_MAUI.View"
+    xmlns:viewmodels="clr-namespace:InventorySystem_MAUI.ViewModel"
+    x:DataType="viewmodels:AppShellViewModel"
     FlyoutBehavior="{Binding FlyoutBehavior}">
 
     <Shell.TitleView>
@@ -29,5 +31,12 @@
         Route="WelcomePage"
         ContentTemplate="{DataTemplate views:WelcomePage}"
         IsVisible="{Binding IsNotAuthenticated}" />
+
+    <FlyoutItem Title="Склади"
+            IsVisible="{Binding IsAdmin}">
+        <ShellContent 
+        Route="WarehouseListPage" 
+        ContentTemplate="{DataTemplate views:WarehouseListPage}" />
+    </FlyoutItem>
 
 </Shell>

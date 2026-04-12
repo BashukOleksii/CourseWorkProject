@@ -31,6 +31,7 @@ namespace InventorySystem_MAUI.ViewModel
                 IsCodeSent = true;
                 await Shell.Current.DisplayAlertAsync("Success", "Код відправлено на пошту", "OK");
             });
+
         }
 
         [RelayCommand]
@@ -44,6 +45,7 @@ namespace InventorySystem_MAUI.ViewModel
                 await Shell.Current.DisplayAlertAsync("Success", "Пароль змінено", "OK");
                 await ShellService.GoBack();
             });
+
         }
 
         [RelayCommand]

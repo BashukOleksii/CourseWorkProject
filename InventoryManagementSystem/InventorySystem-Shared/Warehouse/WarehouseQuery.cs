@@ -14,7 +14,6 @@ namespace InventorySystem_Shared.Warehouse
         public double? MinArea { get; set; }
         public double? MaxArea { get; set; }
 
-
         public string? SortBy { get; set; }
         public bool OrderByDescending { get; set; }
 

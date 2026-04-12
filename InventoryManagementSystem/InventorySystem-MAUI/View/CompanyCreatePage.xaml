@@ -4,6 +4,7 @@
              x:Class="InventorySystem_MAUI.View.CompanyCreatePage"
              xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
              x:DataType="vm:CompanyCreateViewModel"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
              Shell.PresentationMode="Modal">
 
     <Grid>
@@ -62,18 +63,6 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <VerticalStackLayout IsVisible="{Binding IsBusy}"
-                             BackgroundColor="#80000000"
-                             HorizontalOptions="Fill"
-                             VerticalOptions="Fill"
-                             InputTransparent="False">
-            <ActivityIndicator IsRunning="{Binding IsBusy}"
-                               Color="{StaticResource Primary}"
-                               VerticalOptions="Center"
-                               HorizontalOptions="Center"
-                               HeightRequest="100"
-                               WidthRequest="100"
-                               Margin="0,200,0,0"/>
-        </VerticalStackLayout>
+        <components:LoadingOverlay />
     </Grid>
 </ContentPage>

@@ -27,7 +27,6 @@ namespace InventorySystem_MAUI.Service
 
             var tokens = await response.Content.ReadFromJsonAsync<TokensDataResponse>();
 
-
             await _userContextService.SetUserContextAsync(
                    null,
                    tokens.AccessToken,

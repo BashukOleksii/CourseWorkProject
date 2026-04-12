@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.Components.PaginationControl">
+
+    <Border BackgroundColor="White" Padding="15,10" StrokeThickness="1" Stroke="#F3F4F6">
+        <Grid ColumnDefinitions="*, Auto, *">
+            <Button Grid.Column="0" Text="Назад" 
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentView}}, Path=PrevCommand}" 
+                    BackgroundColor="#F3F4F6" TextColor="#374151" HeightRequest="42" CornerRadius="12"/>
+
+            <Label Grid.Column="1" Text="{Binding Source={RelativeSource AncestorType={x:Type ContentView}}, Path=PageNumber, StringFormat='Сторінка {0}'}" 
+                   VerticalOptions="Center" Margin="20,0" FontAttributes="Bold" TextColor="#111827"/>
+
+            <Button Grid.Column="2" Text="Далі" 
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentView}}, Path=NextCommand}" 
+                    IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type ContentView}}, Path=CanNext}"
+                    BackgroundColor="#6366F1" TextColor="White" HeightRequest="42" CornerRadius="12"/>
+        </Grid>
+    </Border>
+</ContentView>

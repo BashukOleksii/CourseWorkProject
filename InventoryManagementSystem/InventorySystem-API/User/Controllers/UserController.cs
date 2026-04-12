@@ -143,7 +143,7 @@ namespace InventorySystem_API.User.Controllers
         [HttpGet("whoami")]
         public async Task<IActionResult> GetCurentUser()
         {
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var id = User.GetId();
             var user = await _userService.GetById(id!, User.GetCompanyId());
             return Ok(user);
         }

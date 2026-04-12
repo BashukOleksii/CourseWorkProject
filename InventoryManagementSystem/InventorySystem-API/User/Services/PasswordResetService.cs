@@ -63,10 +63,23 @@ namespace InventorySystem_API.User.Services
 
         public async Task GenerateResetCode(string email)
         {
+            var resetModel = await _passwordResetRepository.Get(email);
+            if(resetModel is not null)
+                await _passwordResetRepository.Delete(email);
+
             var user = await _userRepository.GetByEmail(email);
 
             if (user is null)
                 throw new ArgumentException($"Не знайдено коритувача із вказаною поштою: {email}");
+
+            string resetCode = new Random().Next(1000000, 9999999).ToString();
+
+            await _passwordResetRepository.Create(new ResetPasswordModel
+            {
+                Email = email,
+                CodeHash = _bCryptHasher.Hash(resetCode),
+                CreatedAt = DateTime.UtcNow
+            });
 
             var message = new MimeMessage();
 
@@ -77,7 +90,7 @@ namespace InventorySystem_API.User.Services
             var random = new Random();
             message.Body = new TextPart("plain")
             {
-                Text = $"Ваш код для відновлення паролю: {random.Next(1000000,9999999)}"
+                Text = $"Ваш код для відновлення паролю: {resetCode}"
             };
 
             var smtp = new MailKit.Net.Smtp.SmtpClient();
