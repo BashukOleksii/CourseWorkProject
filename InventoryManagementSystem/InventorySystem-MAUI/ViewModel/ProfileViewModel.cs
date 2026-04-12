@@ -4,9 +4,6 @@ using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.Company;
 using InventorySystem_Shared.User;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace InventorySystem_MAUI.ViewModel
 {
