@@ -38,7 +38,7 @@
                            BackgroundColor="Transparent"/>
 
                     <ImageButton Grid.Column="2"
-                                 Source="report_icon.png"
+                                 Source="report.png"
                                  Command="{Binding GoToReportsCommand}"
                                  Margin="0,0,10,0"
                                  HeightRequest="25"

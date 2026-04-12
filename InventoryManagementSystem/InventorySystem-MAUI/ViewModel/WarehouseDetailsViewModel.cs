@@ -109,7 +109,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task Cancel()
         {
-            await Shell.Current.GoToAsync("..");
+            await ShellService.GoBack();
         }
     }
 }

@@ -12,7 +12,8 @@
     <Shell.TitleView>
         <Grid HorizontalOptions="Fill" 
           VerticalOptions="Fill" 
-          BackgroundColor="#4F46E5">
+          Margin="-10,0,0,0"
+          Padding="15,0,20,0">
 
             <Label Text="Warehouse System" 
                TextColor="White"
@@ -32,8 +33,7 @@
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding GoToProfileCommand}"/>
                 </Border.GestureRecognizers>
-                <Image Source="{Binding UserPhoto}" 
-                   Aspect="AspectFill"/>
+                <Image Source="{Binding UserPhoto}" Aspect="AspectFill"/>
             </Border>
         </Grid>
     </Shell.TitleView>
