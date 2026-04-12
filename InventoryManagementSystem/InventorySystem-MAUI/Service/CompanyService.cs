@@ -25,5 +25,11 @@ namespace InventorySystem_MAUI.Service
 
             return companyResponse!.Id;
         }
+
+        public async Task<CompanyResponse> GetMyCompany()
+        {
+            var response = await _httpClient.GetAsync("api/company");
+            return await response.Content.ReadFromJsonAsync<CompanyResponse>();
+        }
     }
 }

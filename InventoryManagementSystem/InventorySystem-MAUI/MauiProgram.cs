@@ -36,6 +36,7 @@ namespace InventorySystem_MAUI
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<ResetPasswordService>();
             builder.Services.AddSingleton<WarehouseService>();
+            builder.Services.AddScoped<UserService>();
             #endregion
 
             #region AppShell
@@ -52,6 +53,7 @@ namespace InventorySystem_MAUI
             builder.Services.AddTransient<WarehouseListViewModel>();
             builder.Services.AddTransient<WarehouseDetailsViewModel>();
             builder.Services.AddTransient<WarehouseReportViewModel>();
+            builder.Services.AddTransient<ProfileViewModel>();
             #endregion
 
             return builder.Build();
