@@ -4,6 +4,7 @@
              x:Class="InventorySystem_MAUI.View.WarehouseListPage"
              xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
              xmlns:m="clr-namespace:InventorySystem_Shared.Warehouse;assembly=InventorySystem-Shared"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
              x:DataType="vm:WarehouseListViewModel">
 
     <Grid RowDefinitions="Auto, Auto, *, Auto">
@@ -58,121 +59,27 @@
                      IsRefreshing="{Binding IsBusy}">
 
             <Grid>
-                <CollectionView ItemsSource="{Binding Warehouses}" 
-                                SelectionMode="None" 
-                                Margin="15,5">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="12"/>
-                    </CollectionView.ItemsLayout>
-
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="m:WarehouseResponse">
-                            <Border StrokeShape="RoundRectangle 16" 
-                                    BackgroundColor="White"
-                                    Padding="0">
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer 
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:WarehouseViewModel}}, Path=EditWarehouseCommand}" 
-                                        CommandParameter="{Binding .}"/>
-                                </Border.GestureRecognizers>
-                                <Border.Shadow>
-                                    <Shadow Brush="Black" Opacity="0.1" Offset="0,3" Radius="6"/>
-                                </Border.Shadow>
-
-                                <Grid ColumnDefinitions="Auto, *" Padding="15" ColumnSpacing="15">
-                                    <Border Grid.Column="0" 
-                                            HeightRequest="55" 
-                                            WidthRequest="55" 
-                                            StrokeShape="RoundRectangle 12" 
-                                            BackgroundColor="#EEF2FF"
-                                            StrokeThickness="0">
-                                        <Label Text="🏢" FontSize="26" HorizontalOptions="Center" VerticalOptions="Center"/>
-                                    </Border>
-
-                                    <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
-                                        <Label Text="{Binding Name}" 
-                                               FontSize="17" 
-                                               FontAttributes="Bold" 
-                                               TextColor="#111827"/>
-                                        <Label Text="{Binding Address.City}" 
-                                               FontSize="14" 
-                                               TextColor="#6B7280"/>
-                                        <Label Text="{Binding Area, StringFormat='{0} м²'}" 
-                                               FontSize="13" 
-                                               TextColor="#4F46E5" 
-                                               FontAttributes="Bold"/>
-                                    </VerticalStackLayout>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-
-                    <CollectionView.EmptyView>
-                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="0,50">
-                            <Label Text="Нічого не знайдено" TextColor="#9CA3AF" FontSize="16" HorizontalOptions="Center"/>
-                        </VerticalStackLayout>
-                    </CollectionView.EmptyView>
+                
+                <CollectionView 
+                    ItemsSource="{Binding Warehouses}"
+                    ItemTemplate="{StaticResource Key=WarehouseCardTemplate}"
+                    Margin="15,5">
                 </CollectionView>
 
-                <Button Text="+"
-                        FontSize="30"
-                        TextColor="White"
-                        BackgroundColor="#6366F1"
-                        HeightRequest="60"
-                        WidthRequest="60"
-                        CornerRadius="30"
-                        HorizontalOptions="End"
-                        VerticalOptions="End"
-                        Margin="20"
-                        Command="{Binding AddWarehouseCommand}">
-                    <Button.Shadow>
-                        <Shadow Brush="Black" Opacity="0.3" Offset="0,5" Radius="10"/>
-                    </Button.Shadow>
-                </Button>
+                <components:AddButton AddCommand="{Binding AddWarehouseCommand}"/>
+
             </Grid>
+            
         </RefreshView>
 
-        <Border Grid.Row="3" 
-                BackgroundColor="White" 
-                Padding="15,10" 
-                StrokeThickness="1" 
-                Stroke="#F3F4F6">
-            <Grid ColumnDefinitions="*, Auto, *">
-                <Button Grid.Column="0" 
-                        Text="Назад" 
-                        Command="{Binding PreviousPageCommand}" 
-                        BackgroundColor="#F3F4F6" 
-                        TextColor="#374151" 
-                        HeightRequest="42" 
-                        CornerRadius="12"/>
+        <components:PaginationControl 
+            Grid.Row="3"
+            PageNumber="{Binding CurrentPage}"
+            CanNext="{Binding CanGoNext}"
+            NextCommand="{Binding NextPageCommand}"
+            PrevCommand="{Binding PreviousPageCommand}"/>
 
-                <Label Grid.Column="1" 
-                       Text="{Binding CurrentPage, StringFormat='Сторінка {0}'}" 
-                       VerticalOptions="Center" 
-                       Margin="20,0" 
-                       FontAttributes="Bold"
-                       TextColor="#111827"/>
-
-                <Button Grid.Column="2" 
-                        Text="Далі" 
-                        Command="{Binding NextPageCommand}" 
-                        IsEnabled="{Binding CanGoNext}"
-                        BackgroundColor="#6366F1" 
-                        TextColor="White"
-                        HeightRequest="42" 
-                        CornerRadius="12"/>
-            </Grid>
-        </Border>
-
-        <Grid BackgroundColor="#80000000" 
-              IsVisible="{Binding IsBusy}" 
-              Grid.RowSpan="4"
-              InputTransparent="False">
-            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="15">
-                <ActivityIndicator IsRunning="{Binding IsBusy}" Color="White" HeightRequest="60" WidthRequest="60"/>
-                <Label Text="Завантаження..." TextColor="White" FontAttributes="Bold"/>
-            </VerticalStackLayout>
-        </Grid>
+        <components:LoadingOverlay Grid.RowSpan="4" />
 
     </Grid>
 </ContentPage>

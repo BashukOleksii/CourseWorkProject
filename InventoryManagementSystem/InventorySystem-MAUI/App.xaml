@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/BaseStyles.xaml" />
+                <ResourceDictionary Source="/Resources/Styles/Template.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>

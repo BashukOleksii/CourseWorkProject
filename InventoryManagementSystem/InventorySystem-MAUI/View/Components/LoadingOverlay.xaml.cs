@@ -1,6 +1,6 @@
 namespace InventorySystem_MAUI.View.Components;
 
-public partial class LoadingOverlay : ContentPage
+public partial class LoadingOverlay : ContentView
 {
 	public LoadingOverlay()
 	{
