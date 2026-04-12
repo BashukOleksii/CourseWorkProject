@@ -4,6 +4,8 @@ using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.Company;
 using InventorySystem_Shared.User;
+using System.Buffers.Text;
+using System.Runtime.CompilerServices;
 
 namespace InventorySystem_MAUI.ViewModel
 {
@@ -13,14 +15,18 @@ namespace InventorySystem_MAUI.ViewModel
         private readonly CompanyService _companyService;
         private readonly UserContextService _userContext;
 
-        [ObservableProperty] private UserResponse currentUser;
+        [ObservableProperty] private string name;
+        [ObservableProperty] private string email;
+        [ObservableProperty] private UserRole userRole;
         [ObservableProperty] private CompanyResponse company;
+        [ObservableProperty] private string photoUri;
         [ObservableProperty] private bool isEditMode;
 
         [ObservableProperty] private string editName;
         [ObservableProperty] private string editEmail;
         [ObservableProperty] private string newPassword;
         [ObservableProperty] private string confirmPassword;
+        
 
         public ProfileViewModel(UserService userService, CompanyService companyService, UserContextService userContext)
         {
@@ -35,9 +41,12 @@ namespace InventorySystem_MAUI.ViewModel
         {
             await RunBusyTask(async () =>
             {
-                CurrentUser = _userContext.CurrentUser;
-                EditName = CurrentUser.Name;
-                EditEmail = CurrentUser.Email;
+                Name = _userContext.CurrentUser.Name;
+                Email = _userContext.CurrentUser.Email;
+                UserRole = _userContext.CurrentUser.UserRole;
+                EditName = _userContext.CurrentUser.Name;
+                EditEmail = _userContext.CurrentUser.Email;
+                PhotoUri = Conection.BaseURI +  _userContext.CurrentUser.PhotoURI;
                 Company = await _companyService.GetMyCompany();
             });
         }
@@ -63,18 +72,22 @@ namespace InventorySystem_MAUI.ViewModel
                     Password = string.IsNullOrEmpty(NewPassword) ? null : NewPassword
                 };
 
-                var updatedUser = await _userService.UpdateUser(CurrentUser.Id, update);
+                var updatedUser = await _userService.UpdateUser(_userContext.CurrentUser.Id, update);
 
-                await _userContext.SetUserContextAsync(
-                    updatedUser,
-                    _userContext.AccessToken!,
-                    _userContext.RefreshToken!);
+                Name = updatedUser.Name;
+                Email = updatedUser.Email;
+                PhotoUri = Conection.BaseURI + updatedUser.PhotoURI;
 
-                CurrentUser = updatedUser;
                 IsEditMode = false;
                 NewPassword = ConfirmPassword = string.Empty;
 
             });
+        }
+
+        [RelayCommand]
+        private async Task GoBack()
+        {
+            await ShellService.GoBack();
         }
     }
 }

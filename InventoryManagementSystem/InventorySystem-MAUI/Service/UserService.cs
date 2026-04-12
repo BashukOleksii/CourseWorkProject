@@ -1,4 +1,5 @@
-﻿using InventorySystem_Shared.User;
+﻿using InventorySystem_MAUI.Helper;
+using InventorySystem_Shared.User;
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
@@ -9,10 +10,14 @@ namespace InventorySystem_MAUI.Service
     public class UserService
     {
         private readonly HttpClient _httpClient;
+        private readonly UserContextService _userContext;
 
-        public UserService(IHttpClientFactory httpClientFactory)
+        public UserService(
+            IHttpClientFactory httpClientFactory,
+            UserContextService userContext)
         {
             _httpClient = httpClientFactory.CreateClient("APIClient");
+            _userContext = userContext;
         }
 
         public async Task<UserResponse> UpdateUser(string id, UserUpdate update, FileResult photo = null)
@@ -30,7 +35,14 @@ namespace InventorySystem_MAUI.Service
             }
 
             var response = await _httpClient.PatchAsync($"api/user/{id}", content);
-            return await response.Content.ReadFromJsonAsync<UserResponse>();
+            var updated = await response.Content.ReadFromJsonAsync<UserResponse>();
+
+            await _userContext.SetUserContextAsync(
+                updated,
+                _userContext.AccessToken,
+                _userContext.RefreshToken);
+
+            return updated;
         }
     }
 }
