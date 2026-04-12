@@ -5,11 +5,12 @@
              xmlns:m="clr-namespace:InventorySystem_Shared.Warehouse;assembly=InventorySystem-Shared"
              xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
              x:DataType="vm:WarehouseReportViewModel"
-             BackgroundColor="#F8F9FA">
+             BackgroundColor="#F8F9FA"
+             Shell.PresentationMode="Modal"
+             >
 
     <Grid RowDefinitions="Auto, *">
-        <BoxView Grid.Row="0" HeightRequest="50" BackgroundColor="#4F46E5" VerticalOptions="Start"/>
-
+      
         <Grid Grid.Row="0" Grid.RowSpan="2" RowDefinitions="Auto, *">
 
             <VerticalStackLayout Grid.Row="0" Margin="15,5,15,10" Spacing="10">

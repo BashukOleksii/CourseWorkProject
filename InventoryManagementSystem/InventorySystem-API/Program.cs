@@ -21,6 +21,7 @@ using InventorySystem_API.Warehouse.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
+using QuestPDF.Infrastructure;
 using System.Text;
 using System.Text.Json;
 
@@ -134,6 +135,7 @@ builder.Services.AddSingleton<IImageService, ImageService>();
 #endregion
 
 #region Report
+QuestPDF.Settings.License = LicenseType.Community;
 builder.Services.AddScoped<IReportService, ReportService>();
 #endregion
 
