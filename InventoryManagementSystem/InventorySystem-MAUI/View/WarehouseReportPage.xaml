@@ -1,0 +1,83 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.WarehouseReportPage"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             xmlns:m="clr-namespace:InventorySystem_Shared.Warehouse;assembly=InventorySystem-Shared"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
+             x:DataType="vm:WarehouseReportViewModel"
+             BackgroundColor="#F8F9FA">
+
+    <Grid RowDefinitions="Auto, *">
+        <BoxView Grid.Row="0" HeightRequest="50" BackgroundColor="#4F46E5" VerticalOptions="Start"/>
+
+        <Grid Grid.Row="0" Grid.RowSpan="2" RowDefinitions="Auto, *">
+
+            <VerticalStackLayout Grid.Row="0" Margin="15,5,15,10" Spacing="10">
+                <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" Padding="15">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Opacity="0.15" Offset="0,4" Radius="10"/>
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="*, Auto, Auto">
+                            <Label Text="Звіти та Фільтри" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>
+                            <ImageButton Grid.Column="1" Source="filter.png" Command="{Binding ToggleFiltersCommand}" HeightRequest="30" Margin="0,0,10,0"/>
+                            <Button Grid.Column="2" Text="PDF" Command="{Binding GeneratePdfReportCommand}" BackgroundColor="#EF4444" HeightRequest="35" FontSize="12"/>
+                        </Grid>
+
+                        <VerticalStackLayout IsVisible="{Binding IsFilterVisible}" Spacing="12" Margin="0,10,0,0">
+
+                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="10">
+                                <Entry Placeholder="Назва складу" Text="{Binding Query.Name}"/>
+                            </Border>
+
+                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="10">
+                                <Entry Placeholder="Частина опису..." Text="{Binding Query.PartDescription}"/>
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Border Grid.Column="0" Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="10">
+                                    <Entry Placeholder="Мін. площа" Text="{Binding Query.MinArea}" Keyboard="Numeric"/>
+                                </Border>
+                                <Border Grid.Column="1" Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="10">
+                                    <Entry Placeholder="Макс. площа" Text="{Binding Query.MaxArea}" Keyboard="Numeric"/>
+                                </Border>
+                            </Grid>
+
+                            <Button Text="Застосувати фільтри" 
+                                Command="{Binding ApplyFiltersCommand}" 
+                                BackgroundColor="#4F46E5"
+                                FontAttributes="Bold"
+                                CornerRadius="8"/>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Warehouses}" Margin="15,0">
+                <CollectionView.Header>
+                    <Label Text="Результати вибірки" FontSize="16" FontAttributes="Bold" Margin="5,0,0,10"/>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:WarehouseResponse">
+                        <components:WarehouseCardView 
+                            EditCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:WarehouseReportViewModel}}, Path=EditWarehouseCommand}"
+                            DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:WarehouseReportViewModel}}, Path=DeleteWarehouseCommand}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="80" Color="Transparent"/>
+                </CollectionView.Footer>
+            </CollectionView>
+        </Grid>
+
+        <components:PaginationControl Grid.Row="1" 
+                                      VerticalOptions="End"
+                                      PageNumber="{Binding CurrentPage}"
+                                      CanNext="{Binding CanGoNext}"
+                                      NextCommand="{Binding NextPageCommand}"
+                                      PrevCommand="{Binding PreviousPageCommand}"/>
+
+        <components:LoadingOverlay Grid.RowSpan="2" />
+    </Grid>
+</ContentPage>

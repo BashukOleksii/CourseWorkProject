@@ -51,6 +51,7 @@ namespace InventorySystem_MAUI
             builder.Services.AddTransient<ForgotPasswordViewModel>();
             builder.Services.AddTransient<WarehouseListViewModel>();
             builder.Services.AddTransient<WarehouseDetailsViewModel>();
+            builder.Services.AddTransient<WarehouseReportViewModel>();
             #endregion
 
             return builder.Build();
