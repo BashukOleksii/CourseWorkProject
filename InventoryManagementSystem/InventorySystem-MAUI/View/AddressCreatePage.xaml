@@ -20,9 +20,22 @@
             <ScrollView Grid.Row="0">
                 <VerticalStackLayout Padding="20" Spacing="25">
 
-                    <Label Text="Локація" 
-                           Style="{StaticResource Headline}" 
-                           HorizontalOptions="Start" />
+                    <Grid ColumnDefinitions="Auto, *">
+                        <ImageButton Grid.Column="0"
+                                     Source="back_white.png"
+                                     Command="{Binding CancelCommand}"
+                                     HeightRequest="30"
+                                     WidthRequest="30"
+                                     VerticalOptions="Center"
+                                     BackgroundColor="Transparent"/>
+
+                        <Label Grid.Column="1" 
+                               Text="Локація" 
+                               Style="{StaticResource Headline}" 
+                               HorizontalOptions="Start"
+                               Margin="15,0,0,0"
+                               TextColor="White"/>
+                    </Grid>
 
                     <Border Style="{StaticResource CardBorderStyle}">
                         <VerticalStackLayout Spacing="15">
@@ -109,5 +122,4 @@
 
         <components:LoadingOverlay />
     </Grid>
-
 </ContentPage>

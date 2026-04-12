@@ -54,6 +54,23 @@ namespace InventorySystem_MAUI.Service
 
         public async Task DeleteWarehouse(string id) =>
             await _httpClient.DeleteAsync($"api/warehouse/{id}");
-     
+        public async Task<WarehouseResponse> CreateWarehouse(WarehouseDTO dto)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/warehouse", dto);
+            return await response.Content.ReadFromJsonAsync<WarehouseResponse>();
+        }
+
+        public async Task<WarehouseResponse> UpdateWarehouse(string id, WarehouseUpdate update)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"api/warehouse/{id}", update);
+            return await response.Content.ReadFromJsonAsync<WarehouseResponse>();
+        }
+
+        public async Task<WarehouseResponse> GetWarehouseById(string id)
+        {
+            var response = await _httpClient.GetAsync($"api/warehouse/{id}");
+            return await response.Content.ReadFromJsonAsync<WarehouseResponse>();
+        }
+
     }
 }

@@ -22,16 +22,16 @@ namespace InventorySystem_API.Warehouse.Conroller
         }
 
         [HttpGet("{id}")]
-        [Audit(ActionType.ReadOne,EntityType.Warehouse)]
+        [Audit(ActionType.ReadOne, EntityType.Warehouse)]
         public async Task<IActionResult> GetById(string id)
         {
             try
             {
                 var companyId = User.GetCompanyId();
-                var warehouse = await _warehouseService.GetById(id,companyId);
+                var warehouse = await _warehouseService.GetById(id, companyId);
                 return Ok(warehouse);
             }
-            catch(KeyNotFoundException ex)
+            catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
@@ -41,7 +41,7 @@ namespace InventorySystem_API.Warehouse.Conroller
             }
         }
 
-        [HttpGet]
+        [HttpGet("by-ids")]
         [Audit(ActionType.ReadMany, EntityType.Warehouse)]
         public async Task<IActionResult> GetByIds([FromQuery] string[] ids)
         {

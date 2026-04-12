@@ -90,4 +90,5 @@
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FBFCFD, Dark=#1E1E1E}" />
         <Setter Property="HeightRequest" Value="48" />
     </Style>
+    
 </ResourceDictionary>

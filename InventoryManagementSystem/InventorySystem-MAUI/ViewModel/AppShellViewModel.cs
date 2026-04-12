@@ -34,7 +34,7 @@ namespace InventorySystem_MAUI.ViewModel
             IsAdmin = _userContext.CurrentUser?.UserRole == UserRole.admin;
             IsManager = _userContext.CurrentUser?.UserRole == UserRole.manager;
             FlyoutBehavior = IsAuthenticated ? FlyoutBehavior.Flyout : FlyoutBehavior.Disabled;
-            UserPhoto = _userContext.CurrentUser?.PhotoURI ?? "default_user.png";
+            UserPhoto = Conection.BaseURI + _userContext.CurrentUser?.PhotoURI ;
         }
 
 

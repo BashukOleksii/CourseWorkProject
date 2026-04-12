@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
+using InventorySystem_MAUI.View;
 using InventorySystem_Shared.Warehouse;
 using System.Collections.ObjectModel;
 
@@ -90,13 +91,13 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task AddWarehouse()
         {
-            // Переходимо на сторінку додавання складу
+            await ShellService.NavigateTo(nameof(WarehouseDetailsPage));
         }
 
         [RelayCommand]
         private async Task EditWarehouse(WarehouseResponse warehouse)
         {
-            // Переходимо на сторінку редагування складу, передаючи його ID
+            await ShellService.NavigateTo(nameof(WarehouseDetailsPage), new Dictionary<string, object> { { "Id", warehouse.Id} });
         }
 
         [RelayCommand]
