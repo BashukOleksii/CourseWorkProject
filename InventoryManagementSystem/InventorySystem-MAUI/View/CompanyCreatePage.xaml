@@ -62,18 +62,11 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <VerticalStackLayout IsVisible="{Binding IsBusy}"
-                             BackgroundColor="#80000000"
-                             HorizontalOptions="Fill"
-                             VerticalOptions="Fill"
-                             InputTransparent="False">
-            <ActivityIndicator IsRunning="{Binding IsBusy}"
-                               Color="{StaticResource Primary}"
-                               VerticalOptions="Center"
-                               HorizontalOptions="Center"
-                               HeightRequest="100"
-                               WidthRequest="100"
-                               Margin="0,200,0,0"/>
-        </VerticalStackLayout>
+        <Grid BackgroundColor="#80000000" IsVisible="{Binding IsBusy}">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="15">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" Color="White" HeightRequest="60" WidthRequest="60"/>
+                <Label Text="Обробка запиту..." TextColor="White" FontAttributes="Bold"/>
+            </VerticalStackLayout>
+        </Grid>
     </Grid>
 </ContentPage>

@@ -15,7 +15,7 @@
                     <GradientStop Color="#9333EA" Offset="1.0"/>
                 </LinearGradientBrush>
             </Grid.Background>
-            
+
             <ScrollView Grid.Row="0">
                 <VerticalStackLayout Padding="20" Spacing="25">
 
@@ -106,19 +106,12 @@
             </Border>
         </Grid>
 
-        <Grid BackgroundColor="{AppThemeBinding Light=#80FFFFFF, Dark=#80000000}"
-              IsVisible="{Binding IsBusy}"
-              InputTransparent="False">
-            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
-                <ActivityIndicator IsRunning="{Binding IsBusy}"
-                                   Color="{StaticResource Primary}"
-                                   HeightRequest="50"
-                                   WidthRequest="50" />
-                <Label Text="Шукаємо локацію..." 
-                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                       FontSize="14"
-                       HorizontalOptions="Center"/>
+        <Grid BackgroundColor="#80000000" IsVisible="{Binding IsBusy}">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="15">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" Color="White" HeightRequest="60" WidthRequest="60"/>
+                <Label Text="Обробка запиту..." TextColor="White" FontAttributes="Bold"/>
             </VerticalStackLayout>
         </Grid>
     </Grid>
+
 </ContentPage>

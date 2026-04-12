@@ -4,7 +4,8 @@
              x:Class="InventorySystem_MAUI.View.UserCreatePage"
              xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
              x:DataType="vm:UserCreateViewModel"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             Shell.PresentationMode="Modal">
 
     <Grid>
         <Grid.Background>
@@ -111,7 +112,7 @@
         <Grid BackgroundColor="#80000000" IsVisible="{Binding IsBusy}">
             <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="15">
                 <ActivityIndicator IsRunning="{Binding IsBusy}" Color="White" HeightRequest="60" WidthRequest="60"/>
-                <Label Text="Створюємо профіль..." TextColor="White" FontAttributes="Bold"/>
+                <Label Text="Обробка запиту..." TextColor="White" FontAttributes="Bold"/>
             </VerticalStackLayout>
         </Grid>
     </Grid>
