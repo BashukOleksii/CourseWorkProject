@@ -49,7 +49,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task GoToProfile()
         {
-            // Перехід до профілю користувача
+            await ShellService.NavigateTo(nameof(ProfilePage));
         }
     }
 }

@@ -1,0 +1,122 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.ProfilePage"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
+             x:DataType="vm:ProfileViewModel"
+             BackgroundColor="#F8F9FA"
+             Shell.PresentationMode="Modal"
+             >
+
+    <Grid RowDefinitions="Auto, *">
+
+        <ScrollView Grid.Row="0" Grid.RowSpan="2">
+            <VerticalStackLayout Padding="20,10,20,30" Spacing="20">
+
+                <Grid ColumnDefinitions="Auto, *">
+                    <Button Grid.Column="0"
+                        Text="← Назад"
+                        Command="{Binding GoBackCommand}"
+                        TextColor="White"
+                        BackgroundColor="Transparent"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Padding="0"
+                        HorizontalOptions="Start"
+                        HeightRequest="40"/>    
+
+                    <Label Grid.Column="1" 
+                       Text="Мій Профіль" 
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       Margin="15,0,0,0"
+                       VerticalOptions="Center"/>
+                </Grid>
+
+                <Border StrokeShape="RoundRectangle 16" BackgroundColor="White" Padding="25" Margin="0,5,0,0">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Opacity="0.1" Offset="0,4" Radius="10"/>
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="15">
+                        <Grid ColumnDefinitions="Auto, *, Auto">
+                            <Border HeightRequest="75" WidthRequest="75" StrokeShape="RoundRectangle 37.5">
+                                <Image Source="{Binding PhotoUri}" Aspect="AspectFill"/>
+                            </Border>
+
+                            <VerticalStackLayout Grid.Column="1" Margin="15,0" VerticalOptions="Center">
+                                <Label Text="{Binding Name}" FontSize="20" FontAttributes="Bold" TextColor="#111827"/>
+                                <Label Text="{Binding UserRole}" TextColor="#4F46E5" FontSize="14" FontAttributes="Italic"/>
+                            </VerticalStackLayout>
+
+                            <ImageButton Grid.Column="2" 
+                                     Source="edit.png" 
+                                     Command="{Binding ToggleEditModeCommand}" 
+                                     HeightRequest="26" 
+                                     VerticalOptions="Start"/>
+                        </Grid>
+
+                        <BoxView HeightRequest="1" BackgroundColor="#F3F4F6" Margin="0,5"/>
+
+                        <VerticalStackLayout Spacing="10" IsVisible="{Binding IsEditMode, Converter={StaticResource InverseBoolConverter}}">
+                            <HorizontalStackLayout Spacing="10">
+                                <Label Text="📧" VerticalOptions="Center"/>
+                                <Label Text="{Binding Email}" TextColor="#4B5563" FontSize="16"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="12" IsVisible="{Binding IsEditMode}">
+                            <Label Text="Редагування профілю" FontAttributes="Bold" TextColor="#4F46E5" Margin="0,5"/>
+
+                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="#F9FAFB">
+                                <Entry Text="{Binding EditName}" Placeholder="Ім'я" TextColor="#111827"/>
+                            </Border>
+
+                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="#F9FAFB">
+                                <Entry Text="{Binding EditEmail}" Placeholder="Email" Keyboard="Email" TextColor="#111827"/>
+                            </Border>
+
+                            <Label Text="Зміна пароля" FontSize="12" TextColor="#9CA3AF" Margin="5,5,0,0"/>
+                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="#F9FAFB">
+                                <Entry Text="{Binding NewPassword}" Placeholder="Новий пароль" IsPassword="True"/>
+                            </Border>
+                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="#F9FAFB">
+                                <Entry Text="{Binding ConfirmPassword}" Placeholder="Підтвердіть пароль" IsPassword="True"/>
+                            </Border>
+
+                            <Button Text="Зберегти зміни" 
+                                Command="{Binding SaveChangesCommand}" 
+                                BackgroundColor="#4F46E5" 
+                                CornerRadius="12"
+                                HeightRequest="50"
+                                Margin="0,10,0,0"/>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border StrokeShape="RoundRectangle 16" BackgroundColor="White" Padding="25">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="🏢 Ваша організація" FontSize="18" FontAttributes="Bold" TextColor="#111827"/>
+                        <Label Text="{Binding Company.Name}" FontSize="17" TextColor="#4F46E5" FontAttributes="Bold"/>
+                        <Label Text="{Binding Company.Description}" FontSize="14" TextColor="#6B7280" LineBreakMode="WordWrap"/>
+
+                        <HorizontalStackLayout Spacing="12" Margin="0,5">
+                            <Label Text="📞" FontSize="16"/>
+                            <Label Text="{Binding Company.Phone}" TextColor="#374151"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Spacing="12">
+                            <Label Text="📍" FontSize="16"/>
+                            <Label Text="{Binding Company.Address.City}" TextColor="#374151"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <components:LoadingOverlay Grid.RowSpan="2" />
+    </Grid>
+    
+</ContentPage>
