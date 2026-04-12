@@ -18,6 +18,7 @@ namespace InventorySystem_MAUI.ViewModel
 
         [ObservableProperty] private string warehouseId;
         [ObservableProperty] private string title = "Новий склад";
+        [ObservableProperty] private string addressDisplay = "Адресу не обрано";
 
         [ObservableProperty] private string name;
         [ObservableProperty] private string description;
@@ -32,6 +33,12 @@ namespace InventorySystem_MAUI.ViewModel
         public WarehouseDetailsViewModel(WarehouseService warehouseService)
         {
             _warehouseService = warehouseService;
+        }
+
+        partial void OnSelectedAddressChanged(Address value)
+        {
+            if (value != null)
+                AddressDisplay = $"{value.City}, {value.Street} {value.HouseNumber}";
         }
 
         async partial void OnWarehouseIdChanged(string value)
