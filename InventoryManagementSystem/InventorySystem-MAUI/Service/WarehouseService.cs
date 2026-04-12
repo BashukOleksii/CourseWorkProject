@@ -51,5 +51,9 @@ namespace InventorySystem_MAUI.Service
 
             return await response.Content.ReadFromJsonAsync<List<WarehouseResponse>>();
         }
+
+        public async Task DeleteWarehouse(string id) =>
+            await _httpClient.DeleteAsync($"api/warehouse/{id}");
+     
     }
 }

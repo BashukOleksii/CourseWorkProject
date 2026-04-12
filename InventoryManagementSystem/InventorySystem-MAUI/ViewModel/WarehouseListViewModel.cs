@@ -75,6 +75,19 @@ namespace InventorySystem_MAUI.ViewModel
         }
 
         [RelayCommand]
+        private async Task Delete(WarehouseResponse warehouse)
+        {
+            bool confirm = await Shell.Current.DisplayAlertAsync("Видалення", $"Ви впевнSені, що хочете видалити {warehouse.Name}?", "Так", "Ні");
+            if (!confirm) return;
+
+            await RunBusyTask(async () =>
+            {
+                await _warehouseService.DeleteWarehouse(warehouse.Id);
+                Warehouses.Remove(warehouse); 
+            });
+        }
+
+        [RelayCommand]
         private async Task AddWarehouse()
         {
             // Переходимо на сторінку додавання складу

@@ -34,7 +34,7 @@ namespace InventorySystem_MAUI.ViewModel
             {
                 await _authService.Login(Email, Password);
 
-                await Shell.Current.DisplayAlertAsync("Успіх", "Ви успішно увійшли в систему", "OK");
+                await ShellService.NavigateTo(nameof(WarehouseListPage));
             });
         }
 

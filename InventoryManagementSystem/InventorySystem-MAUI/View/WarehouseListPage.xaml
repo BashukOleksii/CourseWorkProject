@@ -59,11 +59,15 @@
                      IsRefreshing="{Binding IsBusy}">
 
             <Grid>
-                
-                <CollectionView 
-                    ItemsSource="{Binding Warehouses}"
-                    ItemTemplate="{StaticResource Key=WarehouseCardTemplate}"
-                    Margin="15,5">
+
+                <CollectionView ItemsSource="{Binding Warehouses}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="m:WarehouseResponse">
+                            <components:WarehouseCardView 
+                EditCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:WarehouseListViewModel}}, Path=EditWarehouseCommand}"
+                DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:WarehouseListViewModel}}, Path=DeleteCommand}"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
                 </CollectionView>
 
                 <components:AddButton AddCommand="{Binding AddWarehouseCommand}"/>

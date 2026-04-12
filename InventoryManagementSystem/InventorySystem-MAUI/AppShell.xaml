@@ -32,4 +32,11 @@
         ContentTemplate="{DataTemplate views:WelcomePage}"
         IsVisible="{Binding IsNotAuthenticated}" />
 
+    <FlyoutItem Title="Склади"
+            IsVisible="{Binding IsAdmin}">
+        <ShellContent 
+        Route="WarehouseListPage" 
+        ContentTemplate="{DataTemplate views:WarehouseListPage}" />
+    </FlyoutItem>
+
 </Shell>

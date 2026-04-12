@@ -1,0 +1,35 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.Components.WarehouseCardView"
+             x:Name="this">
+    
+    <Border StrokeShape="RoundRectangle 16" BackgroundColor="White" Padding="15" Margin="0,5">
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding Source={x:Reference this}, Path=EditCommand}" 
+                                  CommandParameter="{Binding BindingContext, Source={x:Reference this}}"/>
+        </Border.GestureRecognizers>
+
+        <Grid ColumnDefinitions="Auto, *, Auto">
+            <Border Grid.Column="0" HeightRequest="55" WidthRequest="55" StrokeShape="RoundRectangle 12" BackgroundColor="#EEF2FF">
+                <Label Text="🏢" FontSize="26" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+
+            <VerticalStackLayout Grid.Column="1" Spacing="2" Margin="15,0" VerticalOptions="Center">
+                <Label Text="{Binding Name}" FontSize="17" FontAttributes="Bold" TextColor="#111827"/>
+                <Label Text="{Binding Address.City}" FontSize="14" TextColor="#6B7280"/>
+                <Label Text="{Binding Area, StringFormat='{0} м²'}" FontSize="13" TextColor="#4F46E5" FontAttributes="Bold"/>
+            </VerticalStackLayout>
+
+            <ImageButton Grid.Column="2" 
+                         Source="delete_icon.png" 
+                         BackgroundColor="Transparent"
+                         VerticalOptions="Center"
+                         HeightRequest="35" WidthRequest="35"
+                         Command="{Binding Source={x:Reference this}, Path=DeleteCommand}"
+                         CommandParameter="{Binding BindingContext, Source={x:Reference this}}">
+                <ImageButton.Behaviors>
+                </ImageButton.Behaviors>
+            </ImageButton>
+        </Grid>
+    </Border>
+</ContentView>
