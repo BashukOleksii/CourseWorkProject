@@ -103,7 +103,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task GoToReports()
         {
-            // Переходимо на сторінку звітів
+            await ShellService.NavigateTo(nameof(WarehouseReportPage));
         }
     }
 }

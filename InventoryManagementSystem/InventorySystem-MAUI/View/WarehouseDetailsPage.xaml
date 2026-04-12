@@ -6,17 +6,13 @@
              xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
              x:DataType="vm:WarehouseDetailsViewModel"
              BackgroundColor="#F8F9FA"
-             Shell.NavBarIsVisible="True">
+             Shell.NavBarIsVisible="True"
+             Shell.PresentationMode="Modal">
 
     <Grid RowDefinitions="Auto, *">
 
-        <BoxView Grid.Row="0" 
-                 HeightRequest="30" 
-                 BackgroundColor="#4F46E5" 
-                 VerticalOptions="Start"/>
-
         <ScrollView Grid.Row="0" Grid.RowSpan="2">
-            <VerticalStackLayout Padding="20,40,20,30" Spacing="20">
+            <VerticalStackLayout Padding="20,10,20,30" Spacing="20">
 
                 <Border StrokeShape="RoundRectangle 16" 
                         BackgroundColor="White" 

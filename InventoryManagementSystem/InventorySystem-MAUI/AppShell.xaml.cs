@@ -12,9 +12,12 @@ namespace InventorySystem_MAUI
             Routing.RegisterRoute(nameof(AddressCreatePage), typeof(AddressCreatePage));
             Routing.RegisterRoute(nameof(CompanyCreatePage), typeof(CompanyCreatePage));
             Routing.RegisterRoute(nameof(UserCreatePage), typeof(UserCreatePage));
+
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(ForgotPasswordPage), typeof(ForgotPasswordPage));
+
             Routing.RegisterRoute(nameof(WarehouseDetailsPage), typeof(WarehouseDetailsPage));
+            Routing.RegisterRoute(nameof(WarehouseReportPage), typeof(WarehouseReportPage));
         }
     }
 }
