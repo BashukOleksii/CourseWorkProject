@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace InventorySystem_MAUI.ViewModel
 {
-    public partial class WarehouseViewModel : BaseViewModel
+    public partial class WarehouseListViewModel : BaseViewModel
     {
         private readonly WarehouseService _warehouseService;
         private CancellationTokenSource _searchCts; 
@@ -18,7 +18,7 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private int pageSize = 5;
         [ObservableProperty] private bool canGoNext;
 
-        public WarehouseViewModel(WarehouseService warehouseService)
+        public WarehouseListViewModel(WarehouseService warehouseService)
         {
             _warehouseService = warehouseService;
         }
