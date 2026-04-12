@@ -71,7 +71,7 @@ namespace InventorySystem_API.Inventory.Service
             var modelList = await _inventoryRepository.GetByWarehouseId(warehouseId);
 
             if (modelList.Count() == 0)
-                throw new ArgumentException($"Не знадено товарів за вказаним id складу:{warehouseId}");
+                return;
 
             foreach (var model in modelList)
                 _imageService.DeleteImage(model.PhotoURI);
