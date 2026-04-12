@@ -15,7 +15,7 @@
                 <GradientStop Color="#9333EA" Offset="1.0"/>
             </LinearGradientBrush>
         </Grid.Background>
-        
+
         <ScrollView Padding="25">
             <VerticalStackLayout Spacing="20">
                 <Label Text="Створення компанії" Style="{StaticResource Headline}"/>
