@@ -17,7 +17,7 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private string name;
         [ObservableProperty] private string description;
         [ObservableProperty] private string phone;
-        [ObservableProperty] private Address selectedAddress;
+        [ObservableProperty] private Address? selectedAddress;
         [ObservableProperty] private string addressDisplay = "Адресу не обрано";
 
         public CompanyCreateViewModel(CompanyService companyService)
@@ -34,7 +34,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task OpenAddressPicker()
         {
-            await ShellService.NavigateTo(nameof(AddressCreatePage));
+            await ShellService.NavigateTo(nameof(AddressCreatePage), new Dictionary<string, object>{ { "InitialAddress", selectedAddress } });
         }
 
         [RelayCommand]
