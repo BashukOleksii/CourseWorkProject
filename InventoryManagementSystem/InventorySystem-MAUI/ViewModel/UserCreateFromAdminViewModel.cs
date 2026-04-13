@@ -18,7 +18,7 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private string password;
 
         [ObservableProperty] private FileResult? photo;
-        [ObservableProperty] private ImageSource? previewPhoto;
+        [ObservableProperty] private ImageSource? previewPhoto = "default_user.png";
         [ObservableProperty] private List<string> selectedWarehouseIds = new();
 
         public List<UserRole> AvailableRoles => Enum.GetValues(typeof(UserRole)).Cast<UserRole>().ToList();

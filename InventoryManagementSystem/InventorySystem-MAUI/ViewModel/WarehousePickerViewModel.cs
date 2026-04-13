@@ -78,8 +78,14 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private void ToggleSelection(WarehouseSelectableItem item)
         {
-            if (item.IsSelected) _selectedIdsSet.Add(item.Warehouse.Id);
-            else _selectedIdsSet.Remove(item.Warehouse.Id);
+            if (item == null) return;
+
+            item.IsSelected = !item.IsSelected;
+
+            if (item.IsSelected)
+                _selectedIdsSet.Add(item.Warehouse.Id);
+            else
+                _selectedIdsSet.Remove(item.Warehouse.Id);
         }
 
         [RelayCommand]

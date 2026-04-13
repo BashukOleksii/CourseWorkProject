@@ -12,40 +12,53 @@
     <Grid RowDefinitions="Auto, *, Auto">
 
         <Grid Grid.Row="0" HeightRequest="130">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#4F46E5" Offset="0.0"/>
+                    <GradientStop Color="Transparent" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Grid.Background>
 
             <VerticalStackLayout Padding="20,20,20,10" Spacing="10">
-                <Label Text="Виберіть склади" 
-                       FontSize="24" 
+                <Label Text="Вибір локацій" 
+                       FontSize="22" 
                        FontAttributes="Bold" 
                        TextColor="White" 
                        HorizontalOptions="Center"/>
 
                 <Border StrokeShape="RoundRectangle 12" 
                         BackgroundColor="White" 
-                        HeightRequest="50">
+                        HeightRequest="50"
+                        StrokeThickness="0">
                     <Border.Shadow>
-                        <Shadow Brush="Black" Opacity="0.1" Offset="0,4" Radius="10"/>
+                        <Shadow Brush="Black" Opacity="0.15" Offset="0,4" Radius="10"/>
                     </Border.Shadow>
-                    <Grid ColumnDefinitions="Auto, *">
-                        <Label Text="🔍" VerticalOptions="Center" Margin="15,0,5,0" FontSize="16"/>
-                        <Entry Text="{Binding SearchText}" 
-                               Placeholder="Пошук за назвою..." 
-                               VerticalOptions="Center"
-                               TextColor="#1F2937"
-                               BackgroundColor="Transparent"/>
+                    <Grid ColumnDefinitions="35, *">
+
+                        <Label Text="🔍"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           FontSize="16"/>
+
+                        <Entry Grid.Column="1"
+                           Text="{Binding SearchText}" 
+                           Placeholder="Шукати за назвою..." 
+                           VerticalOptions="Center"
+                           HorizontalOptions="Fill"
+                           TextColor="#1F2937"
+                           BackgroundColor="Transparent"/>
                     </Grid>
                 </Border>
             </VerticalStackLayout>
         </Grid>
 
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Warehouses}" Margin="15,10">
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Warehouses}" Margin="15,5">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="vm:WarehouseSelectableItem">
                     <Border StrokeShape="RoundRectangle 16" 
                             Margin="0,5" 
-                            Padding="15" 
+                            Padding="18,15" 
                             BackgroundColor="White">
-
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer 
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:WarehousePickerViewModel}}, Path=ToggleSelectionCommand}"
@@ -67,6 +80,7 @@
                                       IsChecked="{Binding IsSelected}" 
                                       InputTransparent="True"
                                       Color="#4F46E5" 
+                                      Scale="1.1"
                                       VerticalOptions="Center"/>
                         </Grid>
                     </Border>
@@ -78,26 +92,33 @@
         </CollectionView>
 
         <Border Grid.Row="2" 
-                Padding="20,15" 
+                Padding="0" 
                 BackgroundColor="White" 
                 StrokeThickness="1" 
-                Stroke="#E5E7EB">
-            <VerticalStackLayout Spacing="15">
+                Stroke="#E5E7EB"
+                StrokeShape="RoundRectangle 20,20,0,0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Opacity="0.05" Offset="0,-4" Radius="10"/>
+            </Border.Shadow>
 
-                <components:PaginationControl HorizontalOptions="FillAndExpand"
+            <VerticalStackLayout Padding="20,15" Spacing="15">
+
+                <components:PaginationControl HorizontalOptions="Center"
                                               PageNumber="{Binding CurrentPage}" 
                                               CanNext="{Binding CanGoNext}"
                                               NextCommand="{Binding NextPageCommand}" 
                                               PrevCommand="{Binding PreviousPageCommand}"/>
 
-                <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                <BoxView HeightRequest="1" Color="#F3F4F6" Margin="-20,0"/>
+
+                <Grid ColumnDefinitions="*, *" ColumnSpacing="12">
                     <Button Grid.Column="0" 
                             Text="Скасувати" 
                             Command="{Binding CancelCommand}"
-                            BackgroundColor="#F3F4F6"
-                            TextColor="#374151"
+                            BackgroundColor="#F9FAFB"
+                            TextColor="#4B5563"
                             CornerRadius="12"
-                            HeightRequest="48"
+                            HeightRequest="52"
                             FontAttributes="Bold"/>
 
                     <Button Grid.Column="1" 
@@ -106,8 +127,12 @@
                             BackgroundColor="#4F46E5" 
                             TextColor="White"
                             CornerRadius="12"
-                            HeightRequest="48"
-                            FontAttributes="Bold"/>
+                            HeightRequest="52"
+                            FontAttributes="Bold">
+                        <Button.Shadow>
+                            <Shadow Brush="#4F46E5" Opacity="0.2" Offset="0,4" Radius="5"/>
+                        </Button.Shadow>
+                    </Button>
                 </Grid>
             </VerticalStackLayout>
         </Border>
