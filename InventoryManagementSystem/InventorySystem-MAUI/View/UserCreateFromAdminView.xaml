@@ -1,0 +1,81 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.UserCreatePage"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
+             x:DataType="vm:UserCreateFromAdminViewModel"
+             BackgroundColor="#F8F9FA">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <ScrollView Grid.Row="0" Grid.RowSpan="2" Margin="0,15,0,0">
+            <VerticalStackLayout Padding="20,10,20,30" Spacing="20">
+
+                <Border StrokeShape="RoundRectangle 16" BackgroundColor="White" Padding="25">
+                    <VerticalStackLayout Spacing="18">
+                        <Label Text="Створення користувача" FontSize="22" FontAttributes="Bold" TextColor="#4F46E5"/>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Повне ім'я" FontAttributes="Bold" TextColor="#374151"/>
+                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 12" BackgroundColor="#F9FAFB" Padding="12,0">
+                                <Entry Text="{Binding Name}" Placeholder="Іван Іванов"/>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Email" FontAttributes="Bold" TextColor="#374151"/>
+                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 12" BackgroundColor="#F9FAFB" Padding="12,0">
+                                <Entry Text="{Binding Email}" Keyboard="Email" Placeholder="example@mail.com"/>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Пароль" FontAttributes="Bold" TextColor="#374151"/>
+                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 12" BackgroundColor="#F9FAFB" Padding="12,0">
+                                <Entry Text="{Binding Password}" IsPassword="True" Placeholder="********"/>
+                            </Border>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border StrokeShape="RoundRectangle 16" BackgroundColor="White" Padding="25">
+                    <VerticalStackLayout Spacing="15">
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Роль у системі" FontAttributes="Bold" TextColor="#374151"/>
+                            <Picker ItemsSource="{Binding AvailableRoles}" 
+                                    SelectedItem="{Binding SelectedRole}"
+                                    Title="Оберіть роль"/>
+                        </VerticalStackLayout>
+
+                        <Button Text="Обрати фото профілю" 
+                                Command="{Binding SelectPhotoCommand}"
+                                BackgroundColor="#EEF2FF" TextColor="#4F46E5"/>
+                        <Label Text="{Binding Photo.FileName}" FontSize="12" HorizontalOptions="Center" IsVisible="{Binding Photo, Converter={StaticResource NotNullConverter}}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border StrokeShape="RoundRectangle 16" BackgroundColor="White" Padding="25"
+                        IsVisible="{Binding CanSelectWarehouses}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Доступні склади" FontSize="18" FontAttributes="Bold" TextColor="#111827"/>
+                        <Label Text="{Binding SelectedWarehouseIds.Count, StringFormat='Вибрано складів: {0}'}" TextColor="#6B7280"/>
+
+                        <Button Text="Налаштувати доступ" 
+                                Command="{Binding OpenWarehousePickerCommand}"
+                                BackgroundColor="#4F46E5" CornerRadius="12"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <VerticalStackLayout Spacing="12">
+                    <Button Text="Створити обліковий запис" Command="{Binding SaveCommand}"
+                            BackgroundColor="#4F46E5" TextColor="White" FontAttributes="Bold" HeightRequest="56" CornerRadius="14"/>
+                    <Button Text="Скасувати" Command="{Binding CancelCommand}"
+                            BackgroundColor="Transparent" TextColor="#6B7280"/>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <components:LoadingOverlay Grid.RowSpan="2"/>
+    </Grid>
+</ContentPage>
