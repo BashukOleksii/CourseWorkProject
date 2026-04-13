@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
+using InventorySystem_MAUI.View;
 using InventorySystem_Shared.User;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,6 @@ namespace InventorySystem_MAUI.ViewModel
         public UserListViewModel(UserService userService)
         {
             _userService = userService;
-            Task.Run(async () => await LoadUsers());
         }
 
         async partial void OnSearchTextChanged(string value)
@@ -55,7 +55,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task AddUser()
         {
-            // Перехід на сторінку додавання користувача
+            await ShellService.NavigateTo(nameof(UserCreateFromAdminPage));
         }
 
         [RelayCommand]

@@ -10,10 +10,7 @@ namespace InventorySystem_API.User.Services
         Task Delete(string id, string companyIdClient);
 
         public Task<long> GetCountInWarehouse(string warehouseId);
-        Task AddWarehouses(string userId, string[] warehouses, string companyIdClient);
-        Task RemoveWarehouses(string userId, string[] warehouses, string companyIdClient);
-
-        Task AddWarehouseToAdmins(string warehouseId,string companyId);
+        Task UpdateWarehouses(string userId, string[] warehouses, string companyIdClient);
         Task RemoveWarehouse(string warehouseId, string companyId);
     }
 }

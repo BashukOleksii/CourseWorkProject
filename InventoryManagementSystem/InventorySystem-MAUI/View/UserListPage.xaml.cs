@@ -9,4 +9,12 @@ public partial class UserListPage : ContentPage
 		InitializeComponent();
 		BindingContext = userListViewModel;
     }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        if (BindingContext is UserListViewModel vm)
+            await vm.LoadUsers();
+        
+    }
 }

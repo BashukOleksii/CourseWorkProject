@@ -1,6 +1,7 @@
 ﻿using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
 using InventorySystem_MAUI.ViewModel;
+using CommunityToolkit.Mvvm;
 
 namespace InventorySystem_MAUI
 {
@@ -16,6 +17,7 @@ namespace InventorySystem_MAUI
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
 
             #region API-Requests
             builder.Services.AddTransient<AuthHandler>();
@@ -55,6 +57,8 @@ namespace InventorySystem_MAUI
             builder.Services.AddTransient<WarehouseReportViewModel>();
             builder.Services.AddTransient<ProfileViewModel>();
             builder.Services.AddTransient<UserListViewModel>();
+            builder.Services.AddTransient<WarehousePickerViewModel>();
+            builder.Services.AddTransient<UserCreateFromAdminViewModel>();
             #endregion
 
             return builder.Build();
