@@ -1,0 +1,68 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.WarehousePickerPage"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
+             x:DataType="vm:WarehousePickerViewModel"
+             Shell.PresentationMode="Modal">
+
+    <Grid RowDefinitions="Auto, *, Auto">
+
+        <VerticalStackLayout Grid.Row="0" Padding="20,10">
+            <Button Text="Скасувати" Command="{Binding CancelCommand}" HorizontalOptions="Start" 
+                    TextColor="White" BackgroundColor="#4F46E5"/>
+
+            <Label Text="Виберіть склади" FontSize="24" FontAttributes="Bold" TextColor="White" Margin="0,5"/>
+
+            <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" HeightRequest="50" Margin="0,10,0,0">
+                <Grid ColumnDefinitions="Auto, *">
+                    <Label Text="🔍" VerticalOptions="Center" Margin="15,0,5,0"/>
+                    <Entry Text="{Binding SearchText}" Placeholder="Пошук за назвою..." VerticalOptions="Center"/>
+                </Grid>
+            </Border>
+        </VerticalStackLayout>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Warehouses}" Margin="15,10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:WarehouseSelectableItem">
+                    <Border StrokeShape="RoundRectangle 16" Margin="0,5" Padding="15" BackgroundColor="White">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:WarehousePickerViewModel}}, Path=ToggleSelectionCommand}"
+                                CommandParameter="{Binding .}"/>    
+                        </Border.GestureRecognizers>
+
+                        <Grid ColumnDefinitions="*, Auto">
+                            <VerticalStackLayout VerticalOptions="Center" Spacing="2">
+                                <Label Text="{Binding Warehouse.Name}" FontAttributes="Bold" FontSize="16" TextColor="#111827"/>
+                                <Label Text="{Binding Warehouse.Address.City}" TextColor="#6B7280" FontSize="13"/>
+                            </VerticalStackLayout>
+
+                            <CheckBox Grid.Column="1" 
+                      IsChecked="{Binding IsSelected}" 
+                      InputTransparent="True"
+                      Color="#4F46E5" 
+                      VerticalOptions="Center"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Border Grid.Row="2" Padding="20" BackgroundColor="White" StrokeThickness="0">
+            <Grid ColumnDefinitions="*, Auto">
+                <components:PaginationControl VerticalOptions="Center" HorizontalOptions="Start"
+                                              PageNumber="{Binding CurrentPage}" 
+                                              CanNext="{Binding CanGoNext}"
+                                              NextCommand="{Binding NextPageCommand}" 
+                                              PrevCommand="{Binding PreviousPageCommand}"/>
+
+                <Button Grid.Column="1" Text="Підтвердити" WidthRequest="150"
+                        Command="{Binding SaveAndCloseCommand}" 
+                        BackgroundColor="#4F46E5" CornerRadius="12"/>
+            </Grid>
+        </Border>
+
+        <components:LoadingOverlay Grid.RowSpan="3"/>
+    </Grid>
+</ContentPage>
