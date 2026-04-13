@@ -1,0 +1,62 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.UserListPage"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             xmlns:u="clr-namespace:InventorySystem_Shared.User;assembly=InventorySystem-Shared"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
+             x:DataType="vm:UserListViewModel"
+             BackgroundColor="#F8F9FA">
+
+    <Grid RowDefinitions="Auto, *">
+        <Grid Grid.Row="0" HeightRequest="60">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#4F46E5" Offset="0.0"/>
+                    <GradientStop Color="Transparent" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <Border Margin="15,0" VerticalOptions="Start" StrokeShape="RoundRectangle 12" 
+                    Stroke="#E5E7EB" BackgroundColor="White" HeightRequest="50">
+                <Border.Shadow>
+                    <Shadow Brush="Black" Opacity="0.1" Offset="0,4" Radius="10"/>
+                </Border.Shadow>
+                <Grid ColumnDefinitions="Auto, *">
+                    <Label Text="🔍" VerticalOptions="Center" Margin="15,0,5,0"/>
+                    <Entry Grid.Column="1" Text="{Binding SearchText}" Placeholder="Пошук співробітника..."
+                           FontSize="15" VerticalOptions="Center" BackgroundColor="Transparent"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <RefreshView Grid.Row="1" Command="{Binding LoadUsersCommand}" IsRefreshing="{Binding IsBusy}">
+            <Grid>
+                <CollectionView ItemsSource="{Binding Users}" Margin="15,0">
+                    <CollectionView.Header>
+                        <Label Text="Персонал компанії" FontSize="18" FontAttributes="Bold" Margin="5,10,0,10"/>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="u:UserResponse">
+                            <components:UserCardView 
+                                EditCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:UserListViewModel}}, Path=EditUserCommand}"
+                                DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:UserListViewModel}}, Path=DeleteUserCommand}"/>      
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.Footer>
+                        <BoxView HeightRequest="80" Color="Transparent"/>
+                    </CollectionView.Footer>
+                </CollectionView>
+
+                <components:AddButton AddCommand="{Binding AddUserCommand}"
+                                     VerticalOptions="End" HorizontalOptions="End"
+                                     Margin="20,0,20,80"/>
+            </Grid>
+        </RefreshView>
+
+        <components:PaginationControl Grid.Row="1" VerticalOptions="End"
+                                      PageNumber="{Binding CurrentPage}" CanNext="{Binding CanGoNext}"
+                                      NextCommand="{Binding NextPageCommand}" PrevCommand="{Binding PreviousPageCommand}"/>
+
+        <components:LoadingOverlay Grid.RowSpan="2" />
+    </Grid>
+</ContentPage>
