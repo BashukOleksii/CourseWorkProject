@@ -4,7 +4,8 @@
              xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
              xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
              x:DataType="vm:WarehousePickerViewModel"
-             Shell.PresentationMode="Modal">
+             Shell.PresentationMode="Modal"
+             Shell.NavBarIsVisible="False">
 
     <Grid RowDefinitions="Auto, *, Auto">
 
@@ -26,12 +27,7 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="vm:WarehouseSelectableItem">
                     <Border StrokeShape="RoundRectangle 16" Margin="0,5" Padding="15" BackgroundColor="White">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer 
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:WarehousePickerViewModel}}, Path=ToggleSelectionCommand}"
-                                CommandParameter="{Binding .}"/>    
-                        </Border.GestureRecognizers>
-
+                        
                         <Grid ColumnDefinitions="*, Auto">
                             <VerticalStackLayout VerticalOptions="Center" Spacing="2">
                                 <Label Text="{Binding Warehouse.Name}" FontAttributes="Bold" FontSize="16" TextColor="#111827"/>
@@ -39,10 +35,12 @@
                             </VerticalStackLayout>
 
                             <CheckBox Grid.Column="1" 
-                      IsChecked="{Binding IsSelected}" 
-                      InputTransparent="True"
-                      Color="#4F46E5" 
-                      VerticalOptions="Center"/>
+                              IsChecked="{Binding IsSelected}" 
+                              InputTransparent="True"
+                              Color="#4F46E5" 
+                              VerticalOptions="Center"
+                              Command="{Binding Source={RelativeSource AncestorType={x:Type vm:WarehousePickerViewModel}}, Path=ToggleSelectionCommand}"
+                              CommandParameter="{Binding .}"/>
                         </Grid>
                     </Border>
                 </DataTemplate>

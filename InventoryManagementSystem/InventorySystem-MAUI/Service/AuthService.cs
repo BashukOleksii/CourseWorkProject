@@ -53,6 +53,14 @@ namespace InventorySystem_MAUI.Service
             content.Add(new StringContent(((int)userRegister.UserRole).ToString()), "UserRole");
             content.Add(new StringContent(userRegister.Password), "Password");
 
+            if (userRegister.WarehouseIds != null)
+            {
+                foreach (var id in userRegister.WarehouseIds)
+                {
+                    content.Add(new StringContent(id), "WarehouseIds");
+                }
+            }
+
             if (photo != null)
             {
                 var stream = await photo.OpenReadAsync();
@@ -62,6 +70,7 @@ namespace InventorySystem_MAUI.Service
             }
 
             var response = await _httpClient.PostAsync("api/auth/sign-up", content);
+            response.EnsureSuccessStatusCode();
         }
     }
 }

@@ -45,15 +45,11 @@ namespace InventorySystem_API.User.Services
             return user;
         }
 
-        public async Task AddWarehouses(string userId, string[] warehouses, string companyIdClient)
+        public async Task UpdateWarehouses(string userId, string[] warehouses, string companyIdClient)
         {
             var user = await GetById(userId, companyIdClient);
-
-            if(user.WarehouseIds is null)
-                user.WarehouseIds = new List<string>();
-
+            user.WarehouseIds = new List<string>();
             user.WarehouseIds.AddRange(warehouses);
-
             await _userRepository.Update(user);
         }
 
@@ -111,23 +107,6 @@ namespace InventorySystem_API.User.Services
            return _mapper.Map<List<UserResponse>>(users);
         }
 
-
-        public async Task RemoveWarehouses(string userId, string[] warehouses, string companyIdClient)
-        {
-            var user = await GetById(userId, companyIdClient);
-
-            foreach(var warehouse in warehouses)
-            {
-                if (user.WarehouseIds is null || !user.WarehouseIds.Contains(warehouse))
-                    throw new ArgumentException($"Працівник не має складу із id:{warehouse}"); 
-
-                user.WarehouseIds.Remove(warehouse);
-            }
-
-            await _userRepository.Update(user);
-
-        }
-
         public async Task<UserResponse> Update(string userId, UserUpdate userUpdate, string companyIdClient, IFormFile? photo)
         {
             var user = await GetById(userId, companyIdClient);
@@ -169,17 +148,6 @@ namespace InventorySystem_API.User.Services
             return _mapper.Map<UserResponse>(userModel);
         }
 
-        public async Task AddWarehouseToAdmins(string warehouseId, string companyId)
-        {
-            var admins = await _userRepository.GetByRole(UserRole.admin, companyId);
-
-            foreach (var admin in admins) {
-                if (admin.WarehouseIds is null)
-                    admin.WarehouseIds = new List<string>();
-
-                admin.WarehouseIds.Add(warehouseId);
-            }
-        }
 
         public async Task RemoveWarehouse(string warehouseId, string companyId)
         {

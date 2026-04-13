@@ -56,7 +56,6 @@ namespace InventorySystem_API.Warehouse.Service
             model.CompanyId = companyId;
 
             var modelResponse = await _warehouseRepository.Create(model);
-            await _userService.AddWarehouseToAdmins(modelResponse.Id, companyId);
 
             return _warehouseMapper.Map<WarehouseResponse>(modelResponse);
         }
