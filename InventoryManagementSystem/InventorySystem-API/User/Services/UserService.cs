@@ -66,7 +66,7 @@ namespace InventorySystem_API.User.Services
             await _userRepository.Delete(user.Id);
         }
 
-        public async Task<List<UserResponse>> Get(string companyIdClient, UserQuery? userQuery)
+        public async Task<List<UserResponse>> Get(string companyIdClient, UserQuery? userQuery, string? userId)
         {
             var builder = new FilterDefinitionBuilder<UserModel>();
             var filter = builder.Empty;
@@ -104,6 +104,9 @@ namespace InventorySystem_API.User.Services
             }
 
             var users = await _userRepository.Get(filter, sort, pageSize, page);
+
+            if(!string.IsNullOrEmpty(userId))
+                 users.RemoveAll(user => user.Id == userId);
 
            return _mapper.Map<List<UserResponse>>(users);
         }
