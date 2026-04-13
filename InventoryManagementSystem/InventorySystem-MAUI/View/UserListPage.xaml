@@ -27,16 +27,25 @@
                 <Border.Shadow>
                     <Shadow Brush="Black" Opacity="0.1" Offset="0,4" Radius="10"/>
                 </Border.Shadow>
-                <Grid ColumnDefinitions="Auto, *">
+                <Grid ColumnDefinitions="Auto, *, Auto">
                     <Label Text="🔍" VerticalOptions="Center" Margin="15,0,5,0" FontSize="16"/>
-                    <Entry Grid.Column="1" 
-                           Text="{Binding SearchText}" 
-                           Placeholder="Пошук співробітника..."
-                           FontSize="15" 
-                           TextColor="#1F2937"
-                           VerticalOptions="Center" 
-                           BackgroundColor="Transparent"/>
+                    <Entry Grid.Column="1"
+                       Text="{Binding SearchText}"
+                       Placeholder="Пошук складу..."
+                       FontSize="15"
+                       TextColor="#1F2937"
+                       VerticalOptions="Center"
+                       BackgroundColor="Transparent"/>
+
+                    <ImageButton Grid.Column="2"
+                         Source="report.png"
+                         Command="{Binding GoToReportsCommand}"
+                         Margin="0,0,10,0"
+                         HeightRequest="25"
+                         WidthRequest="25"
+                         VerticalOptions="Center"/>
                 </Grid>
+
             </Border>
         </Grid>
 
