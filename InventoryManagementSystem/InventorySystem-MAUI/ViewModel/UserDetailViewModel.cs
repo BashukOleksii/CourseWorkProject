@@ -13,6 +13,8 @@ public partial class UserDetailViewModel : BaseViewModel
     private readonly UserService _userService;
 
     [ObservableProperty] private string userId;
+
+    [NotifyPropertyChangedFor(nameof(IsManager))]
     [ObservableProperty] private UserResponse user;
 
     [ObservableProperty]
