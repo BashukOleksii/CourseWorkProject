@@ -15,7 +15,8 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
-       
+            <converters:UriConverter x:Key="UriConverter" />
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
