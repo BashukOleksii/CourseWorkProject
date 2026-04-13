@@ -44,5 +44,25 @@ namespace InventorySystem_MAUI.Service
 
             return updated;
         }
+
+        public async Task<List<UserResponse>> GetUsers(UserQuery query)
+        {
+            var queryString = $"?Page={query.Page}&PageSize={query.PageSize}";
+
+            if (!string.IsNullOrEmpty(query.Name))
+                queryString += $"&Name={query.Name}";
+            if (!string.IsNullOrEmpty(query.WarehouseId))
+                queryString += $"&WarehouseId={query.WarehouseId}";
+            if (query.UserRole.HasValue)
+                queryString += $"&UserRole={query.UserRole}";
+            if (!string.IsNullOrEmpty(query.SortBy))
+                queryString += $"&SortBy={query.SortBy}&SortDescending={query.SortDescending}";
+
+            var response = await _httpClient.GetAsync($"api/user{queryString}");
+            return await response.Content.ReadFromJsonAsync<List<UserResponse>>();
+        }
+
+        public async Task DeleteUser(string id) =>
+            await _httpClient.DeleteAsync($"api/user/{id}");
     }
 }
