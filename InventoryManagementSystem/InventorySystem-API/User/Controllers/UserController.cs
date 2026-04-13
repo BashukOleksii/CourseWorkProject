@@ -48,7 +48,7 @@ namespace InventorySystem_API.User.Controllers
         {
             try
             {
-                var user = await _userService.Get(User.GetCompanyId(), userQuery);
+                var user = await _userService.Get(User.GetCompanyId(), userQuery, User.GetId());
                 return Ok(user);
             }
             catch (ArgumentException ex)

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="InventorySystem_MAUI.View.WarehouseListPage"
+             x:Class="InventorySystem_MAUI.View.UserListPage"
              xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
-             xmlns:m="clr-namespace:InventorySystem_Shared.Warehouse;assembly=InventorySystem-Shared"
+             xmlns:u="clr-namespace:InventorySystem_Shared.User;assembly=InventorySystem-Shared"
              xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
-             x:DataType="vm:WarehouseListViewModel"
+             x:DataType="vm:UserListViewModel"
              BackgroundColor="#F8F9FA">
 
     <Grid RowDefinitions="Auto, *">
@@ -27,61 +27,49 @@
                 <Border.Shadow>
                     <Shadow Brush="Black" Opacity="0.1" Offset="0,4" Radius="10"/>
                 </Border.Shadow>
-
-                <Grid ColumnDefinitions="Auto, *, Auto">
+                <Grid ColumnDefinitions="Auto, *">
                     <Label Text="🔍" VerticalOptions="Center" Margin="15,0,5,0" FontSize="16"/>
-                    <Entry Grid.Column="1"
-                           Text="{Binding SearchText}"
-                           Placeholder="Пошук складу..."
-                           FontSize="15"
+                    <Entry Grid.Column="1" 
+                           Text="{Binding SearchText}" 
+                           Placeholder="Пошук співробітника..."
+                           FontSize="15" 
                            TextColor="#1F2937"
-                           VerticalOptions="Center"
+                           VerticalOptions="Center" 
                            BackgroundColor="Transparent"/>
-
-                    <ImageButton Grid.Column="2"
-                                 Source="report.png"
-                                 Command="{Binding GoToReportsCommand}"
-                                 Margin="0,0,10,0"
-                                 HeightRequest="25"
-                                 WidthRequest="25"
-                                 VerticalOptions="Center"/>
                 </Grid>
             </Border>
         </Grid>
 
         <Grid Grid.Row="1">
-            <CollectionView ItemsSource="{Binding Warehouses}"
-                            Margin="15,0">
+            <CollectionView ItemsSource="{Binding Users}" Margin="15,0">
                 <CollectionView.Header>
-                    <Label Text="Ваші локації" 
+                    <Label Text="Персонал компанії" 
                            FontSize="18" 
                            FontAttributes="Bold" 
                            Margin="5,10,0,10"
                            TextColor="#1F2937"/>
                 </CollectionView.Header>
-
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="m:WarehouseResponse">
-                        <components:WarehouseCardView 
-                                EditCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:WarehouseListViewModel}}, Path=EditWarehouseCommand}"
-                                DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:WarehouseListViewModel}}, Path=DeleteCommand}"/>
+                    <DataTemplate x:DataType="u:UserResponse">
+                        <components:UserCardView 
+                                EditCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:UserListViewModel}}, Path=EditUserCommand}"
+                                DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:UserListViewModel}}, Path=DeleteUserCommand}"/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-
                 <CollectionView.Footer>
                     <BoxView HeightRequest="100" Color="Transparent"/>
                 </CollectionView.Footer>
             </CollectionView>
 
-            <components:AddButton AddCommand="{Binding AddWarehouseCommand}"
-                                  VerticalOptions="End"
+            <components:AddButton AddCommand="{Binding AddUserCommand}"
+                                  VerticalOptions="End" 
                                   HorizontalOptions="End"
                                   Margin="20,0,20,80"/>
 
             <components:PaginationControl VerticalOptions="End"
-                                          PageNumber="{Binding CurrentPage}"
+                                          PageNumber="{Binding CurrentPage}" 
                                           CanNext="{Binding CanGoNext}"
-                                          NextCommand="{Binding NextPageCommand}"
+                                          NextCommand="{Binding NextPageCommand}" 
                                           PrevCommand="{Binding PreviousPageCommand}"/>
         </Grid>
 

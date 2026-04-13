@@ -51,4 +51,11 @@
         ContentTemplate="{DataTemplate views:WarehouseListPage}" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Працівники"
+        IsVisible="{Binding IsAuthenticated}">
+        <ShellContent 
+        Route="UserListPage" 
+        ContentTemplate="{DataTemplate views:UserListPage}" />
+    </FlyoutItem>
+
 </Shell>

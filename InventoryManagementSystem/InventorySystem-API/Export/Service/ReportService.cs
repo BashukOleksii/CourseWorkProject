@@ -247,7 +247,7 @@ namespace InventorySystem_API.Report.Service
 
         public async Task<byte[]> GetUserReport(UserQuery? userQuery, string companyId)
         {
-            var usersData = await _userService.Get(companyId, userQuery);
+            var usersData = await _userService.Get(companyId, userQuery,null);
 
             if (usersData.Count == 0)
                 throw new InvalidOperationException("Немає даних для генерації звіту.");
