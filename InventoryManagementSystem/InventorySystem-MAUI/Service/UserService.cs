@@ -64,5 +64,15 @@ namespace InventorySystem_MAUI.Service
 
         public async Task DeleteUser(string id) =>
             await _httpClient.DeleteAsync($"api/user/{id}");
+
+        public async Task UpdateUserWarehouses(string userId, List<string> warehouseIds) =>
+             await _httpClient.PatchAsJsonAsync($"api/user/{userId}/warehouses", warehouseIds);
+
+
+        public async Task<UserResponse> GetUserById(string id)
+        {
+            var response = await _httpClient.GetAsync($"api/user/{id}");
+            return await response.Content.ReadFromJsonAsync<UserResponse>();
+        }
     }
 }

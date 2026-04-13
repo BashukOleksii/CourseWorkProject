@@ -5,7 +5,6 @@
     using InventorySystem_Shared.User;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Security.Claims;
 
     namespace InventorySystem_API.User.Controllers
     {

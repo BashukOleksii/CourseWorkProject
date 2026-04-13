@@ -61,7 +61,10 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task EditUser(UserResponse user)
         {
-            // Перехід на сторінку редагування користувача з передачею user.Id
+            await ShellService.NavigateTo(nameof(UserDetailPage), new Dictionary<string, object>
+            {
+                { "Id", user.Id }
+            });
         }
 
         [RelayCommand]
