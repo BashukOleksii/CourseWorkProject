@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
+using InventorySystem_MAUI.View;
 using InventorySystem_Shared.User;
 
 namespace InventorySystem_MAUI.ViewModel
@@ -15,12 +16,16 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private string name;
         [ObservableProperty] private string email;
         [ObservableProperty] private string password;
-        [ObservableProperty] private UserRole selectedRole = UserRole.manager;
+
         [ObservableProperty] private FileResult? photo;
+        [ObservableProperty] private ImageSource? previewPhoto;
         [ObservableProperty] private List<string> selectedWarehouseIds = new();
 
         public List<UserRole> AvailableRoles => Enum.GetValues(typeof(UserRole)).Cast<UserRole>().ToList();
 
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(CanSelectWarehouses))] 
+        private UserRole selectedRole = UserRole.manager;
         public bool CanSelectWarehouses => SelectedRole != UserRole.admin;
 
         public UserCreateFromAdminViewModel(AuthService authService, UserContextService userContext)
@@ -32,7 +37,13 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task SelectPhoto()
         {
-            Photo = await MediaPicker.PickPhotoAsync();
+            var result = await MediaPicker.PickPhotoAsync();
+            if (result != null)
+            {
+                Photo = result;
+                var stream = await result.OpenReadAsync();
+                PreviewPhoto = ImageSource.FromStream(() => stream);
+            }
         }
 
         [RelayCommand]
@@ -42,17 +53,12 @@ namespace InventorySystem_MAUI.ViewModel
         {
             { "InitialSelectedIds", SelectedWarehouseIds }
         };
-            await ShellService.NavigateTo(nameof(View.WarehousePickerPage), parameters);
+            await ShellService.NavigateTo(nameof(WarehousePickerPage), parameters);
         }
 
         [RelayCommand]
         private async Task Save()
         {
-            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
-            {
-                await Shell.Current.DisplayAlertAsync("Помилка", "Заповніть усі обов'язкові поля", "OK");
-                return;
-            }
 
             await RunBusyTask(async () =>
             {

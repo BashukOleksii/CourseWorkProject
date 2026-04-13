@@ -76,6 +76,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="View\UserCreateFromAdminPage.xaml.cs">
+	    <DependentUpon>UserCreateFromAdminPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\WarehouseReportPage.xaml.cs">
 	    <DependentUpon>WarehouseReportPage.xaml</DependentUpon>
 	  </Compile>
@@ -113,6 +116,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\ProfilePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\UserCreateFromAdminPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\UserCreatePage.xaml">

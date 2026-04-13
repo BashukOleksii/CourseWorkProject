@@ -1,10 +1,11 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="InventorySystem_MAUI.View.UserCreatePage"
+             x:Class="InventorySystem_MAUI.View.UserCreateFromAdminPage"
              xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
              xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
              x:DataType="vm:UserCreateFromAdminViewModel"
-             BackgroundColor="#F8F9FA">
+             BackgroundColor="#F8F9FA"
+             Shell.PresentationMode="Modal">
 
     <Grid RowDefinitions="Auto, *">
 
@@ -43,14 +44,34 @@
                         <VerticalStackLayout Spacing="5">
                             <Label Text="Роль у системі" FontAttributes="Bold" TextColor="#374151"/>
                             <Picker ItemsSource="{Binding AvailableRoles}" 
-                                    SelectedItem="{Binding SelectedRole}"
-                                    Title="Оберіть роль"/>
+                    SelectedItem="{Binding SelectedRole}"
+                    Title="Оберіть роль"/>
                         </VerticalStackLayout>
 
-                        <Button Text="Обрати фото профілю" 
+                        <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+
+                            <Border HeightRequest="120" 
+                                WidthRequest="120" 
+                                StrokeShape="RoundRectangle 60"
+                                IsVisible="{Binding PreviewPhoto, Converter={StaticResource NotNullConverter}}"
+                                HorizontalOptions="Center"
+                                StrokeThickness="0">    
+                                <Image Source="{Binding PreviewPhoto}" Aspect="AspectFill"/>
+                            </Border>
+
+                            <Button Text="Обрати фото профілю" 
                                 Command="{Binding SelectPhotoCommand}"
-                                BackgroundColor="#EEF2FF" TextColor="#4F46E5"/>
-                        <Label Text="{Binding Photo.FileName}" FontSize="12" HorizontalOptions="Center" IsVisible="{Binding Photo, Converter={StaticResource NotNullConverter}}"/>
+                                BackgroundColor="#EEF2FF" 
+                                TextColor="#4F46E5"
+                                HeightRequest="45"
+                                CornerRadius="10"/>
+
+                            <Label Text="{Binding Photo.FileName}" 
+                               FontSize="11" 
+                               TextColor="Gray"
+                               HorizontalOptions="Center" 
+                               IsVisible="{Binding Photo, Converter={StaticResource NotNullConverter}}"/>
+                        </VerticalStackLayout>
                     </VerticalStackLayout>
                 </Border>
 
