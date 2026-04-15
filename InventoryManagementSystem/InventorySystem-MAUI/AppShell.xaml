@@ -59,11 +59,18 @@
     </FlyoutItem>
 
     <FlyoutItem Title="Компанія"
-     IsVisible="{Binding IsAuthenticated}">
+        IsVisible="{Binding IsAuthenticated}">
         <ShellContent 
-     Route="CompanyPage" 
-     ContentTemplate="{DataTemplate views:CompanyPage}" />
+        Route="CompanyPage" 
+        ContentTemplate="{DataTemplate views:CompanyPage}" />
     </FlyoutItem>
 
-    
+    <FlyoutItem Title="Логи"
+        IsVisible="{Binding IsAuthenticated}">
+        <ShellContent 
+        Route="LogPage" 
+        ContentTemplate="{DataTemplate views:LogPage}" />
+    </FlyoutItem>
+
+
 </Shell>

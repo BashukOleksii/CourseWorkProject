@@ -6,6 +6,8 @@ using InventorySystem_Shared.Loging;
 using InventorySystem_Shared.User;
 using System.Collections.ObjectModel;
 
+namespace InventorySystem_MAUI.ViewModel;
+
 public partial class LogViewModel : BaseViewModel
 {
     private readonly LogService _logService;
