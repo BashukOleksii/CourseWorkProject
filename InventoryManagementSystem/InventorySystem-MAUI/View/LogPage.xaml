@@ -70,7 +70,10 @@
                                 <BoxView Color="{Binding Action, Converter={StaticResource ActionToColorConverter}}" VerticalOptions="Fill"/>
 
                                 <VerticalStackLayout Grid.Column="1" Spacing="4">
-                                    <Label Text="{Binding UserName}" FontAttributes="Bold" FontSize="15"/>
+                                    <VerticalStackLayout Spacing="0">
+                                        <Label Text="{Binding UserName}" FontAttributes="Bold" FontSize="15" TextColor="#111827"/>
+                                        <Label Text="{Binding UserId, StringFormat='User ID: {0}'}" FontSize="10" TextColor="#9CA3AF"/>
+                                    </VerticalStackLayout>
 
                                     <Label FontSize="13" TextColor="#374151">
                                         <Label.FormattedText>
@@ -82,7 +85,7 @@
                                         </Label.FormattedText>
                                     </Label>
 
-                                    <Label Text="{Binding EntityId, StringFormat='ID: {0}'}" FontSize="10" TextColor="Gray"/>
+                                    <Label Text="{Binding EntityId, StringFormat='Entity ID: {0}'}" FontSize="10" TextColor="#6B7280"/>
                                 </VerticalStackLayout>
 
                                 <VerticalStackLayout Grid.Column="2" HorizontalOptions="End" VerticalOptions="Center">
