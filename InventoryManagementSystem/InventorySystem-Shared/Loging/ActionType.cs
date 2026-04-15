@@ -14,3 +14,4 @@ namespace InventorySystem_Shared.Loging
         Delete
     }
 }
+    

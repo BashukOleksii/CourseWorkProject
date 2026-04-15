@@ -16,6 +16,7 @@
 
             <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
             <converters:UriConverter x:Key="UriConverter" />
+            <converters:ActionToColorConverter x:Key="ActionToColorConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

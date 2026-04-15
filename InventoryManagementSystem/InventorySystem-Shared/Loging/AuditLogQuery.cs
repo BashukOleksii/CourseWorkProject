@@ -9,7 +9,7 @@ namespace InventorySystem_Shared.Loging
     {
         public string? UserId { get; set; } 
         public string? UserName { get; set; } 
-        public UserRole? Role { get; set; }
+        public UserRole? Role { get; set; } 
 
         public ActionType? Action { get; set; }
 
