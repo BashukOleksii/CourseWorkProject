@@ -74,5 +74,12 @@ namespace InventorySystem_MAUI.Service
             var response = await _httpClient.GetAsync($"api/user/{id}");
             return await response.Content.ReadFromJsonAsync<UserResponse>();
         }
+
+        public async Task<byte[]> GetUserReport(UserQuery query)
+        {
+            var queryString = $"?Name={query.Name}&WarehouseId={query.WarehouseId}&UserRole={query.UserRole}&SortBy={query.SortBy}&SortDescending={query.SortDescending}";
+            var response = await _httpClient.GetAsync($"api/export/user-report{queryString}");
+            return await response.Content.ReadAsByteArrayAsync();
+        }
     }
 }

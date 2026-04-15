@@ -2,6 +2,7 @@
 using InventorySystem_MAUI.Service;
 using InventorySystem_MAUI.ViewModel;
 using CommunityToolkit.Mvvm;
+using InventorySystem_MAUI.View;
 
 namespace InventorySystem_MAUI
 {
@@ -48,18 +49,23 @@ namespace InventorySystem_MAUI
 
             #region ViewModel
             builder.Services.AddTransient<LoginViewModel>();
+            builder.Services.AddTransient<ForgotPasswordViewModel>();
+            builder.Services.AddTransient<ProfileViewModel>();
+
             builder.Services.AddTransient<AddressCreateViewModel>();
             builder.Services.AddTransient<CompanyCreateViewModel>();
             builder.Services.AddTransient<UserCreateViewModel>();
-            builder.Services.AddTransient<ForgotPasswordViewModel>();
+
+
             builder.Services.AddTransient<WarehouseListViewModel>();
             builder.Services.AddTransient<WarehouseDetailsViewModel>();
             builder.Services.AddTransient<WarehouseReportViewModel>();
-            builder.Services.AddTransient<ProfileViewModel>();
-            builder.Services.AddTransient<UserListViewModel>();
             builder.Services.AddTransient<WarehousePickerViewModel>();
+
+            builder.Services.AddTransient<UserListViewModel>();
             builder.Services.AddTransient<UserCreateFromAdminViewModel>();
             builder.Services.AddTransient<UserDetailViewModel>();
+            builder.Services.AddTransient<UserReportViewModel>();
             #endregion
 
             return builder.Build();
