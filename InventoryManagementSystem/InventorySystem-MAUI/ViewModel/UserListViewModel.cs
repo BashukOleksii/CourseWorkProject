@@ -81,7 +81,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         public async Task GoToReports()
         {
-            // Перехід до сторінки звітів
+            await ShellService.NavigateTo(nameof(UserReportPage));
         }
     }
 }
