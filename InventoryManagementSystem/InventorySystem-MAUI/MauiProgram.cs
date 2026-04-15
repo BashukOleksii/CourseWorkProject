@@ -39,8 +39,9 @@ namespace InventorySystem_MAUI
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<ResetPasswordService>();
             builder.Services.AddSingleton<WarehouseService>();
-            builder.Services.AddScoped<UserService>();
-            builder.Services.AddScoped<LogService>();
+            builder.Services.AddSingleton<UserService>();
+            builder.Services.AddSingleton<LogService>();
+            builder.Services.AddSingleton<ManufacturerService>();
             #endregion
 
             #region AppShell
