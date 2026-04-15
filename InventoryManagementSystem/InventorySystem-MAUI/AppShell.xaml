@@ -58,4 +58,12 @@
         ContentTemplate="{DataTemplate views:UserListPage}" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Компанія"
+     IsVisible="{Binding IsAuthenticated}">
+        <ShellContent 
+     Route="CompanyPage" 
+     ContentTemplate="{DataTemplate views:CompanyPage}" />
+    </FlyoutItem>
+
+    
 </Shell>

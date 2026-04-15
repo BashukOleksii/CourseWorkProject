@@ -35,7 +35,6 @@ namespace InventorySystem_MAUI.Service
         public async Task<CompanyResponse> UpdateMyCompany(CompanyUpdate update)
         {
             var response = await _httpClient.PatchAsJsonAsync("api/company", update);
-            response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<CompanyResponse>();
         }
     }

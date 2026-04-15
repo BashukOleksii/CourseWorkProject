@@ -94,6 +94,9 @@
 	  <MauiXaml Update="View\CompanyCreatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\CompanyPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\Components\AddButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
