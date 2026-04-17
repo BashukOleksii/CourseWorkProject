@@ -127,6 +127,9 @@
 	  <MauiXaml Update="View\LogPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\ManufacturerDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\ManufacturerListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

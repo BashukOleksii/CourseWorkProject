@@ -24,4 +24,18 @@ public class ManufacturerService
         using var stream = File.Create(_filePath);
         await JsonSerializer.SerializeAsync(stream, manufacturers, new JsonSerializerOptions { WriteIndented = true });
     }
+
+    public async Task UpsertManufacturerAsync(InventoryManufacturer manufacturer, string? oldName = null)
+    {
+        var list = await GetManufacturersAsync();
+
+        if (!string.IsNullOrEmpty(oldName))
+        {
+            var existing = list.FirstOrDefault(m => m.Name.Equals(oldName, StringComparison.OrdinalIgnoreCase));
+            if (existing != null) list.Remove(existing);
+        }
+
+        list.Add(manufacturer);
+        await SaveManufacturersAsync(list);
+    }
 }
