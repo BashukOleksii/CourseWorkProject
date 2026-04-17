@@ -72,6 +72,8 @@ namespace InventorySystem_MAUI
             builder.Services.AddScoped<CompanyViewModel>();
 
             builder.Services.AddTransient<LogViewModel>();
+
+            builder.Services.AddTransient<ManufacturerListViewModel>();
             #endregion
 
             return builder.Build();
