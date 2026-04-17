@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
+using InventorySystem_MAUI.View;
 using InventorySystem_Shared.Inventory.Manufacturer;
 using System.Collections.ObjectModel;
 
@@ -62,8 +63,19 @@ public partial class ManufacturerListViewModel : BaseViewModel
     [RelayCommand]
     private async Task AddManufacturer()
     {
-        await Shell.Current.DisplayAlertAsync("Success", "Manufacturer added successfully", "OK");
+        await ShellService.NavigateTo(nameof(ManufacturerDetailPage));
     }
+
+    [RelayCommand]
+    private async Task Edit(InventoryManufacturer manufacturer)
+    {
+        var parameters = new Dictionary<string, object>
+    {
+        { "Manufacturer", manufacturer }
+    };
+        await Shell.Current.GoToAsync(nameof(ManufacturerDetailPage), parameters);
+    }
+
 
     [RelayCommand]
     private async Task Delete(InventoryManufacturer item)

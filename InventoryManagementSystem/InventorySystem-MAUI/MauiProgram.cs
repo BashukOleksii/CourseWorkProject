@@ -74,6 +74,7 @@ namespace InventorySystem_MAUI
             builder.Services.AddTransient<LogViewModel>();
 
             builder.Services.AddTransient<ManufacturerListViewModel>();
+            builder.Services.AddTransient<ManufacturerDetailsViewModel>();
             #endregion
 
             return builder.Build();

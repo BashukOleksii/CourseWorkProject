@@ -9,4 +9,12 @@ public partial class ManufacturerListPage : ContentPage
 		InitializeComponent();
 		BindingContext = viewModel;
     }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        if (BindingContext is ManufacturerListViewModel vm)
+            await vm.LoadData();
+
+    }
 }
