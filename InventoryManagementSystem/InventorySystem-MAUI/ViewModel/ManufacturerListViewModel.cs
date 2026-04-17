@@ -5,6 +5,7 @@ using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.Inventory.Manufacturer;
 using System.Collections.ObjectModel;
 
+namespace InventorySystem_MAUI.ViewModel;
 public partial class ManufacturerListViewModel : BaseViewModel
 {
     private readonly ManufacturerService _service;
@@ -15,7 +16,7 @@ public partial class ManufacturerListViewModel : BaseViewModel
     [ObservableProperty] private bool isListEmpty;
 
     [ObservableProperty] private int currentPage = 1;
-    [ObservableProperty] private int pageSize = 5;
+    [ObservableProperty] private int pageSize = 10;
     [ObservableProperty] private bool canGoNext;
 
     public ManufacturerListViewModel(ManufacturerService service)
@@ -59,7 +60,10 @@ public partial class ManufacturerListViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task AddManufacturer() => await Shell.Current.GoToAsync("ManufacturerCreatePage");
+    private async Task AddManufacturer()
+    {
+        await Shell.Current.DisplayAlertAsync("Success", "Manufacturer added successfully", "OK");
+    }
 
     [RelayCommand]
     private async Task Delete(InventoryManufacturer item)

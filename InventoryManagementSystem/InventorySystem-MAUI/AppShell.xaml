@@ -72,5 +72,12 @@
         ContentTemplate="{DataTemplate views:LogPage}" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Вироники"
+    IsVisible="{Binding IsAuthenticated}">
+        <ShellContent 
+    Route="ManufacturerListPage" 
+    ContentTemplate="{DataTemplate views:ManufacturerListPage}" />
+    </FlyoutItem>
+
 
 </Shell>
