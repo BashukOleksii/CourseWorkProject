@@ -1,10 +1,78 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using InventorySystem_MAUI.Helper;
+using InventorySystem_MAUI.Service;
+using InventorySystem_Shared.Inventory;
+using System.Collections.ObjectModel;
 
-namespace InventorySystem_MAUI.ViewModel
+namespace InventorySystem_MAUI.ViewModel;
+
+[QueryProperty(nameof(WarehouseId), "WarehouseId")]
+[QueryProperty(nameof(WarehouseName), "WarehouseName")]
+public partial class InventoryListViewModel : BaseViewModel
 {
-    internal class InventoryListViewModel
+    private readonly InventoryService _inventoryService;
+    private CancellationTokenSource _searchCts;
+
+    [ObservableProperty] private string warehouseId;
+    [ObservableProperty] private string warehouseName;
+    [ObservableProperty] private ObservableCollection<InventoryResponse> items = new();
+    [ObservableProperty] private string searchText;
+
+    [ObservableProperty] private int currentPage = 1;
+    [ObservableProperty] private bool canGoNext;
+
+    public InventoryListViewModel(InventoryService inventoryService) => _inventoryService = inventoryService;
+
+    async partial void OnWarehouseIdChanged(string value) => await LoadItems();
+
+    async partial void OnSearchTextChanged(string value)
     {
+        _searchCts?.Cancel();
+        _searchCts = new CancellationTokenSource();
+        try
+        {
+            await Task.Delay(500, _searchCts.Token);
+            CurrentPage = 1;
+            await LoadItems();
+        }
+        catch (TaskCanceledException) { }
     }
+
+    [RelayCommand]
+    public async Task LoadItems()
+    {
+        if (string.IsNullOrEmpty(WarehouseId)) return;
+
+        await RunBusyTask(async () =>
+        {
+            var query = new InventoryQuery { Name = SearchText, Page = CurrentPage, PageSize = 10 };
+            var result = await _inventoryService.GetItemsByWarehouse(WarehouseId, query);
+
+            Items = new ObservableCollection<InventoryResponse>(result);
+            CanGoNext = result.Count == 10;
+        });
+    }
+
+    [RelayCommand]
+    private async Task AddItem() => await Shell.Current.GoToAsync($"InventoryCreatePage?WarehouseId={WarehouseId}");
+
+    [RelayCommand]
+    private async Task EditItem(InventoryResponse item) =>
+        await Shell.Current.GoToAsync($"InventoryDetailsPage?Id={item.Id}&WarehouseId={WarehouseId}");
+
+    [RelayCommand]
+    private async Task DeleteItem(InventoryResponse item)
+    {
+        bool confirm = await Shell.Current.DisplayAlertAsync("Видалення", $"Видалити {item.Name}?", "Так", "Ні");
+        if (confirm)
+        {
+            await _inventoryService.DeleteById(item.Id);
+            Items.Remove(item);
+        }
+    }
+
+    [RelayCommand] private async Task NextPage() { CurrentPage++; await LoadItems(); }
+    [RelayCommand] private async Task PreviousPage() { if (CurrentPage > 1) { CurrentPage--; await LoadItems(); } }
 }

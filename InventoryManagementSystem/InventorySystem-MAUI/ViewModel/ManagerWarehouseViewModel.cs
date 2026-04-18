@@ -60,7 +60,11 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task SelectWarehouse(WarehouseResponse warehouse)
         {
-            await Shell.Current.DisplayAlertAsync("Success","Selected warehouse: " + warehouse.Name, "OK");
+            await ShellService.NavigateTo(nameof(InventoryListPage), new Dictionary<string, object>
+            {
+                { "WarehouseId", warehouse.Id },
+                { "WarehouseName", warehouse.Name}
+            });
         }
 
         [RelayCommand]
