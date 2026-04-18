@@ -50,6 +50,8 @@ namespace InventorySystem_MAUI
             #endregion
 
             #region ViewModel
+
+            #region User
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<ForgotPasswordViewModel>();
             builder.Services.AddTransient<ProfileViewModel>();
@@ -57,8 +59,9 @@ namespace InventorySystem_MAUI
             builder.Services.AddTransient<AddressCreateViewModel>();
             builder.Services.AddTransient<CompanyCreateViewModel>();
             builder.Services.AddTransient<UserCreateViewModel>();
+            #endregion
 
-
+            #region Admin
             builder.Services.AddTransient<WarehouseListViewModel>();
             builder.Services.AddTransient<WarehouseDetailsViewModel>();
             builder.Services.AddTransient<WarehouseReportViewModel>();
@@ -72,9 +75,15 @@ namespace InventorySystem_MAUI
             builder.Services.AddScoped<CompanyViewModel>();
 
             builder.Services.AddTransient<LogViewModel>();
+            #endregion
 
+            #region Manager
             builder.Services.AddTransient<ManufacturerListViewModel>();
             builder.Services.AddTransient<ManufacturerDetailsViewModel>();
+
+            builder.Services.AddTransient<ManagerWarehouseViewModel>();
+            #endregion
+
             #endregion
 
             return builder.Build();
