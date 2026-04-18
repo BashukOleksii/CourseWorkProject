@@ -1,0 +1,40 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.Components.InventoryCard"
+             x:Name="this">
+    <Border StrokeShape="RoundRectangle 16" BackgroundColor="White" Padding="12" Margin="0,5">
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding Source={x:Reference this}, Path=EditCommand}" 
+                                  CommandParameter="{Binding BindingContext, Source={x:Reference this}}"/>
+        </Border.GestureRecognizers>
+
+        <Grid ColumnDefinitions="110, *, Auto" ColumnSpacing="15">
+            <Border Grid.Column="0" HeightRequest="100" WidthRequest="100" StrokeShape="RoundRectangle 12" StrokeThickness="0">
+                <Image Source="{Binding PhotoURI, Converter={StaticResource UriConverter}}" Aspect="AspectFill"/>
+            </Border>
+
+            <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold" MaxLines="2" LineBreakMode="TailTruncation" TextColor="#111827"/>
+                <Label Text="{Binding Manufacturer.Name}" FontSize="12" TextColor="#4F46E5" FontAttributes="Bold"/>
+                <Label Text="{Binding InventoryType, Converter={StaticResource InventoryTypeToStringConverter}}" FontSize="11" TextColor="#6B7280"/>
+
+                <Label Text="{Binding Quantity, StringFormat='На складі: {0} шт.'}" FontSize="13" Margin="0,5,0,0">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding Quantity}" Value="0">
+                            <Setter Property="TextColor" Value="Red" />
+                            <Setter Property="Text" Value="Немає в наявності" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="2" VerticalOptions="Center" HorizontalOptions="End" Spacing="10">
+                <Label Text="{Binding Price, StringFormat='{0:N0} ₴'}" FontSize="18" FontAttributes="Bold" TextColor="#111827"/>
+                <ImageButton Source="delete_red.png" 
+                             Command="{Binding Source={x:Reference this}, Path=DeleteCommand}"
+                             CommandParameter="{Binding BindingContext, Source={x:Reference this}}"
+                             HeightRequest="30" WidthRequest="30" BackgroundColor="Transparent"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Border>
+</ContentView>

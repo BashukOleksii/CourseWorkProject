@@ -1,0 +1,76 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.InventoryListPage"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             xmlns:m="clr-namespace:InventorySystem_Shared.Inventory;assembly=InventorySystem-Shared"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
+             x:DataType="vm:InventoryListViewModel"
+             BackgroundColor="#F8F9FA">
+
+    <Grid RowDefinitions="Auto, *">
+        <Grid Grid.Row="0" HeightRequest="120">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#4F46E5" Offset="0.0"/>
+                    <GradientStop Color="Transparent" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <VerticalStackLayout Padding="20,10" Spacing="8">
+                <Label Text="{Binding WarehouseName}" 
+                       TextColor="White" 
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       HorizontalOptions="Center"
+                       MaxLines="1" LineBreakMode="TailTruncation"/>
+
+                <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" HeightRequest="45">
+                    <Grid ColumnDefinitions="Auto, *">
+                        <Label Text="🔍" VerticalOptions="Center" Margin="12,0,5,0"/>
+                        <Entry Grid.Column="1" Text="{Binding ItemSearchText}" 
+                               Placeholder="Шукати товар на складі" 
+                               VerticalOptions="Center" 
+                               BackgroundColor="Transparent"/>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <CollectionView ItemsSource="{Binding Items}" Margin="15,0">
+                <CollectionView.Header>
+                    <Label Text="Наявні товари" 
+                           FontSize="16" 
+                           FontAttributes="Bold" 
+                           Margin="5,10,0,10" 
+                           TextColor="#1F2937"/>
+                </CollectionView.Header>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:InventoryResponse">
+                        <components:InventoryCard
+                            EditCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:InventoryListViewModel}}, Path=EditItemCommand}"
+                            DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:InventoryListViewModel}}, Path=DeleteItemCommand}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="90" Color="Transparent"/>
+                </CollectionView.Footer>
+            </CollectionView>
+
+            <components:AddButton AddCommand="{Binding AddItemCommand}" 
+                                  VerticalOptions="End" 
+                                  HorizontalOptions="End" 
+                                  Margin="20,85"/>
+
+            <components:PaginationControl VerticalOptions="End"
+                                          PageNumber="{Binding CurrentPage}" 
+                                          CanNext="{Binding CanGoNext}"
+                                          NextCommand="{Binding NextPageCommand}" 
+                                          PrevCommand="{Binding PreviousPageCommand}"/>
+        </Grid>
+
+        <components:LoadingOverlay Grid.RowSpan="2"/>
+    </Grid>
+</ContentPage>

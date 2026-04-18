@@ -42,6 +42,7 @@ namespace InventorySystem_MAUI
             builder.Services.AddSingleton<UserService>();
             builder.Services.AddSingleton<LogService>();
             builder.Services.AddSingleton<ManufacturerService>();
+            builder.Services.AddSingleton<InventoryService>();
             #endregion
 
             #region AppShell
@@ -82,6 +83,8 @@ namespace InventorySystem_MAUI
             builder.Services.AddTransient<ManufacturerDetailsViewModel>();
 
             builder.Services.AddTransient<ManagerWarehouseViewModel>();
+
+            builder.Services.AddTransient<InventoryListViewModel>();
             #endregion
 
             #endregion
