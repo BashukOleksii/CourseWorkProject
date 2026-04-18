@@ -37,6 +37,7 @@ namespace InventorySystem_MAUI.Service
         {
             using var content = new MultipartFormDataContent();
 
+
             AddContentFields(content, dto);
 
             if (photo != null)
