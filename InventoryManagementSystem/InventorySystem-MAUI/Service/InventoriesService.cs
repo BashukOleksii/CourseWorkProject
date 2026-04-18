@@ -71,6 +71,23 @@ namespace InventorySystem_MAUI.Service
             return "?" + string.Join("&", parts);
         }
 
+        public async Task<InventoryResponse> UpdateItem(string warehouseId, string itemId, InventoryUpdate dto, FileResult photo)
+        {
+            using var content = new MultipartFormDataContent();
+            AddContentFields(content, dto);
+
+            if (photo != null)
+            {
+                var stream = await photo.OpenReadAsync();
+                var fileContent = new StreamContent(stream);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(photo.ContentType);
+                content.Add(fileContent, "photo", photo.FileName);
+            }
+
+            var response = await _httpClient.PatchAsync($"api/inventory/warehouse/{warehouseId}", content);
+            return await response.Content.ReadFromJsonAsync<InventoryResponse>();
+        }
+
         private void AddContentFields(MultipartFormDataContent content, object dto)
         {
             foreach (var prop in dto.GetType().GetProperties())
