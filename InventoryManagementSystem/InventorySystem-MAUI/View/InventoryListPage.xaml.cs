@@ -9,4 +9,11 @@ public partial class InventoryListPage : ContentPage
 		InitializeComponent();
 		BindingContext = inventoryListViewModel;
     }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        if (BindingContext is InventoryListViewModel vm)
+            await vm.LoadItems();
+    }
 }

@@ -71,25 +71,47 @@ namespace InventorySystem_MAUI.Service
             return "?" + string.Join("&", parts);
         }
 
+        public async Task<InventoryResponse> UpdateItem(string itemId, InventoryUpdate dto, FileResult photo)
+        {
+            using var content = new MultipartFormDataContent();
+            AddContentFields(content, dto);
+
+            if (photo != null)
+            {
+                var stream = await photo.OpenReadAsync();
+                var fileContent = new StreamContent(stream);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(photo.ContentType);
+                content.Add(fileContent, "photo", photo.FileName);
+            }
+
+            var response = await _httpClient.PatchAsync($"api/inventory/{itemId}", content);
+            return await response.Content.ReadFromJsonAsync<InventoryResponse>();
+        }
+
         private void AddContentFields(MultipartFormDataContent content, object dto)
         {
             foreach (var prop in dto.GetType().GetProperties())
             {
                 var value = prop.GetValue(dto);
-                if (value != null)
+                if (value == null) continue;
+
+                if (value is Dictionary<string, string> dict)
+                    foreach (var kvp in dict)
+                        content.Add(new StringContent(kvp.Value), $"CustomFileds[{kvp.Key}]");
+                    
+                else if (prop.Name == "Manufacturer")
                 {
-                    if (value is Dictionary<string, string> dict)
-                    {
-                        foreach (var kvp in dict)
-                        {
-                            content.Add(new StringContent(kvp.Value), $"CustomFields[{kvp.Key}]");
-                        }
-                    }
-                    else
-                    {
-                        content.Add(new StringContent(value.ToString()), prop.Name);
-                    }
+                    var nameProp = value.GetType().GetProperty("Name");
+                    var countryProp = value.GetType().GetProperty("Country");
+
+                    if (nameProp != null)
+                        content.Add(new StringContent(nameProp.GetValue(value)?.ToString() ?? ""), "Manufacturer.Name");
+
+                    if (countryProp != null)
+                        content.Add(new StringContent(countryProp.GetValue(value)?.ToString() ?? ""), "Manufacturer.Country");
                 }
+                else
+                    content.Add(new StringContent(value.ToString()), prop.Name);
             }
         }
     }

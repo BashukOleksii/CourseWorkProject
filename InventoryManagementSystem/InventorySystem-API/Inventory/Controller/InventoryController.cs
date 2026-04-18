@@ -54,16 +54,16 @@ namespace InventorySystem_API.Inventory.Controller
             return Ok(response);
         }
 
-        [HttpPatch("warehouse/{warehoue_id}")]
+        [HttpPatch("{id}")]
         [Audit(ActionType.Update, EntityType.Inventory)]
         public async Task<IActionResult> Update(
-            string warehoue_id,
+            string id,
             [FromForm] InventoryUpdate inventoryUpdate,
             IFormFile? photo)
         {
             try
             {
-                var response = await _inventoryService.Update(warehoue_id, inventoryUpdate, photo);
+                var response = await _inventoryService.Update(id, inventoryUpdate, photo);
                 return Ok(response);
             }
             catch (KeyNotFoundException ex)

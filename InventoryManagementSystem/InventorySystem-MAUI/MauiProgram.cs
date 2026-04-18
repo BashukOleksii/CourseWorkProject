@@ -85,6 +85,7 @@ namespace InventorySystem_MAUI
             builder.Services.AddTransient<ManagerWarehouseViewModel>();
 
             builder.Services.AddTransient<InventoryListViewModel>();
+            builder.Services.AddTransient<InventoryDetailsViewModel>();
             #endregion
 
             #endregion
