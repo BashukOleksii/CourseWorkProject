@@ -27,8 +27,11 @@ namespace InventorySystem_API.Warehouse.Repository
             await _collection.Find(warehouse => warehouse.CompanyId == companyId)
             .Project(warehouse => warehouse.Id).ToListAsync();
         
-        public async Task<List<WarehouseModel>> GetByIds(string[] ids) =>
-            await _collection.Find(warehouse => ids.Contains(warehouse.Id)).ToListAsync();
+        public async Task<List<WarehouseModel>> GetByIds(string[] ids)
+        {
+            var filter = Builders<WarehouseModel>.Filter.In(warehouse => warehouse.Id, ids);
+            return await _collection.Find(filter).ToListAsync();    
+        }
         
         public async Task<WarehouseModel> Update(WarehouseModel model)
         {

@@ -72,11 +72,18 @@
         ContentTemplate="{DataTemplate views:LogPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Вироники"
-    IsVisible="{Binding IsAuthenticated}">
+    <FlyoutItem Title="Виробники"
+        IsVisible="{Binding IsAuthenticated}">
         <ShellContent 
-    Route="ManufacturerListPage" 
-    ContentTemplate="{DataTemplate views:ManufacturerListPage}" />
+        Route="ManufacturerListPage" 
+        ContentTemplate="{DataTemplate views:ManufacturerListPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Доступні склади"
+        IsVisible="{Binding IsAuthenticated}">
+        <ShellContent 
+        Route="ManagerWarehousePage" 
+         ContentTemplate="{DataTemplate views:ManagerWarehousePage}" />
     </FlyoutItem>
 
 
