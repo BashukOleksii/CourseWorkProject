@@ -25,12 +25,22 @@
                        MaxLines="1" LineBreakMode="TailTruncation"/>
 
                 <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" HeightRequest="45">
-                    <Grid ColumnDefinitions="Auto, *">
-                        <Label Text="🔍" VerticalOptions="Center" Margin="12,0,5,0"/>
+                    <Grid ColumnDefinitions="Auto, *, Auto">
+                        <Label Grid.Column="0" Text="🔍" VerticalOptions="Center" Margin="12,0,5,0"/>
+
                         <Entry Grid.Column="1" Text="{Binding ItemSearchText}" 
                                Placeholder="Шукати товар на складі" 
                                VerticalOptions="Center" 
                                BackgroundColor="Transparent"/>
+
+                        <ImageButton Grid.Column="2" 
+                                     Source="report.png" 
+                                     Command="{Binding GoToAggregationCommand}"
+                                     HeightRequest="24" 
+                                     WidthRequest="24"
+                                     Margin="0,0,10,0"
+                                     VerticalOptions="Center"
+                                     BackgroundColor="Transparent"/>
                     </Grid>
                 </Border>
             </VerticalStackLayout>

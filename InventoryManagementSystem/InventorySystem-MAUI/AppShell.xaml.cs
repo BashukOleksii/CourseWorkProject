@@ -28,6 +28,7 @@ namespace InventorySystem_MAUI
             Routing.RegisterRoute(nameof(ManufacturerDetailPage), typeof(ManufacturerDetailPage));
 
             Routing.RegisterRoute(nameof(InventoryDetailsPage), typeof(InventoryDetailsPage));
+            Routing.RegisterRoute(nameof(InventoryAggregationPage), typeof(InventoryAggregationPage));
         }
     }
 }

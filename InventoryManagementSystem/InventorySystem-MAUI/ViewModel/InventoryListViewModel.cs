@@ -81,6 +81,12 @@ public partial class InventoryListViewModel : BaseViewModel
         }
     }
 
+    [RelayCommand]
+    private async Task GoToAggregation()
+    {
+        await ShellService.NavigateTo(nameof(InventoryAggregationPage), new Dictionary<string, object>{ { "WarehouseId", WarehouseId } });
+    }
+
     [RelayCommand] private async Task NextPage() { CurrentPage++; await LoadItems(); }
     [RelayCommand] private async Task PreviousPage() { if (CurrentPage > 1) { CurrentPage--; await LoadItems(); } }
 }
