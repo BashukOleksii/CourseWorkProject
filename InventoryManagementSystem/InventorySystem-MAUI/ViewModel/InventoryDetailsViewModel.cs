@@ -133,7 +133,7 @@ public partial class InventoryDetailsViewModel : BaseViewModel
                     Manufacturer = new InventoryManufacturerDTO { Name = SelectedManufacturer.Name, Country = SelectedManufacturer.Country },
                     CustomFileds = customFieldsDict
                 };
-                await _inventoryService.UpdateItem(WarehouseId, ItemId, updateDto, PhotoFile);
+                await _inventoryService.UpdateItem(ItemId, updateDto, PhotoFile);
             }
 
             await Shell.Current.GoToAsync("..");

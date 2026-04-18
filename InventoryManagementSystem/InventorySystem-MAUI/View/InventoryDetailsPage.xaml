@@ -81,7 +81,7 @@
                                         <Border Grid.Column="1" Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="5,0">
                                             <Entry Text="{Binding Value}" Placeholder="Значення" FontSize="13"/>
                                         </Border>
-                                        <ImageButton Grid.Column="2" Source="delete_red.png" 
+                                        <ImageButton Grid.Column="2" Source="delete_icon.png" 
                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type vm:InventoryDetailsViewModel}}, Path=RemoveFieldCommand}"
                                                      CommandParameter="{Binding .}"
                                                      HeightRequest="30" WidthRequest="30"/>

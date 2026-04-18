@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
+using InventorySystem_MAUI.View;
 using InventorySystem_Shared.Inventory;
 using System.Collections.ObjectModel;
 
@@ -62,12 +63,11 @@ public partial class InventoryListViewModel : BaseViewModel
 
     [RelayCommand]
     private async Task AddItem() =>
-        await Shell.Current.GoToAsync($"InventoryCreatePage?WarehouseId={WarehouseId}");
+        await ShellService.NavigateTo(nameof(InventoryDetailsPage), new Dictionary<string, object> { { "WarehouseId", WarehouseId } });
 
     [RelayCommand]
     private async Task EditItem(InventoryResponse item) =>
-        await Shell.Current.GoToAsync($"InventoryDetailsPage?Id={item.Id}&WarehouseId={WarehouseId}");
-
+        await ShellService.NavigateTo(nameof(InventoryDetailsPage), new Dictionary<string, object> { { "Id", item.Id }, { "WarehouseId", WarehouseId } });
     [RelayCommand]
     private async Task DeleteItem(InventoryResponse item)
     {
