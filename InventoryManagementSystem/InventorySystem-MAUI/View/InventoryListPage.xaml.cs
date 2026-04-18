@@ -1,9 +1,12 @@
+using InventorySystem_MAUI.ViewModel;
+
 namespace InventorySystem_MAUI.View;
 
 public partial class InventoryListPage : ContentPage
 {
-	public InventoryListPage()
+	public InventoryListPage(InventoryListViewModel inventoryListViewModel)
 	{
 		InitializeComponent();
-	}
+		BindingContext = inventoryListViewModel;
+    }
 }

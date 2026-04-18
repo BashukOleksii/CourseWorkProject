@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
+using InventorySystem_MAUI.View;
 using InventorySystem_Shared.Warehouse;
 using System.Collections.ObjectModel;
 
@@ -60,7 +61,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task SelectWarehouse(WarehouseResponse warehouse)
         {
-            await ShellService.NavigateTo(nameof(InventoryListPage), new Dictionary<string, object>
+            await ShellService.AbsoluteOpenPage(nameof(InventoryListPage), new Dictionary<string, object>
             {
                 { "WarehouseId", warehouse.Id },
                 { "WarehouseName", warehouse.Name}
