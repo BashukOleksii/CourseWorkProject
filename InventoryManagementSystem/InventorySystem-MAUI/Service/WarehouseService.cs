@@ -80,5 +80,16 @@ namespace InventorySystem_MAUI.Service
             return queryString;
         }
 
+        public async Task<List<WarehouseResponse>> GetWarehousesByIds(List<string> ids)
+        {
+            if (ids == null || !ids.Any()) return new List<WarehouseResponse>();
+
+            var query = string.Join("&", ids.Select(id => $"id={id}"));
+            var response = await _httpClient.GetAsync($"api/warehouse/by-ids?{query}");
+
+            return await response.Content.ReadFromJsonAsync<List<WarehouseResponse>>()
+                   ?? new List<WarehouseResponse>();
+        }
+
     }
 }
