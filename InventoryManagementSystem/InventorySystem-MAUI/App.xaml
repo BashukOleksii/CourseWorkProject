@@ -10,13 +10,14 @@
             
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Ressources/Styles/Styles.xaml" />
                 <ResourceDictionary Source="/Resources/Styles/BaseStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
             <converters:UriConverter x:Key="UriConverter" />
             <converters:ActionToColorConverter x:Key="ActionToColorConverter" />
+            <converters:InventoryTypeToStringConverter x:Key="InventoryTypeToStringConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

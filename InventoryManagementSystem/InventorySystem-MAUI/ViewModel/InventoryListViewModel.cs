@@ -1,5 +1,4 @@
-﻿
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
@@ -13,12 +12,13 @@ namespace InventorySystem_MAUI.ViewModel;
 public partial class InventoryListViewModel : BaseViewModel
 {
     private readonly InventoryService _inventoryService;
-    private CancellationTokenSource _searchCts;
+    private CancellationTokenSource? _searchCts;
 
-    [ObservableProperty] private string warehouseId;
-    [ObservableProperty] private string warehouseName;
+    [ObservableProperty] private string warehouseId = string.Empty;
+    [ObservableProperty] private string warehouseName = string.Empty; 
     [ObservableProperty] private ObservableCollection<InventoryResponse> items = new();
-    [ObservableProperty] private string searchText;
+
+    [ObservableProperty] private string itemSearchText = string.Empty; 
 
     [ObservableProperty] private int currentPage = 1;
     [ObservableProperty] private bool canGoNext;
@@ -27,7 +27,7 @@ public partial class InventoryListViewModel : BaseViewModel
 
     async partial void OnWarehouseIdChanged(string value) => await LoadItems();
 
-    async partial void OnSearchTextChanged(string value)
+    async partial void OnItemSearchTextChanged(string value)
     {
         _searchCts?.Cancel();
         _searchCts = new CancellationTokenSource();
@@ -47,7 +47,12 @@ public partial class InventoryListViewModel : BaseViewModel
 
         await RunBusyTask(async () =>
         {
-            var query = new InventoryQuery { Name = SearchText, Page = CurrentPage, PageSize = 10 };
+            var query = new InventoryQuery
+            {
+                Name = ItemSearchText, 
+                Page = CurrentPage,
+                PageSize = 10
+            };
             var result = await _inventoryService.GetItemsByWarehouse(WarehouseId, query);
 
             Items = new ObservableCollection<InventoryResponse>(result);
@@ -56,7 +61,8 @@ public partial class InventoryListViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task AddItem() => await Shell.Current.GoToAsync($"InventoryCreatePage?WarehouseId={WarehouseId}");
+    private async Task AddItem() =>
+        await Shell.Current.GoToAsync($"InventoryCreatePage?WarehouseId={WarehouseId}");
 
     [RelayCommand]
     private async Task EditItem(InventoryResponse item) =>
@@ -68,8 +74,10 @@ public partial class InventoryListViewModel : BaseViewModel
         bool confirm = await Shell.Current.DisplayAlertAsync("Видалення", $"Видалити {item.Name}?", "Так", "Ні");
         if (confirm)
         {
-            await _inventoryService.DeleteById(item.Id);
-            Items.Remove(item);
+            await RunBusyTask(async () => {
+                await _inventoryService.DeleteById(item.Id);
+                Items.Remove(item);
+            });
         }
     }
 
