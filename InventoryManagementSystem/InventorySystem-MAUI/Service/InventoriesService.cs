@@ -88,6 +88,32 @@ namespace InventorySystem_MAUI.Service
             return await response.Content.ReadFromJsonAsync<InventoryResponse>();
         }
 
+        public async Task ExportData(string warehouseId, string format)
+        {
+            var response = await _httpClient.GetAsync($"api/inventory/export/{format}/{warehouseId}");
+            var stream = await response.Content.ReadAsStreamAsync();
+            var fileName = $"inventory_{warehouseId}.{format}";
+
+            var path = Path.Combine(FileSystem.CacheDirectory, fileName);
+            using (var fileStream = File.Create(path))
+            {
+                await stream.CopyToAsync(fileStream);
+            }
+            await Launcher.Default.OpenAsync(new OpenFileRequest { File = new ReadOnlyFile(path) });
+        }
+
+        public async Task ImportData(string warehouseId, FileResult file)
+        {
+            using var content = new MultipartFormDataContent();
+            var stream = await file.OpenReadAsync();
+            var fileContent = new StreamContent(stream);
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+            content.Add(fileContent, "file", file.FileName);
+
+            var response = await _httpClient.PostAsync($"api/inventory/import/{warehouseId}", content);
+            response.EnsureSuccessStatusCode();
+        }
+
         private void AddContentFields(MultipartFormDataContent content, object dto)
         {
             foreach (var prop in dto.GetType().GetProperties())
