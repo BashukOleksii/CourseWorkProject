@@ -34,7 +34,7 @@ namespace InventorySystem_MAUI.ViewModel
             {
                 await _authService.Login(Email, Password);
 
-                await ShellService.AbsoluteOpenPage(nameof(ManufacturerListPage));
+                await ShellService.AbsoluteOpenPage(nameof(ManagerWarehousePage));
 
             });
         }
