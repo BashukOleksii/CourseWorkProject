@@ -18,7 +18,10 @@ public partial class LogViewModel : BaseViewModel
     [ObservableProperty] private int currentPage = 1;
     [ObservableProperty] private bool canGoNext;
 
-    public List<UserRole?> RoleOptions { get; } = new() { null, UserRole.admin, UserRole.manager};
+    [ObservableProperty] private TimeSpan fromTime = new TimeSpan(0, 0, 0);
+    [ObservableProperty] private TimeSpan toTime = new TimeSpan(23, 59, 59);
+
+    public List<UserRole?> RoleOptions { get; } = new() { null, UserRole.admin, UserRole.manager };
     public List<ActionType?> ActionOptions { get; } = Enum.GetValues(typeof(ActionType)).Cast<ActionType?>().Prepend(null).ToList();
     public List<EntityType?> EntityOptions { get; } = Enum.GetValues(typeof(EntityType)).Cast<EntityType?>().Prepend(null).ToList();
 
@@ -35,6 +38,8 @@ public partial class LogViewModel : BaseViewModel
     private void ResetFilters()
     {
         Query = new AuditLogQuery();
+        FromTime = new TimeSpan(0, 0, 0);
+        ToTime = new TimeSpan(23, 59, 59);
         CurrentPage = 1;
     }
 
@@ -43,6 +48,9 @@ public partial class LogViewModel : BaseViewModel
     {
         await RunBusyTask(async () =>
         {
+            Query.From = Query.From?.Date.Add(FromTime);
+            Query.To = Query.To?.Date.Add(ToTime);
+
             Query.Page = CurrentPage;
             var result = await _logService.GetLogs(Query);
             Logs = new ObservableCollection<AuditLogResponse>(result);
@@ -51,6 +59,9 @@ public partial class LogViewModel : BaseViewModel
         });
     }
 
-    [RelayCommand] private async Task NextPage() { CurrentPage++; await ApplyFilters(); }
-    [RelayCommand] private async Task PreviousPage() { if (CurrentPage > 1) { CurrentPage--; await ApplyFilters(); } }
+    [RelayCommand]
+    private async Task NextPage() { CurrentPage++; await ApplyFilters(); }
+
+    [RelayCommand]
+    private async Task PreviousPage() { if (CurrentPage > 1) { CurrentPage--; await ApplyFilters(); } }
 }

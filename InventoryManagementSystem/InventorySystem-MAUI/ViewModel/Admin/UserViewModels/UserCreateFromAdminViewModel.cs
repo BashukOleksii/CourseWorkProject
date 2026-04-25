@@ -59,6 +59,14 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task Save()
         {
+            if(string.IsNullOrEmpty(Name) ||
+                string.IsNullOrEmpty(Email) ||
+                string.IsNullOrEmpty(Password)
+                )
+            {
+                await Shell.Current.DisplayAlertAsync("Помилка", "Заповніть всі поля", "ОK");
+                return;
+            }
 
             await RunBusyTask(async () =>
             {

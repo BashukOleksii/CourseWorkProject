@@ -9,6 +9,13 @@
 
     <Grid RowDefinitions="Auto, *">
 
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
         <ScrollView Grid.Row="0" Grid.RowSpan="2" Margin="0,15,0,0">
             <VerticalStackLayout Padding="20,10,20,30" Spacing="20">
 
@@ -18,23 +25,17 @@
 
                         <VerticalStackLayout Spacing="5">
                             <Label Text="Повне ім'я" FontAttributes="Bold" TextColor="#374151"/>
-                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 12" BackgroundColor="#F9FAFB" Padding="12,0">
-                                <Entry Text="{Binding Name}" Placeholder="Іван Іванов"/>
-                            </Border>
+                            <Entry Text="{Binding Name}" Placeholder="Ім'я"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Spacing="5">
                             <Label Text="Email" FontAttributes="Bold" TextColor="#374151"/>
-                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 12" BackgroundColor="#F9FAFB" Padding="12,0">
-                                <Entry Text="{Binding Email}" Keyboard="Email" Placeholder="example@mail.com"/>
-                            </Border>
+                            <Entry Text="{Binding Email}" Keyboard="Email" Placeholder="example@mail.com"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Spacing="5">
                             <Label Text="Пароль" FontAttributes="Bold" TextColor="#374151"/>
-                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 12" BackgroundColor="#F9FAFB" Padding="12,0">
-                                <Entry Text="{Binding Password}" IsPassword="True" Placeholder="********"/>
-                            </Border>
+                            <Entry Text="{Binding Password}" IsPassword="True" Placeholder="********"/>
                         </VerticalStackLayout>
                     </VerticalStackLayout>
                 </Border>
@@ -69,7 +70,7 @@
                                FontSize="11" 
                                TextColor="Gray"
                                HorizontalOptions="Center" 
-                               IsVisible="{Binding Photo, Converter={StaticResource NotNullConverter}}"/>
+                               IsVisible="{Binding Photo}"/>
                         </VerticalStackLayout>
                     </VerticalStackLayout>
                 </Border>
@@ -88,9 +89,11 @@
 
                 <VerticalStackLayout Spacing="12">
                     <Button Text="Створити обліковий запис" Command="{Binding SaveCommand}"
+                            BorderColor="Blue"
                             BackgroundColor="#4F46E5" TextColor="White" FontAttributes="Bold" HeightRequest="56" CornerRadius="14"/>
                     <Button Text="Скасувати" Command="{Binding CancelCommand}"
-                            BackgroundColor="Transparent" TextColor="#6B7280"/>
+                           BorderColor="Red"
+                            BackgroundColor="#EF4444" TextColor="White"/>
                 </VerticalStackLayout>
 
             </VerticalStackLayout>
