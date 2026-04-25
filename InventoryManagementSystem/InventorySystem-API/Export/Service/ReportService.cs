@@ -63,6 +63,7 @@ namespace InventorySystem_API.Report.Service
             {
                 x.Span("Сторінка ");
                 x.CurrentPageNumber();
+                x.Span(" з ");
                 x.TotalPages().FontSize(10);
             });
         }
@@ -111,7 +112,7 @@ namespace InventorySystem_API.Report.Service
                             {
                                 table.ColumnsDefinition(columns =>
                                 {
-                                    columns.ConstantColumn(30);
+                                    columns.ConstantColumn(50);
                                     columns.RelativeColumn(3);
                                     columns.RelativeColumn(2);
                                     columns.RelativeColumn(2);
@@ -200,7 +201,7 @@ namespace InventorySystem_API.Report.Service
                             {
                                 table.ColumnsDefinition(columns =>
                                 {
-                                    columns.ConstantColumn(30);
+                                    columns.ConstantColumn(50);
                                     columns.RelativeColumn(2);
                                     columns.RelativeColumn(2);
                                     columns.RelativeColumn(2);
@@ -290,7 +291,7 @@ namespace InventorySystem_API.Report.Service
                             {
                                 table.ColumnsDefinition(columns =>
                                 {
-                                    columns.ConstantColumn(30);
+                                    columns.ConstantColumn(50);
                                     columns.RelativeColumn(2);
                                     columns.RelativeColumn(1.5f);
                                     columns.RelativeColumn(3);

@@ -91,5 +91,11 @@ namespace InventorySystem_MAUI.ViewModel
 
         [RelayCommand]
         private async Task PreviousPage() { if (CurrentPage > 1) { CurrentPage--; await ApplyFilters(); } }
+
+        [RelayCommand]
+        private async Task GoBack()
+        {
+            await ShellService.GoBack();
+        }
     }
 }

@@ -10,7 +10,12 @@
              Shell.PresentationMode="Modal">
 
     <Grid RowDefinitions="Auto, *">
-        <BoxView Grid.Row="0" HeightRequest="40" BackgroundColor="#4F46E5" VerticalOptions="Start"/>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
 
         <Grid Grid.Row="0" Grid.RowSpan="2" RowDefinitions="Auto, *">
 
@@ -21,16 +26,18 @@
                     </Border.Shadow>
 
                     <VerticalStackLayout Spacing="10">
-                        <Grid ColumnDefinitions="*, Auto, Auto">
-                            <Label Text="Аналітика персоналу" FontSize="18" FontAttributes="Bold" VerticalOptions="Center" TextColor="#111827"/>
-                            <ImageButton Grid.Column="1" Source="filter.png" Command="{Binding ToggleFiltersCommand}" HeightRequest="30" Margin="0,0,10,0"/>
-                            <Button Grid.Column="2" Text="ЗВІТ" Command="{Binding GeneratePdfReportCommand}" BackgroundColor="#EF4444" HeightRequest="35" FontSize="12" FontAttributes="Bold"/>
+                        <Grid ColumnDefinitions="Auto,*, Auto, Auto">
+                            <ImageButton Grid.Column="0" Source="back_arrow.png" Command="{Binding GoBackCommand}" WidthRequest="35" HeightRequest="35" BackgroundColor="Transparent"/>
+                            <Label Margin="20,0,0,0" Grid.Column="1" Text="Аналітика персоналу" FontSize="18" FontAttributes="Bold" VerticalOptions="Center" TextColor="#111827"/>
+                            <ImageButton Grid.Column="2" Source="filter.png" Command="{Binding ToggleFiltersCommand}" HeightRequest="30" Margin="0,0,10,0"/>
+                            <ImageButton Grid.Column="3" Source="report.png" Command="{Binding GeneratePdfReportCommand}" HeightRequest="30" Margin="0,0,10,0"/>
+                            
                         </Grid>
 
                         <VerticalStackLayout IsVisible="{Binding IsFilterVisible}" Spacing="12" Margin="0,10,0,0">
 
                             <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="10" BackgroundColor="#F9FAFB">
-                                <Entry Placeholder="Пошук за ім'ям..." Text="{Binding Query.Name}" TextColor="#111827"/>
+                                <Entry Placeholder="Пошук за ім'ям" Text="{Binding Query.Name}" TextColor="#111827"/>
                             </Border>
 
                             <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
@@ -55,7 +62,7 @@
 
             <CollectionView Grid.Row="1" ItemsSource="{Binding Users}" Margin="15,0">
                 <CollectionView.Header>
-                    <Label Text="Знайдені співробітники" FontSize="14" FontAttributes="Bold" Margin="5,0,0,10" TextColor="#6B7280"/>
+                    <Label Text="Знайдені співробітники" FontSize="14" FontAttributes="Bold" Margin="5,0,0,10" TextColor="White"/>
                 </CollectionView.Header>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="u:UserResponse">
