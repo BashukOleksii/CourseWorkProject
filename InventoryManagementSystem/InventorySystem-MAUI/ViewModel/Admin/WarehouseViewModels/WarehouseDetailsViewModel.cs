@@ -16,7 +16,7 @@ namespace InventorySystem_MAUI.ViewModel
     {
         private readonly WarehouseService _warehouseService;
 
-        [ObservableProperty] private string warehouseId;
+        [ObservableProperty] [NotifyPropertyChangedFor(nameof(HasId))] private string warehouseId;
         [ObservableProperty] private string title = "Новий склад";
         [ObservableProperty] private string addressDisplay = "Адресу не обрано";
 
@@ -29,6 +29,7 @@ namespace InventorySystem_MAUI.ViewModel
         private Address? selectedAddress;
 
         public bool HasAddress => SelectedAddress != null;
+        public bool HasId => !string.IsNullOrEmpty(warehouseId);
 
         public WarehouseDetailsViewModel(WarehouseService warehouseService)
         {

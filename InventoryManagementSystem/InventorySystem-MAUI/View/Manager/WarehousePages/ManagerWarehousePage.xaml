@@ -10,6 +10,13 @@
 
     <Grid RowDefinitions="Auto, *">
 
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
         <Grid Grid.Row="1">
             <VerticalStackLayout IsVisible="{Binding IsListEmpty}" 
                                  VerticalOptions="Center" 
@@ -18,11 +25,13 @@
                 <Label Text="🏢" FontSize="80" HorizontalOptions="Center"/>
                 <Label Text="У вас немає доступу до жодного складу" 
                        FontSize="18" 
-                       TextColor="#6B7280" 
+                       TextColor="White" 
                        HorizontalTextAlignment="Center"/>
                 <Label Text="Зверніться до адміністратора фірми" 
                        FontSize="14" 
-                       TextColor="#9CA3AF"/>
+                       TextColor="Wheat"
+                       HorizontalTextAlignment="Center"
+                       />
             </VerticalStackLayout>
 
             <CollectionView ItemsSource="{Binding Warehouses}" 

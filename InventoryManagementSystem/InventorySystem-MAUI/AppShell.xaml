@@ -85,12 +85,5 @@
          ContentTemplate="{DataTemplate views:ManagerWarehousePage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Техніка на склади"
-        IsVisible="{Binding IsManager}">
-        <ShellContent 
-            Route="InventoryListPage" 
-             ContentTemplate="{DataTemplate views:InventoryListPage}" />
-    </FlyoutItem>
-
-
+   
 </Shell>

@@ -38,7 +38,7 @@ namespace InventorySystem_MAUI.ViewModel
                 await _authService.Login(Email, Password);
 
                 if(_userContextService.CurrentUser.UserRole == UserRole.manager)
-                    await ShellService.AbsoluteOpenPage(nameof(WarehousePickerPage));
+                    await ShellService.AbsoluteOpenPage(nameof(ManagerWarehousePage));
                 else
                     await ShellService.AbsoluteOpenPage(nameof(UserListPage));
 

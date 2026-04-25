@@ -8,22 +8,23 @@
              BackgroundColor="#F8F9FA">
 
     <Grid RowDefinitions="Auto, *">
+
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         
         <VerticalStackLayout Grid.Row="0" Padding="20,10" Spacing="10">
-            <Label Text="Виробники" FontSize="24" FontAttributes="Bold" TextColor="White"/>
+            <Label Text="Виробники" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold" TextColor="White"/>
 
             <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" HeightRequest="50">
-                <Grid ColumnDefinitions="Auto, *">
-                    <Label Text="🔍"
-                       Grid.Column="0"
-                       VerticalOptions="Center"
-                       Margin="15,0,5,0"/>  
-
-                        <Entry Text="{Binding SearchText}"
-                       Grid.Column="1"
+                <Entry Text="{Binding SearchText}"
+                       Margin="10,0,10,0"
                        Placeholder="Пошук виробника"
                        VerticalOptions="Center"/>
-                </Grid>
+
             </Border>
         </VerticalStackLayout>
 

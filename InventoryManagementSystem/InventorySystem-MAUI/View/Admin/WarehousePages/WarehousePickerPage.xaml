@@ -92,17 +92,12 @@
 
         <Border Grid.Row="2" 
                 Padding="0" 
-                BackgroundColor="#9333EA" 
-
+                BackgroundColor="#9333EA"
                 StrokeShape="RoundRectangle 20,20,0,0">
 
-            <Grid ColumnDefinitions="*,Auto">
+            <VerticalStackLayout Spacing="5">
 
-                <components:PaginationControl 
-                                              PageNumber="{Binding CurrentPage}" 
-                                              CanNext="{Binding CanGoNext}"
-                                              NextCommand="{Binding NextPageCommand}" 
-                                              PrevCommand="{Binding PreviousPageCommand}"/>
+               
 
 
 
@@ -116,7 +111,14 @@
                             FontAttributes="Bold">
                 </Button>
                 
-            </Grid>
+                <components:PaginationControl 
+                               PageNumber="{Binding CurrentPage}" 
+                               CanNext="{Binding CanGoNext}"
+                               NextCommand="{Binding NextPageCommand}" 
+                               PrevCommand="{Binding PreviousPageCommand}"/>
+
+
+            </VerticalStackLayout>
         </Border>
 
         <components:LoadingOverlay Grid.RowSpan="3"/>

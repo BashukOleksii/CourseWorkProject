@@ -35,6 +35,15 @@
                                TextColor="#4F46E5"/>
 
                         <VerticalStackLayout Spacing="5">
+                            <Label Text="Id складу" FontAttributes="Bold" TextColor="#374151" Margin="5,0"/>
+                            <Entry Text="{Binding WarehouseId}" 
+                                   IsVisible="{Binding HasId}"
+                                   TextColor="#111827"
+                                   IsReadOnly="True"
+                                   />
+                        </VerticalStackLayout>
+                        
+                        <VerticalStackLayout Spacing="5">
                             <Label Text="Назва складу" FontAttributes="Bold" TextColor="#374151" Margin="5,0"/>
                             <Entry Text="{Binding Name}" 
                                        Placeholder="Введіть назву..."
