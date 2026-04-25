@@ -81,7 +81,6 @@ namespace InventorySystem_MAUI.ViewModel
                 };
 
                 await _authService.Register(registerData, Photo);
-                await Shell.Current.DisplayAlertAsync("Успіх", "Користувача створено", "OK");
                 await ShellService.GoBack();
             });
         }

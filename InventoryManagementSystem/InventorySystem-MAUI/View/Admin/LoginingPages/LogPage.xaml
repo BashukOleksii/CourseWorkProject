@@ -53,7 +53,8 @@
                             </Grid>
 
                             <Label Text="Проміжок (Від — До):" FontSize="12" TextColor="Gray" Margin="5,0" FontAttributes="Bold"/>
-                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Background="MintCream">
                                 <VerticalStackLayout Grid.Column="0" Spacing="5">
                                     <DatePicker Date="{Binding Query.From}" FontSize="12"/>
                                     <TimePicker Format="HH:mm" Time="{Binding FromTime}" FontSize="12"/>
@@ -112,7 +113,9 @@
                                     <Label Text="{Binding TimeStamp, StringFormat='{0:HH:mm}'}" FontSize="13" FontAttributes="Bold" HorizontalOptions="End"/>
                                 </VerticalStackLayout>
                             </Grid>
+                            
                         </Border>
+                        
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.Footer>

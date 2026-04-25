@@ -166,7 +166,7 @@
 	  <MauiXaml Update="View\Admin\UserPages\UserReportPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\Manager\WarehousePages\WarehousePickerPage.xaml">
+	  <MauiXaml Update="View\Admin\WarehousePages\WarehousePickerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\Admin\WarehousePages\WarehouseReportPage.xaml">
