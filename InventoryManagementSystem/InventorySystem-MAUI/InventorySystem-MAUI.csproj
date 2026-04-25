@@ -76,13 +76,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="View\UserCreateFromAdminPage.xaml.cs">
+	  <Compile Update="View\Admin\UserPages\UserCreateFromAdminPage.xaml.cs">
 	    <DependentUpon>UserCreateFromAdminPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="View\UserDetailPage.xaml.cs">
+	  <Compile Update="View\Admin\UserPages\UserDetailPage.xaml.cs">
 	    <DependentUpon>UserDetailPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="View\WarehouseReportPage.xaml.cs">
+	  <Compile Update="View\Admin\WarehousePages\WarehouseReportPage.xaml.cs">
 	    <DependentUpon>WarehouseReportPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
@@ -91,10 +91,10 @@
 	  <MauiXaml Update="Resources\Styles\BaseStyles.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\CompanyCreatePage.xaml">
+	  <MauiXaml Update="View\User\RegisterPages\CompanyCreatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\CompanyPage.xaml">
+	  <MauiXaml Update="View\Admin\CompanyPages\CompanyPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\Components\AddButton.xaml">
@@ -118,67 +118,67 @@
 	  <MauiXaml Update="View\Components\WarehouseCardView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\ForgotPasswordPage.xaml">
+	  <MauiXaml Update="View\User\LoginPages\ForgotPasswordPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\AddressCreatePage.xaml">
+	  <MauiXaml Update="View\User\RegisterPages\AddressCreatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\InventoryAggregationPage.xaml">
+	  <MauiXaml Update="View\Manager\InventoryPages\InventoryAggregationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\InventoryDetailsPage.xaml">
+	  <MauiXaml Update="View\Manager\InventoryPages\InventoryDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\InventoryListPage.xaml">
+	  <MauiXaml Update="View\Manager\InventoryPages\InventoryListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\LoginPage.xaml">
+	  <MauiXaml Update="View\User\LoginPages\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\LogPage.xaml">
+	  <MauiXaml Update="View\Admin\LoginingPages\LogPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\ManagerWarehousePage.xaml">
+	  <MauiXaml Update="View\Manager\WarehousePages\ManagerWarehousePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\ManufacturerDetailPage.xaml">
+	  <MauiXaml Update="View\Manager\ManufacturerPages\ManufacturerDetailPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\ManufacturerListPage.xaml">
+	  <MauiXaml Update="View\Manager\ManufacturerPages\ManufacturerListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\ProfilePage.xaml">
+	  <MauiXaml Update="View\User\LoginPages\ProfilePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\UserCreateFromAdminPage.xaml">
+	  <MauiXaml Update="View\Admin\UserPages\UserCreateFromAdminPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\UserCreatePage.xaml">
+	  <MauiXaml Update="View\User\RegisterPages\UserCreatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\UserDetailPage.xaml">
+	  <MauiXaml Update="View\Admin\UserPages\UserDetailPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\UserListPage.xaml">
+	  <MauiXaml Update="View\Admin\UserPages\UserListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\UserReportPage.xaml">
+	  <MauiXaml Update="View\Admin\UserPages\UserReportPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\WarehousePickerPage.xaml">
+	  <MauiXaml Update="View\Manager\WarehousePages\WarehousePickerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\WarehouseReportPage.xaml">
+	  <MauiXaml Update="View\Admin\WarehousePages\WarehouseReportPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\WarehouseDetailsPage.xaml">
+	  <MauiXaml Update="View\Admin\WarehousePages\WarehouseDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\WarehouseListPage.xaml">
+	  <MauiXaml Update="View\Admin\WarehousePages\WarehouseListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\WelcomePage.xaml">
+	  <MauiXaml Update="View\User\LoginPages\WelcomePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
+using InventorySystem_MAUI.View;
 using InventorySystem_Shared.Company;
 using InventorySystem_Shared.User;
 using System.Buffers.Text;
@@ -88,6 +89,17 @@ namespace InventorySystem_MAUI.ViewModel
         private async Task GoBack()
         {
             await ShellService.GoBack();
+        }
+
+        [RelayCommand]
+        private async Task Logout()
+        {
+            bool confirm = await Shell.Current.DisplayAlertAsync("Вихід", "Ви дійсно хочете вийти з акаунту?", "Так", "Ні");
+            if (confirm)
+            {
+                _userContext.LogOut();
+                await ShellService.AbsoluteOpenPage(nameof(WelcomePage));
+            }
         }
     }
 }
