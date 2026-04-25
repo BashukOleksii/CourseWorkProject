@@ -13,6 +13,7 @@ namespace InventorySystem_MAUI.Helper
             else
                 await Shell.Current.GoToAsync(route,paramters);
 
+                
         }
 
         public static async Task GoBack(Dictionary<string, object> paramters = null)
