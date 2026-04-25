@@ -9,6 +9,13 @@
 
     <Grid RowDefinitions="Auto, *">
 
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
         <ScrollView Grid.Row="0" Grid.RowSpan="2">
             <VerticalStackLayout Padding="20,40,20,30" Spacing="20">
 
@@ -24,23 +31,17 @@
 
                         <VerticalStackLayout Spacing="5">
                             <Label Text="Назва компанії" FontAttributes="Bold" FontSize="12" TextColor="#6B7280"/>
-                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="10,0">
-                                <Entry Text="{Binding Name}" Placeholder="Введіть назву"/>
-                            </Border>
+                            <Entry Text="{Binding Name}" Placeholder="Введіть назву"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Spacing="5">
                             <Label Text="Опис" FontAttributes="Bold" FontSize="12" TextColor="#6B7280"/>
-                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="10,0">
-                                <Editor Text="{Binding Description}" AutoSize="TextChanges" Placeholder="Про компанію"/>
-                            </Border>
+                            <Editor Text="{Binding Description}" AutoSize="TextChanges" Placeholder="Про компанію"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Spacing="5">
                             <Label Text="Телефон" FontAttributes="Bold" FontSize="12" TextColor="#6B7280"/>
-                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="10,0">
-                                <Entry Text="{Binding Phone}" Keyboard="Telephone" Placeholder="+380..."/>
-                            </Border>
+                            <Entry Text="{Binding Phone}" Keyboard="Telephone" Placeholder="+380..."/>
                         </VerticalStackLayout>
                     </VerticalStackLayout>
                 </Border>
@@ -65,6 +66,7 @@
                 </Border>
 
                 <Button Text="Зберегти всі зміни" 
+                        BorderColor="Blue"
                         Command="{Binding SaveChangesCommand}"
                         BackgroundColor="#4F46E5" 
                         TextColor="White" 

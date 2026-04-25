@@ -22,7 +22,7 @@
 
                     <Grid ColumnDefinitions="Auto, *">
                         <ImageButton Grid.Column="0"
-                                     Source="back_white.png"
+                                     Source="back_arrow.png"
                                      Command="{Binding CancelCommand}"
                                      HeightRequest="30"
                                      WidthRequest="30"
@@ -30,6 +30,7 @@
                                      BackgroundColor="Transparent"/>
 
                         <Label Grid.Column="1" 
+                               HorizontalTextAlignment="Center" 
                                Text="Локація" 
                                Style="{StaticResource Headline}" 
                                HorizontalOptions="Start"
