@@ -10,10 +10,17 @@
 
     <Grid RowDefinitions="Auto, *">
 
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
         <Grid Grid.Row="0" HeightRequest="60">
             
-
             <Border Margin="15,0"
+                    Padding="15,0"
                     VerticalOptions="Start"
                     StrokeShape="RoundRectangle 12" 
                     Stroke="#E5E7EB" 
@@ -22,17 +29,16 @@
                 <Border.Shadow>
                     <Shadow Brush="Black" Opacity="0.1" Offset="0,4" Radius="10"/>
                 </Border.Shadow>
-                <Grid ColumnDefinitions="Auto, *, Auto">
-                    <Label Text="🔍" VerticalOptions="Center" Margin="15,0,5,0" FontSize="16"/>
-                    <Entry Grid.Column="1"
+                <Grid ColumnDefinitions="*, Auto">
+                    <Entry Grid.Column="0"
                        Text="{Binding SearchText}"
-                       Placeholder="Пошук складу..."
+                       Placeholder="Пошук працівника"
                        FontSize="15"
                        TextColor="#1F2937"
                        VerticalOptions="Center"
                        BackgroundColor="Transparent"/>
 
-                    <ImageButton Grid.Column="2"
+                    <ImageButton Grid.Column="1"
                          Source="report.png"
                          Command="{Binding GoToReportsCommand}"
                          Margin="0,0,10,0"
