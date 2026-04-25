@@ -64,7 +64,7 @@ namespace InventorySystem_Shared.AddressClass
 
             var textInfo = CultureInfo.CurrentCulture.TextInfo;
             var normal = textInfo.ToTitleCase(str);
-
+                
             if (add is not null && normal.Contains(add))
                 normal = normal.Replace(add, "");
 
