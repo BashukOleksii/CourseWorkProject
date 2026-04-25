@@ -16,6 +16,7 @@
           Padding="15,0,20,0">
 
             <Label Text="Warehouse System" 
+               Padding="15,0"
                TextColor="White"
                FontSize="20"
                FontAttributes="Bold"
@@ -28,8 +29,7 @@
                 WidthRequest="38"
                 StrokeShape="RoundRectangle 19"
                 StrokeThickness="1.5"
-                Stroke="White"
-                BackgroundColor="Transparent">
+                Stroke="White">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding GoToProfileCommand}"/>
                 </Border.GestureRecognizers>
@@ -43,19 +43,18 @@
         ContentTemplate="{DataTemplate views:WelcomePage}"
         IsVisible="{Binding IsNotAuthenticated}" />
 
-    
+    <FlyoutItem Title="Працівники"
+     IsVisible="{Binding IsAdmin}">
+        <ShellContent 
+     Route="UserListPage" 
+     ContentTemplate="{DataTemplate views:UserListPage}" />
+    </FlyoutItem>
+
     <FlyoutItem Title="Склади"
             IsVisible="{Binding IsAdmin}">
         <ShellContent 
         Route="WarehouseListPage" 
         ContentTemplate="{DataTemplate views:WarehouseListPage}" />
-    </FlyoutItem>
-
-    <FlyoutItem Title="Працівники"
-        IsVisible="{Binding IsAdmin}">
-        <ShellContent 
-        Route="UserListPage" 
-        ContentTemplate="{DataTemplate views:UserListPage}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Компанія"

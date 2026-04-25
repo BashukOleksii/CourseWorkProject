@@ -11,12 +11,7 @@
     <Grid RowDefinitions="Auto, *">
 
         <Grid Grid.Row="0" HeightRequest="60">
-            <Grid.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="#4F46E5" Offset="0.0"/>
-                    <GradientStop Color="Transparent" Offset="1.0"/>
-                </LinearGradientBrush>
-            </Grid.Background>
+            
 
             <Border Margin="15,0"
                     VerticalOptions="Start"
