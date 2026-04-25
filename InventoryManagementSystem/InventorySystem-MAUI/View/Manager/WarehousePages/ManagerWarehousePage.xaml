@@ -39,10 +39,11 @@
                             IsVisible="{Binding IsListEmpty, Converter={StaticResource InverseBoolConverter}}">
                 <CollectionView.Header>
                     <Label Text="Доступні локації" 
-                           FontSize="20" 
                            FontAttributes="Bold" 
-                           Margin="0,10,0,20" 
-                           TextColor="#111827"/>
+                           FontSize="24"
+                           TextColor="White"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,0,0,10"/>
                 </CollectionView.Header>
 
                 <CollectionView.ItemTemplate>
