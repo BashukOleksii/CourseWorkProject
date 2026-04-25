@@ -48,7 +48,7 @@ namespace InventorySystem_MAUI.ViewModel
         {
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
-                await Shell.Current.DisplayAlertAsync("Error", "Заповніть усі обов'язкові поля", "OK");
+                await Shell.Current.DisplayAlertAsync("Помилка", "Заповніть усі обов'язкові поля", "OK");
                 return;
             }
 
@@ -65,7 +65,6 @@ namespace InventorySystem_MAUI.ViewModel
 
                 await _authService.Register(userRegister, SelectedPhoto);
 
-                await Shell.Current.DisplayAlertAsync("Success", "Користувача зареєстровано!", "OK");
                 await ShellService.NavigateTo(nameof(LoginPage));
 
             });

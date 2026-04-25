@@ -56,7 +56,7 @@ namespace InventorySystem_MAUI.Helper
                     if (problemDetails?.Errors != null && problemDetails.Errors.Any())
                         errorMessage = string.Join("\n", problemDetails.Errors.SelectMany(x => x.Value));
                     else
-                        errorMessage = !string.IsNullOrWhiteSpace(content) ? content : "Unknown error occurred";
+                        errorMessage = !string.IsNullOrWhiteSpace(content) ? content : "Невідомий тип помилки";
                     
                 }
                 catch (JsonException)

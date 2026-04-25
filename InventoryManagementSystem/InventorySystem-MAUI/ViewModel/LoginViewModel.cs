@@ -3,12 +3,14 @@ using CommunityToolkit.Mvvm.Input;
 using InventorySystem_MAUI.Service;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.View;
+using InventorySystem_Shared.User;
 
 namespace InventorySystem_MAUI.ViewModel
 {
     public partial class LoginViewModel : BaseViewModel
     {
         private readonly AuthService _authService;
+        private readonly UserContextService _userContextService;
 
         [ObservableProperty]
         private string email;
@@ -16,9 +18,10 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty]
         private string password;
 
-        public LoginViewModel(AuthService authService)
+        public LoginViewModel(AuthService authService, UserContextService userContextService)
         {
             _authService = authService;
+            _userContextService = userContextService;
         }
 
         [RelayCommand]
@@ -34,7 +37,10 @@ namespace InventorySystem_MAUI.ViewModel
             {
                 await _authService.Login(Email, Password);
 
-                await ShellService.AbsoluteOpenPage(nameof(ManagerWarehousePage));
+                if(_userContextService.CurrentUser.UserRole == UserRole.manager)
+                    await ShellService.AbsoluteOpenPage(nameof(WarehousePickerPage));
+                else
+                    await ShellService.AbsoluteOpenPage(nameof(WarehouseListPage));
 
             });
         }

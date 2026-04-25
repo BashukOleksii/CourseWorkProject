@@ -29,7 +29,7 @@ namespace InventorySystem_MAUI.ViewModel
             {
                 await _resetPasswordService.RequestResetCode(Email);
                 IsCodeSent = true;
-                await Shell.Current.DisplayAlertAsync("Success", "Код відправлено на пошту", "OK");
+                await Shell.Current.DisplayAlertAsync("Успіх", "Код відправлено на пошту", "OK");
             });
 
         }
@@ -42,7 +42,6 @@ namespace InventorySystem_MAUI.ViewModel
             await RunBusyTask(async () =>
             {
                 await _resetPasswordService.ConfirmResetPassword(Email, ResetCode, NewPassword);
-                await Shell.Current.DisplayAlertAsync("Success", "Пароль змінено", "OK");
                 await ShellService.GoBack();
             });
 

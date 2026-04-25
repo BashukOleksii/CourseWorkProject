@@ -109,7 +109,7 @@ namespace InventorySystem_API.Warehouse.Service
             var validationResult = _warehouseValidator.Validate(_warehouseMapper.Map<WarehouseDTO>(model));
 
             if (!validationResult.IsValid)
-                throw new ArgumentException(validationResult.Errors.ToString());
+                throw new ArgumentException(string.Join(";",validationResult.Errors.Select(e => e.ErrorMessage)));
 
             var updatedModel = await _warehouseRepository.Update(model);
 

@@ -45,7 +45,7 @@ namespace InventorySystem_MAUI.ViewModel
                    string.IsNullOrEmpty(Description) ||
                    string.IsNullOrEmpty(Phone))
             {
-                await Shell.Current.DisplayAlertAsync("Error", "Заповніть всі поля", "OK");
+                await Shell.Current.DisplayAlertAsync("Помилка", "Заповніть всі поля", "OK");
                 return;
             }
 
@@ -60,7 +60,6 @@ namespace InventorySystem_MAUI.ViewModel
                 };
 
                 var id = await _companyService.CreateCompany(dto);
-                await Shell.Current.DisplayAlertAsync("Success", "Успіх", "OK");
                 await ShellService.NavigateTo(nameof(UserCreatePage), new Dictionary<string, object>
                     {
                         { "CompanyId", id }
