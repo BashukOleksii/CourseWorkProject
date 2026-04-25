@@ -11,13 +11,14 @@
 
     <Grid RowDefinitions="Auto, *, Auto">
 
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
         <Grid Grid.Row="0" HeightRequest="130">
-            <Grid.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="#4F46E5" Offset="0.0"/>
-                    <GradientStop Color="Transparent" Offset="1.0"/>
-                </LinearGradientBrush>
-            </Grid.Background>
 
             <VerticalStackLayout Padding="20,20,20,10" Spacing="10">
                 <Label Text="Вибір локацій" 
@@ -29,20 +30,18 @@
                 <Border StrokeShape="RoundRectangle 12" 
                         BackgroundColor="White" 
                         HeightRequest="50"
-                        StrokeThickness="0">
+                        StrokeThickness="0"
+                        Padding="10,0,10,0">
                     <Border.Shadow>
                         <Shadow Brush="Black" Opacity="0.15" Offset="0,4" Radius="10"/>
                     </Border.Shadow>
-                    <Grid ColumnDefinitions="35, *">
 
-                        <Label Text="🔍"
-                           VerticalOptions="Center"
-                           HorizontalOptions="Center"
-                           FontSize="16"/>
-
-                        <Entry Grid.Column="1"
+                    <Grid ColumnDefinitions="Auto,*">
+                        <ImageButton HeightRequest="40" WidthRequest="35" Source="back_arrow.png" Command="{Binding CancelCommand}" Margin="0,0,10,0"/>
+                        <Entry
+                            Grid.Column="1"
                            Text="{Binding SearchText}" 
-                           Placeholder="Шукати за назвою..." 
+                           Placeholder="Шукати за назвою" 
                            VerticalOptions="Center"
                            HorizontalOptions="Fill"
                            TextColor="#1F2937"
@@ -93,48 +92,31 @@
 
         <Border Grid.Row="2" 
                 Padding="0" 
-                BackgroundColor="White" 
-                StrokeThickness="1" 
-                Stroke="#E5E7EB"
+                BackgroundColor="#9333EA" 
+
                 StrokeShape="RoundRectangle 20,20,0,0">
-            <Border.Shadow>
-                <Shadow Brush="Black" Opacity="0.05" Offset="0,-4" Radius="10"/>
-            </Border.Shadow>
 
-            <VerticalStackLayout Padding="20,15" Spacing="15">
+            <Grid ColumnDefinitions="*,Auto">
 
-                <components:PaginationControl HorizontalOptions="Center"
+                <components:PaginationControl 
                                               PageNumber="{Binding CurrentPage}" 
                                               CanNext="{Binding CanGoNext}"
                                               NextCommand="{Binding NextPageCommand}" 
                                               PrevCommand="{Binding PreviousPageCommand}"/>
 
-                <BoxView HeightRequest="1" Color="#F3F4F6" Margin="-20,0"/>
 
-                <Grid ColumnDefinitions="*, *" ColumnSpacing="12">
-                    <Button Grid.Column="0" 
-                            Text="Скасувати" 
-                            Command="{Binding CancelCommand}"
-                            BackgroundColor="#F9FAFB"
-                            TextColor="#4B5563"
-                            CornerRadius="12"
-                            HeightRequest="52"
-                            FontAttributes="Bold"/>
 
-                    <Button Grid.Column="1" 
+                <Button Grid.Column="1" 
                             Text="Підтвердити" 
                             Command="{Binding SaveAndCloseCommand}" 
                             BackgroundColor="#4F46E5" 
                             TextColor="White"
-                            CornerRadius="12"
+                            CornerRadius="20"
                             HeightRequest="52"
                             FontAttributes="Bold">
-                        <Button.Shadow>
-                            <Shadow Brush="#4F46E5" Opacity="0.2" Offset="0,4" Radius="5"/>
-                        </Button.Shadow>
-                    </Button>
-                </Grid>
-            </VerticalStackLayout>
+                </Button>
+                
+            </Grid>
         </Border>
 
         <components:LoadingOverlay Grid.RowSpan="3"/>

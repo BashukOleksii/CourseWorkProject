@@ -6,8 +6,7 @@
              xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
              x:DataType="vm:WarehouseReportViewModel"
              BackgroundColor="#F8F9FA"
-             Shell.PresentationMode="Modal"
-             >
+             Shell.PresentationMode="Modal">
 
     <Grid RowDefinitions="Auto, *">
 
