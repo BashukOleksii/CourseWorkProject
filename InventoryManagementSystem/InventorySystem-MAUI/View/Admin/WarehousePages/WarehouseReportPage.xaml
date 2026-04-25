@@ -27,29 +27,22 @@
                     </Border.Shadow>
 
                     <VerticalStackLayout Spacing="10">
-                        <Grid ColumnDefinitions="*, Auto, Auto">
-                            <Label Text="Звіти та Фільтри" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>
-                            <ImageButton Grid.Column="1" Source="filter.png" Command="{Binding ToggleFiltersCommand}" HeightRequest="30" Margin="0,0,10,0"/>
-                            <Button Grid.Column="2" Text="PDF" Command="{Binding GeneratePdfReportCommand}" BackgroundColor="#EF4444" HeightRequest="35" FontSize="12"/>
+                        <Grid ColumnDefinitions="Auto,*, Auto, Auto">
+                            <ImageButton Grid.Column="0" Source="back_arrow.png" Command="{Binding GoBackCommand}" WidthRequest="35" HeightRequest="35" BackgroundColor="Transparent"/>
+                            <Label Grid.Column="1" Margin="20,0,0,0" Text="Звіти та Фільтри" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>
+                            <ImageButton Grid.Column="2" Source="filter.png" Command="{Binding ToggleFiltersCommand}" HeightRequest="30" Margin="0,0,10,0"/>
+                            <ImageButton Grid.Column="3" Source="report.png" Command="{Binding GeneratePdfReportCommand}" HeightRequest="35" />
                         </Grid>
 
                         <VerticalStackLayout IsVisible="{Binding IsFilterVisible}" Spacing="12" Margin="0,10,0,0">
 
-                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="10">
-                                <Entry Placeholder="Назва складу" Text="{Binding Query.Name}"/>
-                            </Border>
+                            <Entry Placeholder="Назва складу" Text="{Binding Query.Name}"/>
 
-                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="10">
-                                <Entry Placeholder="Частина опису..." Text="{Binding Query.PartDescription}"/>
-                            </Border>
+                            <Entry Placeholder="Частина опису" Text="{Binding Query.PartDescription}"/>
 
                             <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                                <Border Grid.Column="0" Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="10">
-                                    <Entry Placeholder="Мін. площа" Text="{Binding Query.MinArea}" Keyboard="Numeric"/>
-                                </Border>
-                                <Border Grid.Column="1" Stroke="#E5E7EB" StrokeShape="RoundRectangle 8" Padding="10">
-                                    <Entry Placeholder="Макс. площа" Text="{Binding Query.MaxArea}" Keyboard="Numeric"/>
-                                </Border>
+                                <Entry Placeholder="Мін. площа" Text="{Binding Query.MinArea}" Keyboard="Numeric"/>
+                                <Entry Grid.Column="1" Placeholder="Макс. площа" Text="{Binding Query.MaxArea}" Keyboard="Numeric"/>
                             </Grid>
 
                             <Button Text="Застосувати фільтри" 
