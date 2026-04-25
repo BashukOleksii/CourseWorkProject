@@ -112,7 +112,7 @@
 
             <Border Grid.Row="1" 
                     Padding="20,15" 
-                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray950}}">
+                    BackgroundColor="#9333EA">
                 <Button Text="Зберегти" 
                         Command="{Binding SaveAndCloseCommand}"
                         IsEnabled="{Binding IsNotBusy}"

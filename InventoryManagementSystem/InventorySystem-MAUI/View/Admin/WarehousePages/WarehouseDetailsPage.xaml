@@ -11,6 +11,13 @@
 
     <Grid RowDefinitions="Auto, *">
 
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
         <ScrollView Grid.Row="0" Grid.RowSpan="2">
             <VerticalStackLayout Padding="20,10,20,30" Spacing="20">
 
@@ -29,20 +36,16 @@
 
                         <VerticalStackLayout Spacing="5">
                             <Label Text="Назва складу" FontAttributes="Bold" TextColor="#374151" Margin="5,0"/>
-                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 12" BackgroundColor="#F9FAFB" Padding="12,0">
-                                <Entry Text="{Binding Name}" 
+                            <Entry Text="{Binding Name}" 
                                        Placeholder="Введіть назву..."
                                        TextColor="#111827"/>
-                            </Border>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Spacing="5">
                             <Label Text="Загальна площа (м²)" FontAttributes="Bold" TextColor="#374151" Margin="5,0"/>
-                            <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 12" BackgroundColor="#F9FAFB" Padding="12,0">
-                                <Entry Text="{Binding Area}" 
+                            <Entry Text="{Binding Area}" 
                                        Keyboard="Numeric" 
                                        Placeholder="0.00"/>
-                            </Border>
                         </VerticalStackLayout>
                     </VerticalStackLayout>
                 </Border>
@@ -96,6 +99,7 @@
 
                 <VerticalStackLayout Spacing="12">
                     <Button Text="Зберегти зміни" 
+                            BorderColor="Blue"
                             Command="{Binding SaveCommand}"
                             BackgroundColor="#4F46E5"
                             TextColor="White"
@@ -109,8 +113,9 @@
 
                     <Button Text="Скасувати" 
                             Command="{Binding CancelCommand}"
-                            BackgroundColor="Transparent"
-                            TextColor="#6B7280"
+                            BorderColor="Red"
+                            BackgroundColor="#EF4444"
+                            TextColor="White"
                             CornerRadius="14"
                             HeightRequest="50"/>
                 </VerticalStackLayout>
