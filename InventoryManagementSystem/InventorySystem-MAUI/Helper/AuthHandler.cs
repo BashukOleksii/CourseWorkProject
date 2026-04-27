@@ -24,8 +24,8 @@ namespace InventorySystem_MAUI.Helper
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
 
-            if (!string.IsNullOrEmpty(_userContextService.AccessToken))
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _userContextService.AccessToken);
+                if (!string.IsNullOrEmpty(_userContextService.AccessToken))
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _userContextService.AccessToken);
 
             var response = await base.SendAsync(request, cancellationToken);
 

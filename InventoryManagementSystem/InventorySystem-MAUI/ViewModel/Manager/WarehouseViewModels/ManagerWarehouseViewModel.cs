@@ -61,7 +61,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task SelectWarehouse(WarehouseResponse warehouse)
         {
-            await ShellService.AbsoluteOpenPage(nameof(InventoryListPage), new Dictionary<string, object>
+            await ShellService.NavigateTo(nameof(InventoryListPage), new Dictionary<string, object>
             {
                 { "WarehouseId", warehouse.Id },
                 { "WarehouseName", warehouse.Name}

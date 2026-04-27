@@ -8,13 +8,16 @@
              BackgroundColor="#F8F9FA">
 
     <Grid RowDefinitions="Auto, *">
+
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
         <Grid Grid.Row="0" HeightRequest="120">
-            <Grid.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="#4F46E5" Offset="0.0"/>
-                    <GradientStop Color="Transparent" Offset="1.0"/>
-                </LinearGradientBrush>
-            </Grid.Background>
+
 
             <VerticalStackLayout Padding="20,10" Spacing="8">
                 <Label Text="{Binding WarehouseName}" 
@@ -24,20 +27,19 @@
                        HorizontalOptions="Center"
                        MaxLines="1" LineBreakMode="TailTruncation"/>
 
-                <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" HeightRequest="45">
-                    <Grid ColumnDefinitions="Auto, *, Auto">
-                        <Label Grid.Column="0" Text="🔍" VerticalOptions="Center" Margin="12,0,5,0"/>
-
-                        <Entry Grid.Column="1" Text="{Binding ItemSearchText}" 
+                <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" HeightRequest="70" Padding="5">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Entry Grid.Column="0" Text="{Binding ItemSearchText}" 
                                Placeholder="Шукати товар на складі" 
                                VerticalOptions="Center" 
-                               BackgroundColor="Transparent"/>
+                               BackgroundColor="Transparent"
+                               />
 
-                        <ImageButton Grid.Column="2" 
+                        <ImageButton Grid.Column="1" 
                                      Source="report.png" 
                                      Command="{Binding GoToAggregationCommand}"
-                                     HeightRequest="24" 
-                                     WidthRequest="24"
+                                     HeightRequest="50" 
+                                     WidthRequest="50"
                                      Margin="0,0,10,0"
                                      VerticalOptions="Center"
                                      BackgroundColor="Transparent"/>

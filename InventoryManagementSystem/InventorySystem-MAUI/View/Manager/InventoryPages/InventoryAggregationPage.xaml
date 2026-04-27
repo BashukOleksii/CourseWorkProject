@@ -11,6 +11,15 @@
              BackgroundColor="#F3F4F6">
 
     <Grid RowDefinitions="Auto, *">
+
+
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
         <Border Grid.Row="0" BackgroundColor="#4F46E5" StrokeThickness="0" Padding="15">
             <Grid ColumnDefinitions="*, Auto">
                 <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
@@ -18,7 +27,7 @@
                     <Button Text="XML" Command="{Binding ExportDataCommand}" CommandParameter="xml" HeightRequest="35" FontSize="12" BackgroundColor="#6366F1"/>
                     <Button Text="Імпорт" Command="{Binding ImportDataCommand}" HeightRequest="35" FontSize="12" BackgroundColor="#10B981"/>
                 </HorizontalStackLayout>
-                <ImageButton Grid.Column="1" Source="filter_white.png" Command="{Binding ToggleFilterCommand}" HeightRequest="30" WidthRequest="30"/>
+                <ImageButton Grid.Column="1" BackgroundColor="Transparent" Source="filter.png" Command="{Binding ToggleFilterCommand}" HeightRequest="30" WidthRequest="30"/>
             </Grid>
         </Border>
 

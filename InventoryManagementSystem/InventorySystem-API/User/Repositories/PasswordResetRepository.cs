@@ -15,7 +15,7 @@ namespace InventorySystem_API.User.Repositories
 
             var indexOptions = new CreateIndexOptions
             {
-                ExpireAfter = TimeSpan.FromHours(1)
+                ExpireAfter = TimeSpan.FromMinutes(5)
             };
 
             var indexModel = new CreateIndexModel<ResetPasswordModel>(indexKeys, indexOptions);
