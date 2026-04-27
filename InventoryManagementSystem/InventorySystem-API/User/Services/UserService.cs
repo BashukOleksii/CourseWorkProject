@@ -128,7 +128,7 @@ namespace InventorySystem_API.User.Services
             var validationResult = _validationRules.Validate(user);
 
             if (!validationResult.IsValid)
-                throw new ArgumentException(validationResult.ToString());
+                throw new ArgumentException(string.Join(";",validationResult.Errors.Select(e => e.ErrorMessage)));
 
             if (photo is not null)
             {

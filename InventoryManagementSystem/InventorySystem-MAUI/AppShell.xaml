@@ -16,6 +16,7 @@
           Padding="15,0,20,0">
 
             <Label Text="Warehouse System" 
+               Padding="15,0"
                TextColor="White"
                FontSize="20"
                FontAttributes="Bold"
@@ -28,8 +29,7 @@
                 WidthRequest="38"
                 StrokeShape="RoundRectangle 19"
                 StrokeThickness="1.5"
-                Stroke="White"
-                BackgroundColor="Transparent">
+                Stroke="White">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding GoToProfileCommand}"/>
                 </Border.GestureRecognizers>
@@ -43,55 +43,47 @@
         ContentTemplate="{DataTemplate views:WelcomePage}"
         IsVisible="{Binding IsNotAuthenticated}" />
 
-    
+    <FlyoutItem Title="Працівники"
+     IsVisible="{Binding IsAdmin}">
+        <ShellContent 
+     Route="UserListPage" 
+     ContentTemplate="{DataTemplate views:UserListPage}" />
+    </FlyoutItem>
+
     <FlyoutItem Title="Склади"
-            IsVisible="{Binding IsAuthenticated}">
+            IsVisible="{Binding IsAdmin}">
         <ShellContent 
         Route="WarehouseListPage" 
         ContentTemplate="{DataTemplate views:WarehouseListPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Працівники"
-        IsVisible="{Binding IsAuthenticated}">
-        <ShellContent 
-        Route="UserListPage" 
-        ContentTemplate="{DataTemplate views:UserListPage}" />
-    </FlyoutItem>
-
     <FlyoutItem Title="Компанія"
-        IsVisible="{Binding IsAuthenticated}">
+        IsVisible="{Binding IsAdmin}">
         <ShellContent 
         Route="CompanyPage" 
         ContentTemplate="{DataTemplate views:CompanyPage}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Логи"
-        IsVisible="{Binding IsAuthenticated}">
+        IsVisible="{Binding IsAdmin}">
         <ShellContent 
         Route="LogPage" 
         ContentTemplate="{DataTemplate views:LogPage}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Виробники"
-        IsVisible="{Binding IsAuthenticated}">
+        IsVisible="{Binding IsManager}">
         <ShellContent 
         Route="ManufacturerListPage" 
         ContentTemplate="{DataTemplate views:ManufacturerListPage}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Доступні склади"
-        IsVisible="{Binding IsAuthenticated}">
+        IsVisible="{Binding IsManager}">
         <ShellContent 
         Route="ManagerWarehousePage" 
          ContentTemplate="{DataTemplate views:ManagerWarehousePage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Техніка на склади"
-        IsVisible="{Binding IsAuthenticated}">
-        <ShellContent 
-            Route="InventoryListPage" 
-             ContentTemplate="{DataTemplate views:InventoryListPage}" />
-    </FlyoutItem>
-
-
+   
 </Shell>

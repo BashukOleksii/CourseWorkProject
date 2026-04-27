@@ -1,0 +1,59 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.ManufacturerListPage"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             xmlns:m="clr-namespace:InventorySystem_Shared.Inventory.Manufacturer;assembly=InventorySystem-Shared"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
+             x:DataType="vm:ManufacturerListViewModel"
+             BackgroundColor="#F8F9FA">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
+        <VerticalStackLayout Grid.Row="0" Padding="20,10" Spacing="10">
+            <Label Text="Виробники" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold" TextColor="White"/>
+
+            <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" HeightRequest="50">
+                <Entry Text="{Binding SearchText}"
+                       Margin="10,0,10,0"
+                       Placeholder="Пошук виробника"
+                       VerticalOptions="Center"/>
+
+            </Border>
+        </VerticalStackLayout>
+
+        <Grid Grid.Row="1">
+            <VerticalStackLayout IsVisible="{Binding IsListEmpty}" VerticalOptions="Center" HorizontalOptions="Center" Spacing="15">
+                <Label Text="📦" FontSize="80" HorizontalOptions="Center"/>
+                <Label Text="Список виробників порожній" FontSize="18" TextColor="#6B7280"/>
+                <Button Text="Додати першого" Command="{Binding AddManufacturerCommand}" WidthRequest="200" BackgroundColor="#4F46E5"/>
+            </VerticalStackLayout>
+
+            <CollectionView ItemsSource="{Binding DisplayedManufacturers}" Margin="15,10" IsVisible="{Binding IsListEmpty, Converter={StaticResource InverseBoolConverter}}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:InventoryManufacturer">
+                        <components:ManufacturerCard 
+                            EditCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:ManufacturerListViewModel}}, Path=EditCommand}"
+                            DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:ManufacturerListViewModel}}, Path=DeleteCommand}"/>  
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <components:AddButton AddCommand="{Binding AddManufacturerCommand}" VerticalOptions="End" HorizontalOptions="End" Margin="20,80"/>
+
+            <components:PaginationControl VerticalOptions="End" 
+                                          PageNumber="{Binding CurrentPage}" 
+                                          CanNext="{Binding CanGoNext}"
+                                          NextCommand="{Binding NextPageCommand}" 
+                                          PrevCommand="{Binding PreviousPageCommand}"/>
+        </Grid>
+
+        <components:LoadingOverlay Grid.RowSpan="2"/>
+    </Grid>
+</ContentPage>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace InventorySystem_MAUI.Helper
 {
@@ -23,8 +24,8 @@ namespace InventorySystem_MAUI.Helper
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
 
-            if (!string.IsNullOrEmpty(_userContextService.AccessToken))
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _userContextService.AccessToken);
+                if (!string.IsNullOrEmpty(_userContextService.AccessToken))
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _userContextService.AccessToken);
 
             var response = await base.SendAsync(request, cancellationToken);
 
@@ -44,8 +45,26 @@ namespace InventorySystem_MAUI.Helper
 
             if (!response.IsSuccessStatusCode)
             {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                throw new ApiException(response.StatusCode, errorContent);
+                var content = await response.Content.ReadAsStringAsync();
+                string errorMessage;
+
+                try
+                {
+                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var problemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(content, options);
+
+                    if (problemDetails?.Errors != null && problemDetails.Errors.Any())
+                        errorMessage = string.Join("\n", problemDetails.Errors.SelectMany(x => x.Value));
+                    else
+                        errorMessage = !string.IsNullOrWhiteSpace(content) ? content : "Невідомий тип помилки";
+                    
+                }
+                catch (JsonException)
+                {
+                    errorMessage = content;
+                }
+
+                throw new ApiException(response.StatusCode, errorMessage);
             }
 
 

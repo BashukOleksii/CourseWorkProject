@@ -1,105 +1,105 @@
-﻿using AutoMapper;
-using InventorySystem_API.User.Models;
-using InventorySystem_API.User.Repositories;
-using Microsoft.Extensions.Options;
-using MimeKit;
-using System.Text.RegularExpressions;
+﻿    using AutoMapper;
+    using InventorySystem_API.User.Models;
+    using InventorySystem_API.User.Repositories;
+    using Microsoft.Extensions.Options;
+    using MimeKit;
+    using System.Text.RegularExpressions;
 
-namespace InventorySystem_API.User.Services
-{
-    public class PasswordResetService : IPasswordResetService
+    namespace InventorySystem_API.User.Services
     {
-        private readonly IPasswordResetRepository _passwordResetRepository;
-        private readonly IHasher _bCryptHasher;
-        private readonly IUserRepository _userRepository;
-        private readonly EmailSettingOptions _emailData;
-
-        public PasswordResetService
-            (
-            IPasswordResetRepository passwordResetRepository,
-            IHasher bCryptHasher,
-            IUserRepository userRepository,
-            IOptions<EmailSettingOptions> emailData
-            )
+        public class PasswordResetService : IPasswordResetService
         {
-            _passwordResetRepository = passwordResetRepository;
-            _bCryptHasher = bCryptHasher;
-            _userRepository = userRepository;
-            _emailData = emailData.Value;
-        }
+            private readonly IPasswordResetRepository _passwordResetRepository;
+            private readonly IHasher _bCryptHasher;
+            private readonly IUserRepository _userRepository;
+            private readonly EmailSettingOptions _emailData;
 
-        public async Task ChangePassword(string email, string newPassword)
-        {
-            if (!Regex.IsMatch(newPassword, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,}$"))
-                throw new ArgumentException("Парль має містити " +
-                    "принаймні одну велику та малу англійську літеру," +
-                    " спеціальний символ та" +
-                    " мати довжину мінімум вісім символів"
-                );
+            public PasswordResetService
+                (
+                IPasswordResetRepository passwordResetRepository,
+                IHasher bCryptHasher,
+                IUserRepository userRepository,
+                IOptions<EmailSettingOptions> emailData
+                )
+            {
+                _passwordResetRepository = passwordResetRepository;
+                _bCryptHasher = bCryptHasher;
+                _userRepository = userRepository;
+                _emailData = emailData.Value;
+            }
 
-            var user = await _userRepository.GetByEmail(email);
+            public async Task ChangePassword(string email, string newPassword)
+            {
+                if (!Regex.IsMatch(newPassword, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,}$"))
+                    throw new ArgumentException("Парль має містити " +
+                        "принаймні одну велику та малу англійську літеру," +
+                        " спеціальний символ та" +
+                        " мати довжину мінімум вісім символів"
+                    );
 
-            if(user is null)
-                throw new ArgumentException($"Не знайдено коритувача із вказаною поштою: {email}");
+                var user = await _userRepository.GetByEmail(email);
 
-            user.PasswordHash = _bCryptHasher.Hash(newPassword);
+                if(user is null)
+                    throw new ArgumentException($"Не знайдено коритувача із вказаною поштою: {email}");
 
-            await _userRepository.Update(user);
+                user.PasswordHash = _bCryptHasher.Hash(newPassword);
 
-            await _passwordResetRepository.Delete(email);
+                await _userRepository.Update(user);
 
-        }
-
-        public async Task CheckCode(string email, string code)
-        {
-            var resetModel = await _passwordResetRepository.Get(email);
-
-            if (resetModel is null)
-                throw new ArgumentException("Час вийшов, зробіть новий запит");
-
-            if(!_bCryptHasher.Verify(code, resetModel.CodeHash))
-                throw new ArgumentException("Невірний код");
-        }
-
-        public async Task GenerateResetCode(string email)
-        {
-            var resetModel = await _passwordResetRepository.Get(email);
-            if(resetModel is not null)
                 await _passwordResetRepository.Delete(email);
 
-            var user = await _userRepository.GetByEmail(email);
+            }
 
-            if (user is null)
-                throw new ArgumentException($"Не знайдено коритувача із вказаною поштою: {email}");
-
-            string resetCode = new Random().Next(1000000, 9999999).ToString();
-
-            await _passwordResetRepository.Create(new ResetPasswordModel
+            public async Task CheckCode(string email, string code)
             {
-                Email = email,
-                CodeHash = _bCryptHasher.Hash(resetCode),
-                CreatedAt = DateTime.UtcNow
-            });
+                var resetModel = await _passwordResetRepository.Get(email);
 
-            var message = new MimeMessage();
+                if (resetModel is null)
+                    throw new ArgumentException("Час вийшов, зробіть новий запит");
 
-            message.From.Add(new MailboxAddress("InventorySystem", _emailData.From));
-            message.To.Add(MailboxAddress.Parse(email));
-            message.Subject = "Код для відновлення паролю";
+                if(!_bCryptHasher.Verify(code, resetModel.CodeHash))
+                    throw new ArgumentException("Невірний код");
+            }
 
-            var random = new Random();
-            message.Body = new TextPart("plain")
+            public async Task GenerateResetCode(string email)
             {
-                Text = $"Ваш код для відновлення паролю: {resetCode}"
-            };
+                var resetModel = await _passwordResetRepository.Get(email);
+                if(resetModel is not null)
+                    await _passwordResetRepository.Delete(email);
 
-            var smtp = new MailKit.Net.Smtp.SmtpClient();
+                var user = await _userRepository.GetByEmail(email);
 
-            await smtp.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-            await smtp.AuthenticateAsync(_emailData.From, _emailData.AppPassword);
-            await smtp.SendAsync(message);
-            await smtp.DisconnectAsync(true);
+                if (user is null)
+                    throw new ArgumentException($"Не знайдено коритувача із вказаною поштою: {email}");
+
+                string resetCode = new Random().Next(1000000, 9999999).ToString();
+
+                await _passwordResetRepository.Create(new ResetPasswordModel
+                {
+                    Email = email,
+                    CodeHash = _bCryptHasher.Hash(resetCode),
+                    CreatedAt = DateTime.UtcNow
+                });
+
+                var message = new MimeMessage();
+
+                message.From.Add(new MailboxAddress("InventorySystem", _emailData.From));
+                message.To.Add(MailboxAddress.Parse(email));
+                message.Subject = "Код для відновлення паролю";
+
+                var random = new Random();
+                message.Body = new TextPart("plain")
+                {
+                    Text = $"Ваш код для відновлення паролю: {resetCode}"
+                };
+
+                var smtp = new MailKit.Net.Smtp.SmtpClient();
+
+                await smtp.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+                await smtp.AuthenticateAsync(_emailData.From, _emailData.AppPassword);
+                await smtp.SendAsync(message);
+                await smtp.DisconnectAsync(true);
+            }
+
         }
-
     }
-}

@@ -68,7 +68,7 @@ namespace InventorySystem_API.Company.Service
             var validationResult = _compnyValidator.Validate(companyDTO);
 
             if (!validationResult.IsValid)
-                throw new ArgumentException(validationResult.Errors.ToString());
+                throw new ArgumentException(string.Join(";",validationResult.Errors.Select(e => e.ErrorMessage)));
 
             await _companyRepository.Update(companyModel);
 

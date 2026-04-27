@@ -1,0 +1,95 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.ManagerWarehousePage"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             xmlns:m="clr-namespace:InventorySystem_Shared.Warehouse;assembly=InventorySystem-Shared"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
+             x:DataType="vm:ManagerWarehouseViewModel"
+             Title="Мої Склади"
+             BackgroundColor="#F8F9FA">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
+        <Grid Grid.Row="1">
+            <VerticalStackLayout IsVisible="{Binding IsListEmpty}" 
+                                 VerticalOptions="Center" 
+                                 HorizontalOptions="Center" 
+                                 Spacing="15">
+                <Label Text="🏢" FontSize="80" HorizontalOptions="Center"/>
+                <Label Text="У вас немає доступу до жодного складу" 
+                       FontSize="18" 
+                       TextColor="White" 
+                       HorizontalTextAlignment="Center"/>
+                <Label Text="Зверніться до адміністратора фірми" 
+                       FontSize="14" 
+                       TextColor="Wheat"
+                       HorizontalTextAlignment="Center"
+                       />
+            </VerticalStackLayout>
+
+            <CollectionView ItemsSource="{Binding Warehouses}" 
+                            Margin="20,10"
+                            IsVisible="{Binding IsListEmpty, Converter={StaticResource InverseBoolConverter}}">
+                <CollectionView.Header>
+                    <Label Text="Доступні локації" 
+                           FontAttributes="Bold" 
+                           FontSize="24"
+                           TextColor="White"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,0,0,10"/>
+                </CollectionView.Header>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:WarehouseResponse">
+                        <Border StrokeShape="RoundRectangle 16" 
+                                Margin="0,8" 
+                                Padding="20" 
+                                BackgroundColor="White">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ManagerWarehouseViewModel}}, Path=SelectWarehouseCommand}" 
+                                                      CommandParameter="{Binding .}"/>
+                            </Border.GestureRecognizers>
+                            <Border.Shadow>
+                                <Shadow Brush="Black" Opacity="0.05" Offset="0,2" Radius="5"/>
+                            </Border.Shadow>
+
+                            <Grid ColumnDefinitions="Auto, *">
+                                <Border BackgroundColor="#EEF2FF" 
+                                        HeightRequest="60" 
+                                        WidthRequest="60" 
+                                        StrokeShape="RoundRectangle 12">
+                                    <Label Text="🏪" FontSize="30" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Border>
+
+                                <VerticalStackLayout Grid.Column="1" Margin="15,0" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="#111827"/>
+                                    <Label Text="{Binding Address.City}" FontSize="14" TextColor="#6B7280"/>
+                                    <Label Text="{Binding Description}" FontSize="12" TextColor="#9CA3AF" MaxLines="1" LineBreakMode="TailTruncation"/>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="80" Color="Transparent"/>
+                </CollectionView.Footer>
+            </CollectionView>
+
+            <components:PaginationControl VerticalOptions="End"
+                                          PageNumber="{Binding CurrentPage}"
+                                          CanNext="{Binding CanGoNext}"
+                                          NextCommand="{Binding NextPageCommand}"
+                                          PrevCommand="{Binding PreviousPageCommand}"/>
+        </Grid>
+
+        <components:LoadingOverlay Grid.RowSpan="2"/>
+    </Grid>
+</ContentPage>

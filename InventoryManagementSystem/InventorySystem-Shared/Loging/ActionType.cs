@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿    using System;
+    using System.Collections.Generic;
+    using System.Text;
 
-namespace InventorySystem_Shared.Loging
-{
-    public enum ActionType
+    namespace InventorySystem_Shared.Loging
     {
-        ReadOne,
-        ReadMany,
-        Create,
-        CreateMany,
-        Update,
-        Delete
+        public enum ActionType
+        {
+            ReadOne,
+            ReadMany,
+            Create,
+            CreateMany,
+            Update,
+            Delete
+        }
     }
-}
     

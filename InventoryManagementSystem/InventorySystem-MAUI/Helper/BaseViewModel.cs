@@ -23,7 +23,7 @@ namespace InventorySystem_MAUI.Helper
             }
             catch (ApiException ex)
             {
-                await Shell.Current.DisplayAlertAsync("Помилка API", ex.Content, "OK");
+                await Shell.Current.DisplayAlertAsync("Помилка", ex.Content, "OK");
             }
             catch (ApiEmptyResponseException ex)
             {

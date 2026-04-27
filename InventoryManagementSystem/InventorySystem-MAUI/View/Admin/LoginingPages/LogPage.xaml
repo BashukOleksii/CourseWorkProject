@@ -1,0 +1,133 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventorySystem_MAUI.View.LogPage"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             xmlns:log="clr-namespace:InventorySystem_Shared.Loging;assembly=InventorySystem-Shared"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
+             x:DataType="vm:LogViewModel"
+             BackgroundColor="#F8F9FA">
+
+    <Grid RowDefinitions="Auto, *">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid Grid.Row="0" Grid.RowSpan="2" RowDefinitions="Auto, *">
+            <VerticalStackLayout Grid.Row="0" Margin="15,10" Spacing="10">
+                <Border StrokeShape="RoundRectangle 16" BackgroundColor="White" Padding="15">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Opacity="0.1" Offset="0,4" Radius="10"/>
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="*, Auto, Auto">
+                            <Label Text="Логи аудиту" FontSize="20" FontAttributes="Bold" VerticalOptions="Center"/>
+                            <Button Grid.Column="1" Text="Очистити" IsVisible="{Binding IsFilterVisible}" Command="{Binding ResetFiltersCommand}" 
+                                    BackgroundColor="Transparent" TextColor="Gray" FontSize="12"/>
+                            <ImageButton Grid.Column="2" Source="filter.png" Command="{Binding ToggleFiltersCommand}" HeightRequest="30"/>
+                        </Grid>
+
+                        <VerticalStackLayout IsVisible="{Binding IsFilterVisible}" Spacing="12" Margin="0,10,0,0">
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Border Style="{StaticResource InputWrapperStyle}" Grid.Column="0">
+                                    <Entry Placeholder="User ID" Text="{Binding Query.UserId}" FontSize="12"/>
+                                </Border>
+                                <Border Style="{StaticResource InputWrapperStyle}" Grid.Column="1">
+                                    <Entry Placeholder="Ім'я користувача" Text="{Binding Query.UserName}" FontSize="12"/>
+                                </Border>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Border Style="{StaticResource InputWrapperStyle}" Grid.Column="0">
+                                    <Entry Placeholder="Entity ID" Text="{Binding Query.EntityId}" FontSize="12"/>
+                                </Border>
+                                <Picker Title="Тип об'єкта" ItemsSource="{Binding EntityOptions}" SelectedItem="{Binding Query.EntityType}" Grid.Column="1" FontSize="12"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Picker Title="Роль" ItemsSource="{Binding RoleOptions}" SelectedItem="{Binding Query.Role}" Grid.Column="0" FontSize="12"/>
+                                <Picker Title="Дія" ItemsSource="{Binding ActionOptions}" SelectedItem="{Binding Query.Action}" Grid.Column="1" FontSize="12"/>
+                            </Grid>
+
+                            <Label Text="Проміжок (Від — До):" FontSize="12" TextColor="Gray" Margin="5,0" FontAttributes="Bold"/>
+                            
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Background="MintCream">
+                                <VerticalStackLayout Grid.Column="0" Spacing="5">
+                                    <DatePicker Date="{Binding Query.From}" FontSize="12"/>
+                                    <TimePicker Format="HH:mm" Time="{Binding FromTime}" FontSize="12"/>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" Spacing="5">
+                                    <DatePicker Date="{Binding Query.To}" FontSize="12"/>
+                                    <TimePicker Format="HH:mm"  Time="{Binding ToTime}" FontSize="12"/>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Button Text="Застосувати фільтри" Command="{Binding ApplyFiltersCommand}" 
+                                    BackgroundColor="#4F46E5" FontAttributes="Bold" CornerRadius="12" HeightRequest="45"/>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Logs}" Margin="15,0">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="log:AuditLogResponse">
+                        <Border StrokeShape="RoundRectangle 12" Margin="0,8" Padding="15" BackgroundColor="White" StrokeThickness="0">
+                            <Grid ColumnDefinitions="4, *, Auto" ColumnSpacing="15">
+                                <BoxView Color="{Binding Action, Converter={StaticResource ActionToColorConverter}}" VerticalOptions="Fill"/>
+
+                                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                    <VerticalStackLayout Spacing="0">
+                                        <Label Text="{Binding UserName}" FontAttributes="Bold" FontSize="15" TextColor="#111827"/>
+                                        <Entry Text="{Binding UserId}" IsReadOnly="True" FontSize="10" TextColor="#9CA3AF" 
+                                               BackgroundColor="Transparent" HeightRequest="22" Margin="0" />
+                                    </VerticalStackLayout>
+
+                                    <Label FontSize="13">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Action}" FontAttributes="Bold" TextColor="#4F46E5"/>
+                                                <Span Text=" → " TextColor="#374151"/>
+                                                <Span Text="{Binding EntityType}" FontAttributes="Bold" TextColor="#111827"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <HorizontalStackLayout Spacing="2">
+                                        <Label Text="Entity ID: " FontSize="10" TextColor="#6B7280" VerticalOptions="Center"/>
+                                        <Entry Text="{Binding EntityId}" IsReadOnly="True" FontSize="10" TextColor="#6B7280" 
+                                               BackgroundColor="Transparent" HeightRequest="22" WidthRequest="250" Margin="0"/>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Grid.Column="2" HorizontalOptions="End" VerticalOptions="Center">
+                                    <Label Text="{Binding TimeStamp, StringFormat='{0:dd.MM}'}" FontSize="11" TextColor="Gray" HorizontalOptions="End"/>
+                                    <Label Text="{Binding TimeStamp, StringFormat='{0:HH:mm}'}" FontSize="13" FontAttributes="Bold" HorizontalOptions="End"/>
+                                </VerticalStackLayout>
+                            </Grid>
+                            
+                        </Border>
+                        
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="100" Color="Transparent"/>
+                </CollectionView.Footer>
+            </CollectionView>
+        </Grid>
+
+        <components:PaginationControl Grid.Row="1" VerticalOptions="End"
+                                      PageNumber="{Binding CurrentPage}" CanNext="{Binding CanGoNext}"
+                                      NextCommand="{Binding NextPageCommand}" PrevCommand="{Binding PreviousPageCommand}"/>
+
+        <components:LoadingOverlay Grid.RowSpan="2"/>
+    </Grid>
+</ContentPage>

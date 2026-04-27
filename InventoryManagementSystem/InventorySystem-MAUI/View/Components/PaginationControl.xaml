@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventorySystem_MAUI.View.Components.PaginationControl">
 
-    <Border BackgroundColor="White" Padding="15,10" StrokeThickness="1" Stroke="#F3F4F6">
+    <Border BackgroundColor="#9333EA" Padding="15,10" Stroke="#F3F4F6">
         <Grid ColumnDefinitions="*, Auto, *">
             <Button Grid.Column="0" Text="Назад" 
                     Command="{Binding Source={RelativeSource AncestorType={x:Type ContentView}}, Path=PrevCommand}" 
