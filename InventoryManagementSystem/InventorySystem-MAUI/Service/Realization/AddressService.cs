@@ -7,7 +7,7 @@ using System.Text;
 
 namespace InventorySystem_MAUI.Service
 {
-    public class AddressService
+    public class AddressService : IAddressService
     {
         private readonly HttpClient _httpClient;
 

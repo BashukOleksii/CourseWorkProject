@@ -34,7 +34,7 @@ namespace InventorySystem_MAUI
 
             #region Service
             builder.Services.AddSingleton<IUserContextService,UserContextService>();
-            builder.Services.AddSingleton<AddressService>();
+            builder.Services.AddSingleton<IAddressService, AddressService>();
             builder.Services.AddSingleton<ICompanyService,CompanyService>();
             builder.Services.AddSingleton<IAuthService,AuthService>();
             builder.Services.AddSingleton<IResetPasswordService,ResetPasswordService>();
