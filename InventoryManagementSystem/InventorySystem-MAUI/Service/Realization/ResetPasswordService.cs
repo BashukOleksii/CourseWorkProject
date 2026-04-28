@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace InventorySystem_MAUI.Service
 {
-    public class ResetPasswordService
+    public class ResetPasswordService : IResetPasswordService
     {
         private readonly HttpClient _httpClient;
 

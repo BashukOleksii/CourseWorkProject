@@ -6,7 +6,7 @@ using InventorySystem_Shared.AddressClass;
 using InventorySystem_Shared.Company;
 using System.Threading.Tasks;
 
-namespace InventoryManagementSystem_Tests
+namespace InventoryManagementSystem_Tests.ViewModels
 {
     public class CompanyCreateViewModelTests
     {

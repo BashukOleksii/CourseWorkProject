@@ -7,14 +7,14 @@ namespace InventorySystem_MAUI.ViewModel
 {
     public partial class ForgotPasswordViewModel : BaseViewModel
     {
-        private readonly ResetPasswordService _resetPasswordService;
+        private readonly IResetPasswordService _resetPasswordService;
 
         [ObservableProperty] private string email;
         [ObservableProperty] private string resetCode;
         [ObservableProperty] private string newPassword;
         [ObservableProperty] private bool isCodeSent; 
 
-        public ForgotPasswordViewModel(ResetPasswordService resetPasswordService)
+        public ForgotPasswordViewModel(IResetPasswordService resetPasswordService)
         {
             _resetPasswordService = resetPasswordService;
             IsCodeSent = false;
@@ -29,7 +29,7 @@ namespace InventorySystem_MAUI.ViewModel
             {
                 await _resetPasswordService.RequestResetCode(Email);
                 IsCodeSent = true;
-                await Shell.Current.DisplayAlertAsync("Успіх", "Код відправлено на пошту", "OK");
+                await ShellService.DisplayAlert("Успіх", "Код відправлено на пошту", "OK");
             });
 
         }

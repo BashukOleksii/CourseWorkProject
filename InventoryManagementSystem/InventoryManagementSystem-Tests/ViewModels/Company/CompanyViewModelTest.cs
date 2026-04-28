@@ -5,7 +5,7 @@ using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.Company;
 using InventorySystem_Shared.AddressClass;
 
-namespace InventoryManagementSystem_Tests
+namespace InventoryManagementSystem_Tests.ViewModels
 {
     public class CompanyViewModelTests
     {
