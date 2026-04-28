@@ -8,7 +8,7 @@ using System.Text;
 
 namespace InventorySystem_MAUI.Service
 {
-    public class CompanyService
+    public class CompanyService : ICompanyService
     {
         private readonly HttpClient _httpClient;
 

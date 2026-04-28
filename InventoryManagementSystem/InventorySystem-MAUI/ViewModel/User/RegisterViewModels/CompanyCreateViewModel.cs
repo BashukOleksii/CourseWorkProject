@@ -12,7 +12,7 @@ namespace InventorySystem_MAUI.ViewModel
     [QueryProperty(nameof(SelectedAddress), "SelectedAddress")]
     public partial class CompanyCreateViewModel : BaseViewModel
     {
-        private readonly CompanyService _companyService;
+        private readonly ICompanyService _companyService;
 
         [ObservableProperty] private string name;
         [ObservableProperty] private string description;
@@ -20,7 +20,7 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private Address? selectedAddress;
         [ObservableProperty] private string addressDisplay = "Адресу не обрано";
 
-        public CompanyCreateViewModel(CompanyService companyService)
+        public CompanyCreateViewModel(ICompanyService companyService)
         {
             _companyService = companyService;
         }
@@ -45,7 +45,7 @@ namespace InventorySystem_MAUI.ViewModel
                    string.IsNullOrEmpty(Description) ||
                    string.IsNullOrEmpty(Phone))
             {
-                await Shell.Current.DisplayAlertAsync("Помилка", "Заповніть всі поля", "OK");
+                await ShellService.DisplayAlert("Помилка", "Заповніть всі поля", "OK");
                 return;
             }
 
