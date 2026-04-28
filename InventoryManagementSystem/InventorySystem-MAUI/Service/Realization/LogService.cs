@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace InventorySystem_MAUI.Service
 {
-    public class LogService
+    public class LogService : ILogService
     {
         private readonly HttpClient _httpClient;
 

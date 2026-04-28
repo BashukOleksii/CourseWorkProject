@@ -31,8 +31,4 @@
 		<ProjectReference Include="..\InventorySystem-Shared\InventorySystem-Shared.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="ViewModels\Logining\" />
-	</ItemGroup>
-
 </Project>

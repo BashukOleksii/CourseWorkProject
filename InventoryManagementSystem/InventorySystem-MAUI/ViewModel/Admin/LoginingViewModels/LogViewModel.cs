@@ -10,7 +10,7 @@ namespace InventorySystem_MAUI.ViewModel;
 
 public partial class LogViewModel : BaseViewModel
 {
-    private readonly LogService _logService;
+    private readonly ILogService _logService;
 
     [ObservableProperty] private ObservableCollection<AuditLogResponse> logs = new();
     [ObservableProperty] private AuditLogQuery query = new();
@@ -25,10 +25,9 @@ public partial class LogViewModel : BaseViewModel
     public List<ActionType?> ActionOptions { get; } = Enum.GetValues(typeof(ActionType)).Cast<ActionType?>().Prepend(null).ToList();
     public List<EntityType?> EntityOptions { get; } = Enum.GetValues(typeof(EntityType)).Cast<EntityType?>().Prepend(null).ToList();
 
-    public LogViewModel(LogService logService)
+    public LogViewModel(ILogService logService)
     {
         _logService = logService;
-        Task.Run(async () => await ApplyFilters());
     }
 
     [RelayCommand]

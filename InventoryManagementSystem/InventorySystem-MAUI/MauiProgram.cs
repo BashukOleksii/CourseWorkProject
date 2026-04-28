@@ -40,7 +40,7 @@ namespace InventorySystem_MAUI
             builder.Services.AddSingleton<IResetPasswordService,ResetPasswordService>();
             builder.Services.AddSingleton<IWarehouseService ,WarehouseService>();
             builder.Services.AddSingleton<IUserService,UserService>();
-            builder.Services.AddSingleton<LogService>();
+            builder.Services.AddSingleton<ILogService, LogService>();
             builder.Services.AddSingleton<IManufacturerService,ManufacturerService>();
             builder.Services.AddSingleton<IInventoryService,InventoryService>();
             #endregion
