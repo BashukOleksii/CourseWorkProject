@@ -13,7 +13,7 @@ namespace InventorySystem_MAUI.ViewModel
 {
     public partial class UserListViewModel : BaseViewModel
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
         private CancellationTokenSource _searchCts;
 
         [ObservableProperty] private ObservableCollection<UserResponse> users = new();
@@ -22,7 +22,7 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private int pageSize = 10;
         [ObservableProperty] private bool canGoNext;
 
-        public UserListViewModel(UserService userService)
+        public UserListViewModel(IUserService userService)
         {
             _userService = userService;
         }
@@ -70,7 +70,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task DeleteUser(UserResponse user)
         {
-            if (await Shell.Current.DisplayAlertAsync("Видалення", $"Видалити {user.Name}?", "Так", "Ні"))
+            if (await ShellService.DisplayAlert("Видалення", $"Видалити {user.Name}?", "Так", "Ні"))
             {
                 await RunBusyTask(async () => {
                     await _userService.DeleteUser(user.Id);

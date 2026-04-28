@@ -10,7 +10,7 @@ namespace InventorySystem_MAUI.ViewModel;
 [QueryProperty(nameof(SelectedWarehouseIds), "SelectedWarehouseIds")] 
 public partial class UserDetailViewModel : BaseViewModel
 {
-    private readonly UserService _userService;
+    private readonly IUserService _userService;
 
     [ObservableProperty] private string userId;
 
@@ -27,7 +27,7 @@ public partial class UserDetailViewModel : BaseViewModel
 
     public bool IsManager => User?.UserRole == UserRole.manager;
 
-    public UserDetailViewModel(UserService userService)
+    public UserDetailViewModel(IUserService userService)
     {
         _userService = userService;
     }
@@ -39,7 +39,6 @@ public partial class UserDetailViewModel : BaseViewModel
         await RunBusyTask(async () =>
         {
             await _userService.UpdateUserWarehouses(User.Id, value);
-            await Shell.Current.DisplayAlertAsync("Успіх", "Список складів оновлено", "OK");
         });
 
         await LoadUserDetails();
