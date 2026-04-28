@@ -42,7 +42,7 @@ namespace InventorySystem_MAUI
             builder.Services.AddSingleton<IUserService,UserService>();
             builder.Services.AddSingleton<LogService>();
             builder.Services.AddSingleton<IManufacturerService,ManufacturerService>();
-            builder.Services.AddSingleton<InventoryService>();
+            builder.Services.AddSingleton<IInventoryService,InventoryService>();
             #endregion
 
             #region AppShell

@@ -13,8 +13,8 @@ namespace InventorySystem_MAUI.ViewModel;
 [QueryProperty(nameof(ItemId), "Id")]
 public partial class InventoryDetailsViewModel : BaseViewModel
 {
-    private readonly InventoryService _inventoryService;
-    private readonly ManufacturerService _manufacturerService;
+    private readonly IInventoryService _inventoryService;
+    private readonly IManufacturerService _manufacturerService;
 
     [ObservableProperty] private string warehouseId = string.Empty;
     [ObservableProperty] private string itemId = string.Empty;
@@ -28,14 +28,14 @@ public partial class InventoryDetailsViewModel : BaseViewModel
     [ObservableProperty] private InventoryManufacturer? selectedManufacturer;
 
     [ObservableProperty] private FileResult? photoFile;
-    [ObservableProperty] private ImageSource? previewImage;
+    [ObservableProperty] private object? previewImage;
 
     [ObservableProperty] private ObservableCollection<CustomFieldItem> dynamicFields = new();
 
     [ObservableProperty] private ObservableCollection<InventoryManufacturer> manufacturers = new();
     public List<InventoryType> InventoryTypes => Enum.GetValues(typeof(InventoryType)).Cast<InventoryType>().ToList();
 
-    public InventoryDetailsViewModel(InventoryService inventoryService, ManufacturerService manufacturerService)
+    public InventoryDetailsViewModel(IInventoryService inventoryService, IManufacturerService manufacturerService)
     {
         _inventoryService = inventoryService;
         _manufacturerService = manufacturerService;
@@ -97,7 +97,7 @@ public partial class InventoryDetailsViewModel : BaseViewModel
     {
         if (string.IsNullOrWhiteSpace(Name) || SelectedManufacturer == null)
         {
-            await Shell.Current.DisplayAlertAsync("Помилка", "Заповніть назву та виберіть виробника", "OK");
+            await ShellService.DisplayAlert("Помилка", "Заповніть назву та виберіть виробника", "OK");
             return;
         }
 
@@ -136,7 +136,7 @@ public partial class InventoryDetailsViewModel : BaseViewModel
                 await _inventoryService.UpdateItem(ItemId, updateDto, PhotoFile);
             }
 
-            await Shell.Current.GoToAsync("..");
+            await ShellService.GoBack();
         });
     }
 

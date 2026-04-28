@@ -11,7 +11,7 @@ namespace InventorySystem_MAUI.ViewModel;
 [QueryProperty(nameof(WarehouseId), "WarehouseId")]
 public partial class InventoryAggregationViewModel : BaseViewModel
 {
-    private readonly InventoryService _inventoryService;
+    private readonly IInventoryService _inventoryService;
 
     [ObservableProperty] private string warehouseId = string.Empty;
     [ObservableProperty] private ObservableCollection<InventoryResponse> items = new();
@@ -26,7 +26,7 @@ public partial class InventoryAggregationViewModel : BaseViewModel
         .Prepend(null)
         .ToList();
 
-    public InventoryAggregationViewModel(InventoryService inventoryService)
+    public InventoryAggregationViewModel(IInventoryService inventoryService)
     {
         _inventoryService = inventoryService;
     }
