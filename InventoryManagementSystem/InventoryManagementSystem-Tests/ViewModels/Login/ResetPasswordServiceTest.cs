@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem_Tests.ViewModels
 {
-    public class ForgotPasswordViewModelTests
+    public class ForgotPasswordViewModelTest
     {
         private readonly Mock<IResetPasswordService> _resetServiceMock;
         private readonly ForgotPasswordViewModel _viewModel;
 
-        public ForgotPasswordViewModelTests()
+        public ForgotPasswordViewModelTest()
         {
             _resetServiceMock = new Mock<IResetPasswordService>();
             _viewModel = new ForgotPasswordViewModel(_resetServiceMock.Object);

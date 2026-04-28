@@ -7,14 +7,14 @@ using InventorySystem_Shared.Company;
 
 namespace InventoryManagementSystem_Tests.ViewModels
 {
-    public class ProfileViewModelTests
+    public class ProfileViewModelTest
     {
         private readonly Mock<IUserService> _userServiceMock;
         private readonly Mock<ICompanyService> _companyServiceMock;
         private readonly Mock<IUserContextService> _userContextMock;
         private readonly ProfileViewModel _viewModel;
 
-        public ProfileViewModelTests()
+        public ProfileViewModelTest()
         {
             _userServiceMock = new Mock<IUserService>();
             _companyServiceMock = new Mock<ICompanyService>();

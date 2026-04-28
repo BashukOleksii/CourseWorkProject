@@ -10,16 +10,16 @@ namespace InventorySystem_MAUI.ViewModel
     [QueryProperty(nameof(CompanyId), "CompanyId")] 
     public partial class UserCreateViewModel : BaseViewModel
     {
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
         [ObservableProperty] private string companyId;
         [ObservableProperty] private string name;
         [ObservableProperty] private string email;
         [ObservableProperty] private string password;
         [ObservableProperty] private FileResult? selectedPhoto;
-        [ObservableProperty] private ImageSource? previewImage = "default_user.png";
+        [ObservableProperty] private object? previewImage = "default_user.png";
 
-        public UserCreateViewModel(AuthService authService)
+        public UserCreateViewModel(IAuthService authService)
         {
             _authService = authService;
         }
@@ -39,7 +39,7 @@ namespace InventorySystem_MAUI.ViewModel
             }
             catch
             {
-                await Shell.Current.DisplayAlertAsync("Помилка", "Не вдалося вибрати фото", "OK");
+                await ShellService.DisplayAlert("Помилка", "Не вдалося вибрати фото", "OK");
             }
         }
 
@@ -48,7 +48,7 @@ namespace InventorySystem_MAUI.ViewModel
         {
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
-                await Shell.Current.DisplayAlertAsync("Помилка", "Заповніть усі обов'язкові поля", "OK");
+                await ShellService.DisplayAlert("Помилка", "Заповніть усі обов'язкові поля", "OK");
                 return;
             }
 

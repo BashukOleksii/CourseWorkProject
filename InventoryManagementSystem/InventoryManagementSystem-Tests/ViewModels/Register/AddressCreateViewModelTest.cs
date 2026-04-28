@@ -6,12 +6,12 @@ using InventorySystem_Shared.AddressClass;
 
 namespace InventoryManagementSystem_Tests.ViewModels
 {
-    public class AddressCreateViewModelTests
+    public class AddressCreateViewModelTest
     {
         private readonly Mock<IAddressService> _addressServiceMock;
         private readonly AddressCreateViewModel _viewModel;
 
-        public AddressCreateViewModelTests()
+        public AddressCreateViewModelTest()
         {
             _addressServiceMock = new Mock<IAddressService>();
             _viewModel = new AddressCreateViewModel(_addressServiceMock.Object);
