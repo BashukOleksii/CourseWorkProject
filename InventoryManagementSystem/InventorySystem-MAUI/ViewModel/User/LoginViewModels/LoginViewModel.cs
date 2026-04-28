@@ -9,8 +9,8 @@ namespace InventorySystem_MAUI.ViewModel
 {
     public partial class LoginViewModel : BaseViewModel
     {
-        private readonly AuthService _authService;
-        private readonly UserContextService _userContextService;
+        private readonly IAuthService _authService;
+        private readonly IUserContextService _userContextService;
 
         [ObservableProperty]
         private string email;
@@ -18,7 +18,7 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty]
         private string password;
 
-        public LoginViewModel(AuthService authService, UserContextService userContextService)
+        public LoginViewModel(IAuthService authService, IUserContextService userContextService)
         {
             _authService = authService;
             _userContextService = userContextService;
@@ -29,7 +29,7 @@ namespace InventorySystem_MAUI.ViewModel
         {
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
-                await Shell.Current.DisplayAlertAsync("Помилка", "Заповніть всі поля", "OK");
+                await ShellService.DisplayAlert("Помилка", "Заповніть всі поля", "OK");
                 return;
             }
 

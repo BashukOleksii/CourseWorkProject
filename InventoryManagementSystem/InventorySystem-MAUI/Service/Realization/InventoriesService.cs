@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 
 namespace InventorySystem_MAUI.Service
 {
-    public class InventoryService
+    public class InventoryService : IInventoryService
     {
         private readonly HttpClient _httpClient;
 

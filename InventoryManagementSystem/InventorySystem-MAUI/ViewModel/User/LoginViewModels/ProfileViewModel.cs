@@ -12,9 +12,9 @@ namespace InventorySystem_MAUI.ViewModel
 {
     public partial class ProfileViewModel : BaseViewModel
     {
-        private readonly UserService _userService;
-        private readonly CompanyService _companyService;
-        private readonly UserContextService _userContext;
+        private readonly IUserService _userService;
+        private readonly ICompanyService _companyService;
+        private readonly IUserContextService _userContext;
 
         [ObservableProperty] private string name;
         [ObservableProperty] private string email;
@@ -29,16 +29,14 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private string confirmPassword;
         
 
-        public ProfileViewModel(UserService userService, CompanyService companyService, UserContextService userContext)
+        public ProfileViewModel(IUserService userService, ICompanyService companyService, IUserContextService userContext)
         {
             _userService = userService;
             _companyService = companyService;
             _userContext = userContext;
-
-            LoadData();
         }
 
-        private async void LoadData()
+        public async Task LoadData()
         {
             await RunBusyTask(async () =>
             {
@@ -60,7 +58,7 @@ namespace InventorySystem_MAUI.ViewModel
         {
             if (!string.IsNullOrEmpty(NewPassword) && NewPassword != ConfirmPassword)
             {
-                await Shell.Current.DisplayAlertAsync("Error", "Паролі не збігаються", "OK");
+                await ShellService.DisplayAlert("Помилка", "Паролі не збігаються", "OK");
                 return;
             }
 
@@ -94,7 +92,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task Logout()
         {
-            bool confirm = await Shell.Current.DisplayAlertAsync("Вихід", "Ви дійсно хочете вийти з акаунту?", "Так", "Ні");
+            bool confirm = await ShellService.DisplayAlert("Вихід", "Ви дійсно хочете вийти з акаунту?", "Так", "Ні");
             if (confirm)
             {
                 _userContext.LogOut();

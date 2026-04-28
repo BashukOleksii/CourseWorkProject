@@ -9,4 +9,11 @@ public partial class WarehouseReportPage : ContentPage
 		InitializeComponent();
 		BindingContext = viewModel;
 	}
+
+	protected override void OnAppearing()
+	{
+		base.OnAppearing();
+		var vm = (WarehouseReportViewModel)BindingContext;
+		vm.ApplyFiltersCommand.Execute(null);
+    }
 }

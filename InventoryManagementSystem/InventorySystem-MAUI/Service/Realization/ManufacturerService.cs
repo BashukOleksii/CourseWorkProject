@@ -3,7 +3,7 @@ using InventorySystem_Shared.Inventory.Manufacturer;
 
 namespace InventorySystem_MAUI.Service;
 
-public class ManufacturerService
+public class ManufacturerService : IManufacturerService
 {
     private readonly string _filePath = Path.Combine(FileSystem.AppDataDirectory, "manufacturers.json");
 

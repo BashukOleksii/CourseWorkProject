@@ -11,7 +11,7 @@ namespace InventorySystem_MAUI.ViewModel
     [QueryProperty(nameof(InitialAddress), "InitialAddress")]
     public partial class AddressCreateViewModel : BaseViewModel
     {
-        private readonly AddressService _addressService;
+        private readonly IAddressService _addressService;
 
         [ObservableProperty] private Address? initialAddress;
 
@@ -24,7 +24,7 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private double? latitude;
         [ObservableProperty] private double? longitude;
 
-        public AddressCreateViewModel(AddressService addressService)
+        public AddressCreateViewModel(IAddressService addressService)
         {
             _addressService = addressService;
         }
@@ -54,7 +54,7 @@ namespace InventorySystem_MAUI.ViewModel
                 if (result != null)
                 {
                     UpdateFields(result);
-                    await Shell.Current.DisplayAlertAsync("Успіх", "Адресу уточнено через сервіс", "OK");
+                    await ShellService.DisplayAlert("Успіх", "Адресу уточнено через сервіс", "OK");
                 }
             });
         }
@@ -64,7 +64,7 @@ namespace InventorySystem_MAUI.ViewModel
         {
             if (Latitude == null || Longitude == null)
             {
-                await Shell.Current.DisplayAlertAsync("Помилка", "Введіть широту та довготу", "OK");
+                await ShellService.DisplayAlert("Помилка", "Введіть широту та довготу", "OK");
                 return;
             }
 
@@ -76,7 +76,7 @@ namespace InventorySystem_MAUI.ViewModel
                 if (result != null)
                 {
                     UpdateFields(result);
-                    await Shell.Current.DisplayAlertAsync("Успіх", "Адресу знайдено за координатами", "OK");
+                    await ShellService.DisplayAlert("Успіх", "Адресу знайдено за координатами", "OK");
                 }
             });
         }

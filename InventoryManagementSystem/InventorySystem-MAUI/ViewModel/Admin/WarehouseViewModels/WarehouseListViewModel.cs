@@ -10,7 +10,7 @@ namespace InventorySystem_MAUI.ViewModel
 {
     public partial class WarehouseListViewModel : BaseViewModel
     {
-        private readonly WarehouseService _warehouseService;
+        private readonly IWarehouseService _warehouseService;
         private CancellationTokenSource _searchCts; 
 
         [ObservableProperty] private ObservableCollection<WarehouseResponse> warehouses = new();
@@ -19,7 +19,7 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private int pageSize = 5;
         [ObservableProperty] private bool canGoNext;
 
-        public WarehouseListViewModel(WarehouseService warehouseService)
+        public WarehouseListViewModel(IWarehouseService warehouseService)
         {
             _warehouseService = warehouseService;
         }
@@ -78,7 +78,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task Delete(WarehouseResponse warehouse)
         {
-            bool confirm = await Shell.Current.DisplayAlertAsync("Видалення", $"Ви впевнSені, що хочете видалити {warehouse.Name}?", "Так", "Ні");
+            bool confirm = await ShellService.DisplayAlert("Видалення", $"Ви впевнені, що хочете видалити {warehouse.Name}?", "Так", "Ні");
             if (!confirm) return;
 
             await RunBusyTask(async () =>

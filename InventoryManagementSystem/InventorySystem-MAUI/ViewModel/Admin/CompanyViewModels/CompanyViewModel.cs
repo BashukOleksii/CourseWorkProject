@@ -10,7 +10,7 @@ namespace InventorySystem_MAUI.ViewModel;
 [QueryProperty(nameof(SelectedAddress), "SelectedAddress")]
 public partial class CompanyViewModel : BaseViewModel
 {
-    private readonly CompanyService _companyService;
+    private readonly ICompanyService _companyService;
 
     [ObservableProperty] private CompanyResponse company;
     [ObservableProperty] private string name;
@@ -20,13 +20,12 @@ public partial class CompanyViewModel : BaseViewModel
 
     [ObservableProperty] private Address selectedAddress;
 
-    public CompanyViewModel(CompanyService companyService)
+    public CompanyViewModel(ICompanyService companyService)
     {
         _companyService = companyService;
-        Task.Run(async () => await LoadCompany());
     }
 
-    private async Task LoadCompany()
+    public async Task LoadCompany()
     {
         await RunBusyTask(async () =>
         {

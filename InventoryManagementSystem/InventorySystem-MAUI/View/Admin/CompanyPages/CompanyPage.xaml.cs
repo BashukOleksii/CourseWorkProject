@@ -9,4 +9,12 @@ public partial class CompanyPage : ContentPage
 		InitializeComponent();
 		BindingContext = companyViewModel;
 	}
+
+	protected override async void OnAppearing()
+	{
+		base.OnAppearing();
+		if (BindingContext is CompanyViewModel vm)
+			await vm.LoadCompany();
+		
+    }
 }

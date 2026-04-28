@@ -8,6 +8,9 @@ namespace InventorySystem_MAUI.Helper
     {
         public static async Task NavigateTo(string route, Dictionary<string, object> paramters = null)
         {
+            if (Shell.Current is null)
+                return;
+
             if(paramters is null)
                 await Shell.Current.GoToAsync(route);
             else
@@ -18,7 +21,10 @@ namespace InventorySystem_MAUI.Helper
 
         public static async Task GoBack(Dictionary<string, object> paramters = null)
         {
-            if(paramters is null)
+            if (Shell.Current is null)
+                return;
+
+            if (paramters is null)
                 await Shell.Current.GoToAsync("..");
             else
                 await Shell.Current.GoToAsync("..", paramters);
@@ -26,10 +32,28 @@ namespace InventorySystem_MAUI.Helper
 
         public static async Task AbsoluteOpenPage(string route, Dictionary<string, object> paramters = null)
         {
+            if (Shell.Current is null)
+                return;
+
             if (paramters is null)
                  await Shell.Current.GoToAsync($"//{route}");
             else
                 await Shell.Current.GoToAsync($"//{route}",paramters);
         } 
+
+        public static async Task DisplayAlert(string title, string message, string cancel)
+        {
+            if (Shell.Current is null)
+                return;
+            await Shell.Current.DisplayAlertAsync(title, message, cancel);
+        }
+
+        public static async Task<bool> DisplayAlert(string title, string message, string cancel, string ok)
+        {
+            if (Shell.Current is null)
+                return true;
+
+            return await Shell.Current.DisplayAlertAsync(title, message, cancel, ok);
+        }
     }
 }

@@ -23,15 +23,15 @@ namespace InventorySystem_MAUI.Helper
             }
             catch (ApiException ex)
             {
-                await Shell.Current.DisplayAlertAsync("Помилка", ex.Content, "OK");
+                await ShellService.DisplayAlert("Помилка", ex.Content, "OK");
             }
             catch (ApiEmptyResponseException ex)
             {
-                await Shell.Current.DisplayAlertAsync("Помилка даних", ex.Message, "OK");
+                await ShellService.DisplayAlert("Помилка даних", ex.Message, "OK");
             }
             catch (HttpRequestException ex)
             {
-                await Shell.Current.DisplayAlertAsync("Мережа", "Не вдалося з'єднатися з сервером", "OK");
+                await ShellService.DisplayAlert("Мережа", "Не вдалося з'єднатися з сервером", "OK");
             }
             finally
             {

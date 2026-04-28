@@ -9,4 +9,13 @@ public partial class UserReportPage : ContentPage
 		InitializeComponent();
 		BindingContext = userReportViewModel;
 	}
+
+	protected override void OnAppearing()
+	{
+		base.OnAppearing();
+		if (BindingContext is UserReportViewModel vm)
+		{
+			vm.ApplyFiltersCommand.Execute(null);
+		}
+    }
 }

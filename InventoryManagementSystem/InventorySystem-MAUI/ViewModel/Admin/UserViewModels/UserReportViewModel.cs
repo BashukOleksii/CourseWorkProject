@@ -13,7 +13,7 @@ namespace InventorySystem_MAUI.ViewModel
 {
     public partial class UserReportViewModel : BaseViewModel
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
         [ObservableProperty] private ObservableCollection<UserResponse> users = new();
         [ObservableProperty] private UserQuery query = new() { PageSize = 10, Page = 1 };
@@ -24,10 +24,9 @@ namespace InventorySystem_MAUI.ViewModel
 
         public List<UserRole?> Roles { get; } = new() { null, UserRole.admin, UserRole.manager };
 
-        public UserReportViewModel(UserService userService)
+        public UserReportViewModel(IUserService userService)
         {
             _userService = userService;
-            Task.Run(async () => await ApplyFilters());
         }
 
         [RelayCommand]
@@ -76,7 +75,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task DeleteUser(UserResponse user)
         {
-            bool confirm = await Shell.Current.DisplayAlertAsync("Видалення", $"Видалити користувача {user.Name}?", "Так", "Ні");
+            bool confirm = await ShellService.DisplayAlert("Видалення", $"Видалити користувача {user.Name}?", "Так", "Ні");
             if (!confirm) return;
 
             await RunBusyTask(async () =>

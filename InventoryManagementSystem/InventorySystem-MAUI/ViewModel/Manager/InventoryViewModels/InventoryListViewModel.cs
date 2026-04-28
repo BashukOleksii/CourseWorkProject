@@ -12,7 +12,7 @@ namespace InventorySystem_MAUI.ViewModel;
 [QueryProperty(nameof(WarehouseName), "WarehouseName")]
 public partial class InventoryListViewModel : BaseViewModel
 {
-    private readonly InventoryService _inventoryService;
+    private readonly IInventoryService _inventoryService;
     private CancellationTokenSource? _searchCts;
 
     [ObservableProperty] private string warehouseId = string.Empty;
@@ -24,7 +24,7 @@ public partial class InventoryListViewModel : BaseViewModel
     [ObservableProperty] private int currentPage = 1;
     [ObservableProperty] private bool canGoNext;
 
-    public InventoryListViewModel(InventoryService inventoryService) => _inventoryService = inventoryService;
+    public InventoryListViewModel(IInventoryService inventoryService) => _inventoryService = inventoryService;
 
     async partial void OnWarehouseIdChanged(string value) => await LoadItems();
 
@@ -71,7 +71,7 @@ public partial class InventoryListViewModel : BaseViewModel
     [RelayCommand]
     private async Task DeleteItem(InventoryResponse item)
     {
-        bool confirm = await Shell.Current.DisplayAlertAsync("Видалення", $"Видалити {item.Name}?", "Так", "Ні");
+        bool confirm = await ShellService.DisplayAlert("Видалення", $"Видалити {item.Name}?", "Так", "Ні");
         if (confirm)
         {
             await RunBusyTask(async () => {

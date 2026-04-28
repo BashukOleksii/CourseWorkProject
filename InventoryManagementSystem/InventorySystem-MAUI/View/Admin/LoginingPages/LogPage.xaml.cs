@@ -9,4 +9,13 @@ public partial class LogPage : ContentPage
 		InitializeComponent();
 		BindingContext = logViewModel;
     }
+
+	protected override void OnAppearing()
+	{
+		base.OnAppearing();
+		if (BindingContext is LogViewModel logViewModel)
+		{
+			logViewModel.ApplyFiltersCommand.Execute(null);
+		}
+    }
 }

@@ -10,8 +10,8 @@ namespace InventorySystem_MAUI.ViewModel
 {
     public partial class ManagerWarehouseViewModel : BaseViewModel
     {
-        private readonly WarehouseService _warehouseService;
-        private readonly UserContextService _userContext;
+        private readonly IWarehouseService _warehouseService;
+        private readonly IUserContextService _userContext;
 
         [ObservableProperty] private ObservableCollection<WarehouseResponse> warehouses = new();
         [ObservableProperty] private bool isListEmpty;
@@ -22,7 +22,7 @@ namespace InventorySystem_MAUI.ViewModel
 
         private List<WarehouseResponse> _allAvailableWarehouses = new();
 
-        public ManagerWarehouseViewModel(WarehouseService warehouseService, UserContextService userContext)
+        public ManagerWarehouseViewModel(IWarehouseService warehouseService, IUserContextService userContext)
         {
             _warehouseService = warehouseService;
             _userContext = userContext;

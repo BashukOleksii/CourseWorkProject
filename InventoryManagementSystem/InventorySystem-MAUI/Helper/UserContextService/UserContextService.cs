@@ -5,14 +5,14 @@ using System.Text;
 
 namespace InventorySystem_MAUI.Helper
 {
-    public class UserContextService
+    public class UserContextService : IUserContextService
     {
         public UserResponse? CurrentUser { get; private set; }
         public string? AccessToken { get; private set; }
         public string? RefreshToken { get; private set; }
 
         public event Action? UserContextChanged;
-
+            
         public async Task SetUserContextAsync(UserResponse user, string accessToken, string refreshToken)
         {
             CurrentUser = user;

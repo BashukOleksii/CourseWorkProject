@@ -10,15 +10,15 @@ namespace InventorySystem_MAUI.ViewModel
     [QueryProperty(nameof(SelectedWarehouseIds), "SelectedWarehouseIds")]
     public partial class UserCreateFromAdminViewModel : BaseViewModel
     {
-        private readonly AuthService _authService;
-        private readonly UserContextService _userContext;
+        private readonly IAuthService _authService;
+        private readonly IUserContextService _userContext;
 
         [ObservableProperty] private string name;
         [ObservableProperty] private string email;
         [ObservableProperty] private string password;
 
         [ObservableProperty] private FileResult? photo;
-        [ObservableProperty] private ImageSource? previewPhoto = "default_user.png";
+        [ObservableProperty] private object? previewPhoto = "default_user.png";
         [ObservableProperty] private List<string> selectedWarehouseIds = new();
 
         public List<UserRole> AvailableRoles => Enum.GetValues(typeof(UserRole)).Cast<UserRole>().ToList();
@@ -28,7 +28,7 @@ namespace InventorySystem_MAUI.ViewModel
         private UserRole selectedRole = UserRole.manager;
         public bool CanSelectWarehouses => SelectedRole != UserRole.admin;
 
-        public UserCreateFromAdminViewModel(AuthService authService, UserContextService userContext)
+        public UserCreateFromAdminViewModel(IAuthService authService, IUserContextService userContext)
         {
             _authService = authService;
             _userContext = userContext;
@@ -64,7 +64,7 @@ namespace InventorySystem_MAUI.ViewModel
                 string.IsNullOrEmpty(Password)
                 )
             {
-                await Shell.Current.DisplayAlertAsync("Помилка", "Заповніть всі поля", "ОK");
+                await ShellService.DisplayAlert("Помилка", "Заповніть всі поля", "ОK");
                 return;
             }
 
