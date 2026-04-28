@@ -14,7 +14,7 @@ namespace InventorySystem_MAUI.ViewModel
     [QueryProperty(nameof(SelectedAddress), "SelectedAddress")]
     public partial class WarehouseDetailsViewModel : BaseViewModel
     {
-        private readonly WarehouseService _warehouseService;
+        private readonly IWarehouseService _warehouseService;
 
         [ObservableProperty] [NotifyPropertyChangedFor(nameof(HasId))] private string warehouseId;
         [ObservableProperty] private string title = "Новий склад";
@@ -31,7 +31,7 @@ namespace InventorySystem_MAUI.ViewModel
         public bool HasAddress => SelectedAddress != null;
         public bool HasId => !string.IsNullOrEmpty(warehouseId);
 
-        public WarehouseDetailsViewModel(WarehouseService warehouseService)
+        public WarehouseDetailsViewModel(IWarehouseService warehouseService)
         {
             _warehouseService = warehouseService;
         }
@@ -88,7 +88,6 @@ namespace InventorySystem_MAUI.ViewModel
                         Address = SelectedAddress
                     };
                     await _warehouseService.CreateWarehouse(dto);
-                    await Shell.Current.DisplayAlertAsync("Succes", "Склад успішно створено", "OK");
                 }
                 else
                 {
@@ -100,7 +99,6 @@ namespace InventorySystem_MAUI.ViewModel
                         Address = SelectedAddress
                     };
                     await _warehouseService.UpdateWarehouse(WarehouseId, update);
-                    await Shell.Current.DisplayAlertAsync("Succes", "Дані оновлено", "OK");
                 }
 
                 await ShellService.AbsoluteOpenPage(nameof(WarehouseListPage));

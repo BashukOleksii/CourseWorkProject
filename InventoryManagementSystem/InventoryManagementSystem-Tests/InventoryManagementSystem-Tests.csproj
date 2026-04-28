@@ -33,7 +33,6 @@
 
 	<ItemGroup>
 	  <Folder Include="ViewModels\Logining\" />
-	  <Folder Include="ViewModels\ManagerWarehouse\" />
 	  <Folder Include="ViewModels\User\" />
 	</ItemGroup>
 

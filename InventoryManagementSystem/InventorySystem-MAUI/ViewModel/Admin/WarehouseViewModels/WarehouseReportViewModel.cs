@@ -10,7 +10,7 @@ namespace InventorySystem_MAUI.ViewModel
 {
     public partial class WarehouseReportViewModel : BaseViewModel
     {
-        private readonly WarehouseService _warehouseService;
+        private readonly IWarehouseService _warehouseService;
 
         [ObservableProperty] private ObservableCollection<WarehouseResponse> warehouses = new();
         [ObservableProperty] private WarehouseQuery query = new();
@@ -19,10 +19,9 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private int currentPage = 1;
         [ObservableProperty] private bool canGoNext;
 
-        public WarehouseReportViewModel(WarehouseService warehouseService)
+        public WarehouseReportViewModel(IWarehouseService warehouseService)
         {
             _warehouseService = warehouseService;
-            Task.Run(async () => await ApplyFilters());
         }
 
         [RelayCommand]
@@ -74,7 +73,7 @@ namespace InventorySystem_MAUI.ViewModel
         [RelayCommand]
         private async Task Delete(WarehouseResponse warehouse)
         {
-            bool confirm = await Shell.Current.DisplayAlertAsync("Видалення", $"Ви впевнSені, що хочете видалити {warehouse.Name}?", "Так", "Ні");
+            bool confirm = await ShellService.DisplayAlert("Видалення", $"Ви впевнSені, що хочете видалити {warehouse.Name}?", "Так", "Ні");
             if (!confirm) return;
 
             await RunBusyTask(async () =>
