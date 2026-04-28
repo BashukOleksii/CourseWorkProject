@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace InventorySystem_MAUI.Service
 {
-    public class WarehouseService
+    public class WarehouseService : IWarehouseService
     {
         private readonly HttpClient _httpClient;
 

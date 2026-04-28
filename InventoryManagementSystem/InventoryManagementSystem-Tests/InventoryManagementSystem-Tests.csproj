@@ -34,9 +34,7 @@
 	<ItemGroup>
 	  <Folder Include="ViewModels\Logining\" />
 	  <Folder Include="ViewModels\Inventory\" />
-	  <Folder Include="ViewModels\Manufacturer\" />
 	  <Folder Include="ViewModels\ManagerWarehouse\" />
-	  <Folder Include="ViewModels\Warehouse\" />
 	  <Folder Include="ViewModels\User\" />
 	</ItemGroup>
 

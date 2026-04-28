@@ -10,7 +10,7 @@ namespace InventorySystem_MAUI.ViewModel;
 [QueryProperty(nameof(Manufacturer), "Manufacturer")]
 public partial class ManufacturerDetailsViewModel : BaseViewModel
 {
-    private readonly ManufacturerService _service;
+    private readonly IManufacturerService _service;
     private string? _originalName;
 
     [ObservableProperty] private InventoryManufacturer? manufacturer;
@@ -18,7 +18,7 @@ public partial class ManufacturerDetailsViewModel : BaseViewModel
     [ObservableProperty] private string country;
     [ObservableProperty] private string title = "Новий виробник";
 
-    public ManufacturerDetailsViewModel(ManufacturerService service)
+    public ManufacturerDetailsViewModel(IManufacturerService service)
     {
         _service = service;
     }
@@ -39,7 +39,7 @@ public partial class ManufacturerDetailsViewModel : BaseViewModel
     {
         if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Country))
         {
-            await Shell.Current.DisplayAlertAsync("Помилка", "Заповніть усі поля", "OK");
+            await ShellService.DisplayAlert("Помилка", "Заповніть усі поля", "OK");
             return;
         }
 
@@ -48,12 +48,10 @@ public partial class ManufacturerDetailsViewModel : BaseViewModel
             var newObj = new InventoryManufacturer { Name = Name, Country = Country };
             
             await _service.UpsertManufacturerAsync(newObj, _originalName);
-
-            await Shell.Current.DisplayAlertAsync("Успіх", "Дані збережено", "OK");
-            await Shell.Current.GoToAsync("..");
+            await ShellService.GoBack();
         });
     }
 
     [RelayCommand]
-    private async Task Cancel() => await Shell.Current.GoToAsync("..");
+    private async Task Cancel() => await ShellService.GoBack();
 }

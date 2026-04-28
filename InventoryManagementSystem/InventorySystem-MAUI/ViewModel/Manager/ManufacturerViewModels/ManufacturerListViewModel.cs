@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 namespace InventorySystem_MAUI.ViewModel;
 public partial class ManufacturerListViewModel : BaseViewModel
 {
-    private readonly ManufacturerService _service;
+    private readonly IManufacturerService _service;
     private List<InventoryManufacturer> _fullList = new();
 
     [ObservableProperty] private ObservableCollection<InventoryManufacturer> displayedManufacturers = new();
@@ -20,7 +20,7 @@ public partial class ManufacturerListViewModel : BaseViewModel
     [ObservableProperty] private int pageSize = 10;
     [ObservableProperty] private bool canGoNext;
 
-    public ManufacturerListViewModel(ManufacturerService service)
+    public ManufacturerListViewModel(IManufacturerService service)
     {
         _service = service;
     }
@@ -80,7 +80,7 @@ public partial class ManufacturerListViewModel : BaseViewModel
     [RelayCommand]
     private async Task Delete(InventoryManufacturer item)
     {
-        if (await Shell.Current.DisplayAlertAsync("Видалення", $"Видалити {item.Name}?", "Так", "Ні"))
+        if (await ShellService.DisplayAlert("Видалення", $"Видалити {item.Name}?", "Так", "Ні"))
         {
             _fullList.Remove(item);
             await _service.SaveManufacturersAsync(_fullList);
