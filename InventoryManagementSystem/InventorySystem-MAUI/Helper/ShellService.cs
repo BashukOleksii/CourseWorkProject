@@ -47,5 +47,13 @@ namespace InventorySystem_MAUI.Helper
                 return;
             await Shell.Current.DisplayAlertAsync(title, message, cancel);
         }
+
+        public static async Task<bool> DisplayAlert(string title, string message, string cancel, string ok)
+        {
+            if (Shell.Current is null)
+                return true;
+
+            return await Shell.Current.DisplayAlertAsync(title, message, cancel, ok);
+        }
     }
 }

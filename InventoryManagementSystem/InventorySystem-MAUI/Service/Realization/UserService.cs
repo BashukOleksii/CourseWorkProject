@@ -7,7 +7,7 @@ using System.Text;
 
 namespace InventorySystem_MAUI.Service
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly HttpClient _httpClient;
         private readonly UserContextService _userContext;
