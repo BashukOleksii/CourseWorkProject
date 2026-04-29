@@ -2,6 +2,7 @@
 using InventorySystem_API.Loging.Service;
 using InventorySystem_API.User.Services;
 using InventorySystem_API.Warehouse.Service;
+using InventorySystem_Shared.Company;
 using InventorySystem_Shared.Inventory;
 using InventorySystem_Shared.Loging;
 using InventorySystem_Shared.User;
@@ -11,6 +12,7 @@ using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using System.ComponentModel.Design;
+using System.Reflection;
 
 namespace InventorySystem_API.Report.Service
 {
@@ -66,6 +68,43 @@ namespace InventorySystem_API.Report.Service
             });
         }
 
+        private void AddInventoryTable(IContainer container, List<InventoryResponse> inventories)
+        {
+            container.Table(table =>
+            {
+                table.ColumnsDefinition(columns =>
+                {
+                    columns.ConstantColumn(50);
+                    columns.RelativeColumn(3);
+                    columns.RelativeColumn(2);
+                    columns.RelativeColumn(2);
+                    columns.RelativeColumn(1);
+                    columns.RelativeColumn(1);
+                });
+
+                table.Header(header =>
+                {
+                    header.Cell().Element(CellHeaderStyle).Text("Id");
+                    header.Cell().Element(CellHeaderStyle).Text("Назва");
+                    header.Cell().Element(CellHeaderStyle).Text("Тип");
+                    header.Cell().Element(CellHeaderStyle).Text("Виробник");
+                    header.Cell().Element(CellHeaderStyle).Text("Ціна");
+                    header.Cell().Element(CellHeaderStyle).Text("Кількість");
+                });
+
+                foreach (var item in inventories)
+                {
+                    table.Cell().Element(CellContentStyle).Text(item.Id);
+                    table.Cell().Element(CellContentStyle).Text(item.Name);
+                    table.Cell().Element(CellContentStyle).Text(item.InventoryType.ToString());
+                    table.Cell().Element(CellContentStyle).Text(item.Manufacturer?.Name ?? "N/A");
+                    table.Cell().Element(CellContentStyle).Text($"{item.Price:N2}");
+                    table.Cell().Element(CellContentStyle).Text($"{item.Quantity}");
+                }
+            });
+        }
+             
+
         public async Task<byte[]> GetInventoryReport(InventoryQuery? inventoryQuery, string warehouseId)
         {
             var inventoryData = await _inventoryService.Get(inventoryQuery, warehouseId);
@@ -106,40 +145,7 @@ namespace InventorySystem_API.Report.Service
                                 table.Cell().Element(Block).Text($"Середня вартість: {averagePrice:N2}");
                             });
 
-                            column.Item().Table(table =>
-                            {
-                                table.ColumnsDefinition(columns =>
-                                {
-                                    columns.ConstantColumn(50);
-                                    columns.RelativeColumn(3);
-                                    columns.RelativeColumn(2);
-                                    columns.RelativeColumn(2);
-                                    columns.RelativeColumn(1);
-                                    columns.RelativeColumn(1);
-                                });
-
-                                table.Header(header =>
-                                {
-                                    header.Cell().Element(CellHeaderStyle).Text("Id");
-                                    header.Cell().Element(CellHeaderStyle).Text("Назва");
-                                    header.Cell().Element(CellHeaderStyle).Text("Тип");
-                                    header.Cell().Element(CellHeaderStyle).Text("Виробник");
-                                    header.Cell().Element(CellHeaderStyle).Text("Ціна");
-                                    header.Cell().Element(CellHeaderStyle).Text("Кількість");
-                                });
-
-                                foreach (var item in inventoryData)
-                                {
-                                    table.Cell().Element(CellContentStyle).Text(item.Id);
-                                    table.Cell().Element(CellContentStyle).Text(item.Name);
-                                    table.Cell().Element(CellContentStyle).Text(item.InventoryType.ToString());
-                                    table.Cell().Element(CellContentStyle).Text(item.Manufacturer?.Name ?? "N/A");
-                                    table.Cell().Element(CellContentStyle).Text($"{item.Price:N2}");
-                                    table.Cell().Element(CellContentStyle).Text($"{item.Quantity}");
-                                }
-                            });
-
-
+                            AddInventoryTable(column.Item(),inventoryData);
 
                         });
 
@@ -340,6 +346,89 @@ namespace InventorySystem_API.Report.Service
             });
 
             return documnent.GeneratePdf();
+        }
+
+        public async Task<byte[]> GetSalesReport(string[] inventoryIds, string companyId, string warehouseId, CompanyDTO provider)
+        {
+            var inventories = new List<InventoryResponse>();
+            WarehouseResponse warehouse;
+            try
+            {
+                inventories = await _inventoryService.GetToSellReport(inventoryIds);
+                warehouse = await _warehouseService.GetById(warehouseId, companyId);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
+
+            if (inventories.Count == 0)
+                throw new InvalidOperationException("Немає даних для генерації звіту.");
+
+            var totalCount = inventories.Sum(item => item.Quantity);
+            var totalSum = inventories.Sum(item => item.Price * item.Quantity);
+
+            var documnent = Document.Create(container =>
+            {
+                {
+                    container.Page(page =>
+                    {
+                        page.Margin(50);
+                        page.Size(PageSizes.A4);
+                        page.DefaultTextStyle(x => x.FontSize(10).FontFamily(Fonts.Verdana));
+
+                        page.Header().Row(row =>
+                        {
+                            row.RelativeItem().Column(column =>
+                            {
+                                column.Item().Text("Накладна про продаж").FontSize(20).SemiBold();
+                                column.Item().Table( table =>
+                                {
+                                    table.ColumnsDefinition(columns =>
+                                    {
+                                        columns.ConstantColumn(70);
+                                        columns.RelativeColumn();
+                                    });
+                                    table.Cell().Element(Block).Text($"Постачальник");
+                                    table.Cell().Element(Block).Text($"{warehouse.Name}\n" +
+                                        warehouse.Address.ToString());
+
+                                    table.Cell().Element(Block).Text($"Замовник");
+                                    table.Cell().Element(Block).Text($"{provider.Name}\n" +
+                                        provider.Address.ToString() + $"\n{provider.Phone}");
+                                });
+                                column.Item().Text($"Видана: {DateTime.Now:f}").FontSize(12);
+                            });
+                        });
+
+           
+                        page.Content().PaddingVertical(10).Column(column =>
+                        {
+                            column.Item().PaddingBottom(10).Table(table =>
+                            {
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                });
+
+                                table.Cell().Element(Block).Text($"Загальна кількість: {totalCount}");
+                                table.Cell().Element(Block).Text($"Загальна вартість: {totalSum:N2}");
+                            });
+
+                            AddInventoryTable(column.Item(), inventories);
+
+                        });
+
+                        AddFooter(page);
+
+                    });
+                }
+            });
+
+            return documnent.GeneratePdf();
+
         }
     }
 }

@@ -64,12 +64,32 @@ namespace InventorySystem_Shared.AddressClass
 
             var textInfo = CultureInfo.CurrentCulture.TextInfo;
             var normal = textInfo.ToTitleCase(str);
-                
+
             if (add is not null && normal.Contains(add))
                 normal = normal.Replace(add, "");
 
             return normal;
         }
 
+        public override string ToString()
+        {
+            Normalize();
+
+            var sb = new StringBuilder();
+            if (Country is not null)
+                sb.Append(Country);
+            if (State is not null)
+                sb.Append($", {State}");
+            if (District is not null)
+                sb.Append($", {District}");
+            if (City is not null)
+                sb.Append($", {City}");
+            if (Street is not null)
+                sb.Append($", {Street}");
+            if (HouseNumber is not null)
+                sb.Append($", {HouseNumber}");
+            return sb.ToString();
+
+        }
     }
 }

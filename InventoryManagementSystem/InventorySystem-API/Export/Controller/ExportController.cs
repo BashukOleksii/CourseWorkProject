@@ -1,5 +1,6 @@
 ﻿using InventorySystem_API.Report.Service;
 using InventorySystem_API.User.Extention;
+using InventorySystem_Shared.Company;
 using InventorySystem_Shared.Inventory;
 using InventorySystem_Shared.User;
 using InventorySystem_Shared.Warehouse;
@@ -40,12 +41,12 @@ namespace InventorySystem_API.Report.Controller
         }
 
         [Authorize(Roles = nameof(UserRole.manager))]
-        [HttpGet("sales-report")]
-        public async Task<IActionResult> GetSalesReport([FromQuery] string[] InventoryIds)
+        [HttpPost("sales-report/{warehouseId}")]
+        public async Task<IActionResult> GetSalesReport(string warehouseId, [FromBody] string[] inventoryIds, CompanyDTO provider)
         {
             try
             {
-                var pdfBytes = "";// = await _reportService.GetSalesReport(salesQuery, User.GetCompanyId());
+                var pdfBytes = await _reportService.GetSalesReport(inventoryIds, User.GetCompanyId(), warehouseId, provider);
                 var fileName = $"SalesReport_{DateTime.Now:yyyyMMddHHmmss}.pdf";
                 return File(pdfBytes, "application/pdf", fileName);
             }
