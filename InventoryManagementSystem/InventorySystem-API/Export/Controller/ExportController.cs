@@ -42,11 +42,11 @@ namespace InventorySystem_API.Report.Controller
 
         [Authorize(Roles = nameof(UserRole.manager))]
         [HttpPost("sales-report/{warehouseId}")]
-        public async Task<IActionResult> GetSalesReport(string warehouseId, [FromBody] string[] inventoryIds, CompanyDTO provider)
+        public async Task<IActionResult> GetSalesReport(string warehouseId, [FromBody] SalesReportRequest salesDTO)
         {
             try
             {
-                var pdfBytes = await _reportService.GetSalesReport(inventoryIds, User.GetCompanyId(), warehouseId, provider);
+                var pdfBytes = await _reportService.GetSalesReport(salesDTO.InventoryIds, User.GetCompanyId(), warehouseId, salesDTO.Provider);
                 var fileName = $"SalesReport_{DateTime.Now:yyyyMMddHHmmss}.pdf";
                 return File(pdfBytes, "application/pdf", fileName);
             }

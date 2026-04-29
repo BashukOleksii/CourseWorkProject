@@ -1,6 +1,7 @@
-﻿using System.Net.Http.Json;
+﻿using InventorySystem_Shared.Company;
 using InventorySystem_Shared.Inventory;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace InventorySystem_MAUI.Service
 {
@@ -152,6 +153,19 @@ namespace InventorySystem_MAUI.Service
 
              await _httpClient.PostAsync($"api/Inventory/import/{warehouseId}", content);
 
+        }
+
+        public async Task<byte[]> GetSalesReport(string warehouseId, string[] inventoryIds, CompanyDTO provider)
+        {
+            var requestBody = new SalesReportRequest
+            {
+                InventoryIds = inventoryIds,
+                Provider = provider
+            };
+
+            var response = await _httpClient.PostAsJsonAsync($"api/Export/sales-report/{warehouseId}", requestBody);
+
+                return await response.Content.ReadAsByteArrayAsync();
         }
 
 

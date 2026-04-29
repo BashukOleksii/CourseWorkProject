@@ -28,7 +28,7 @@
                        MaxLines="1" LineBreakMode="TailTruncation"/>
 
                 <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" HeightRequest="70" Padding="5">
-                    <Grid ColumnDefinitions="*, Auto">
+                    <Grid ColumnDefinitions="*, Auto, Auto">
                         <Entry Grid.Column="0" Text="{Binding ItemSearchText}" 
                                Placeholder="Шукати товар на складі" 
                                VerticalOptions="Center" 
@@ -43,6 +43,16 @@
                                      Margin="0,0,10,0"
                                      VerticalOptions="Center"
                                      BackgroundColor="Transparent"/>
+
+                            <ImageButton Grid.Column="2" 
+                                 Source="order.png" 
+                                 Command="{Binding NavigateToOrderCommand}"
+                                 HeightRequest="50" 
+                                 WidthRequest="50"
+                                 Margin="0,0,10,0"
+                                 VerticalOptions="Center"
+                                 BackgroundColor="Transparent"/>
+                        
                     </Grid>
                 </Border>
             </VerticalStackLayout>

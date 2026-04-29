@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
 using InventorySystem_MAUI.View;
+using InventorySystem_MAUI.View.Manager.InventoryPages;
 using InventorySystem_Shared.Inventory;
 using System.Collections.ObjectModel;
 
@@ -85,6 +86,15 @@ public partial class InventoryListViewModel : BaseViewModel
     private async Task GoToAggregation()
     {
         await ShellService.NavigateTo(nameof(InventoryAggregationPage), new Dictionary<string, object>{ { "WarehouseId", WarehouseId } });
+    }
+
+    [RelayCommand]
+    private async Task NavigateToOrder()
+    {
+        await ShellService.NavigateTo(nameof(OrderCreationPage), new Dictionary<string, object>
+    {
+        { "WarehouseId", WarehouseId }
+    });
     }
 
     [RelayCommand] private async Task NextPage() { CurrentPage++; await LoadItems(); }

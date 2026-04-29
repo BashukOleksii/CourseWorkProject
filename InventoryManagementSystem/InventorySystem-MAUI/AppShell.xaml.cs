@@ -1,4 +1,5 @@
 ﻿using InventorySystem_MAUI.View;
+using InventorySystem_MAUI.View.Manager.InventoryPages;
 using InventorySystem_MAUI.ViewModel;
 
 namespace InventorySystem_MAUI
@@ -31,6 +32,9 @@ namespace InventorySystem_MAUI
             Routing.RegisterRoute(nameof(InventoryListPage), typeof(InventoryListPage));
             Routing.RegisterRoute(nameof(InventoryDetailsPage), typeof(InventoryDetailsPage));
             Routing.RegisterRoute(nameof(InventoryAggregationPage), typeof(InventoryAggregationPage));
+
+
+            Routing.RegisterRoute(nameof(OrderCreationPage), typeof(OrderCreationPage));
         }
     }
 }
