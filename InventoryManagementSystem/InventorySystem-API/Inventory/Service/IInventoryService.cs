@@ -15,7 +15,9 @@ namespace InventorySystem_API.Inventory.Service
         Task DeleteById(string id);
         Task DeleteByWarehouseId(string warehouseId);
 
-        Task Import(string warehouseId, IFormFile file);
+        Task Import(string warehouseId, IFormFile file);    
 
+
+        Task<List<InventoryResponse>> GetToSellReport(string[] ids);
     }
 }

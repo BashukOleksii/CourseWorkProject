@@ -39,6 +39,22 @@ namespace InventorySystem_API.Report.Controller
             }
         }
 
+        [Authorize(Roles = nameof(UserRole.manager))]
+        [HttpGet("sales-report")]
+        public async Task<IActionResult> GetSalesReport([FromQuery] string[] InventoryIds)
+        {
+            try
+            {
+                var pdfBytes = "";// = await _reportService.GetSalesReport(salesQuery, User.GetCompanyId());
+                var fileName = $"SalesReport_{DateTime.Now:yyyyMMddHHmmss}.pdf";
+                return File(pdfBytes, "application/pdf", fileName);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
 
         [Authorize(Roles = nameof(UserRole.admin))]
         [HttpGet("warehouse-report")]

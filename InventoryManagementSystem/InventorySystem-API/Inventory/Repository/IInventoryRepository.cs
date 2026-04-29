@@ -20,5 +20,8 @@ namespace InventorySystem_API.Inventory.Repository
         Task DeleteByWarehouseId(string warehouseId);
 
         Task CreateMany(List<InventoryModel> inventoryModels);
+
+        Task<List<InventoryModel>> GetByIds(string[] ids);
+        Task DeleteByIds(string[] ids);
     }
 }

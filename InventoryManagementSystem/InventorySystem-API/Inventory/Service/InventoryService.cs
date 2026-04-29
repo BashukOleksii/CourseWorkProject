@@ -237,5 +237,10 @@ namespace InventorySystem_API.Inventory.Service
 
             await _inventoryRepository.CreateMany(models);
         }
+
+        public Task<List<InventoryResponse>> GetToSellReport(string[] ids)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

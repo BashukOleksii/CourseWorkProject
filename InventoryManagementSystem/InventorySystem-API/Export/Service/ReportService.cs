@@ -19,14 +19,12 @@ namespace InventorySystem_API.Report.Service
         private readonly IInventoryService _inventoryService;
         private readonly IWarehouseService _warehouseService;
         private readonly IUserService _userService;
-        private readonly ILogService _logService;
 
-        public ReportService(IInventoryService inventoryService, IWarehouseService warehouseService, IUserService userService, ILogService logService)
+        public ReportService(IInventoryService inventoryService, IWarehouseService warehouseService, IUserService userService)
         {
             _inventoryService = inventoryService;
             _warehouseService = warehouseService;
             _userService = userService;
-            _logService = logService;
         }
 
         private IContainer Block(IContainer container) =>
