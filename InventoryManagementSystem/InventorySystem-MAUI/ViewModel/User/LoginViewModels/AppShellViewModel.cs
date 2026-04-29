@@ -11,9 +11,9 @@ namespace InventorySystem_MAUI.ViewModel
 {
     public partial class AppShellViewModel : ObservableObject
     {
-        private readonly UserContextService _userContext;
+        private readonly IUserContextService _userContext;
 
-        public AppShellViewModel(UserContextService userContext)
+        public AppShellViewModel(IUserContextService userContext)
         {
             _userContext = userContext;
             userContext.UserContextChanged += UpdateAuthenticationState;

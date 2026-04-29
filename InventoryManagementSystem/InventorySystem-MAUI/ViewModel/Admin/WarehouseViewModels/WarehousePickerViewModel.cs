@@ -13,7 +13,7 @@ namespace InventorySystem_MAUI.ViewModel
     [QueryProperty(nameof(SelectedIds), "InitialSelectedIds")]
     public partial class WarehousePickerViewModel : BaseViewModel
     {
-        private readonly WarehouseService _warehouseService;
+        private readonly IWarehouseService _warehouseService;
         private CancellationTokenSource? _searchCts;
 
         [ObservableProperty] private ObservableCollection<WarehouseSelectableItem> warehouses = new();
@@ -25,7 +25,7 @@ namespace InventorySystem_MAUI.ViewModel
         [ObservableProperty] private List<string> selectedIds = new();
         private HashSet<string> _selectedIdsSet = new();
 
-        public WarehousePickerViewModel(WarehouseService warehouseService)
+        public WarehousePickerViewModel(IWarehouseService warehouseService)
         {
             _warehouseService = warehouseService;
         }
