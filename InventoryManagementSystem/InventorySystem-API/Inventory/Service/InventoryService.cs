@@ -238,9 +238,17 @@ namespace InventorySystem_API.Inventory.Service
             await _inventoryRepository.CreateMany(models);
         }
 
-        public Task<List<InventoryResponse>> GetToSellReport(string[] ids)
+        public async Task<List<InventoryResponse>> GetToSellReport(string[] ids)
         {
-            throw new NotImplementedException();
+            if(ids is null || ids.Length == 0)
+                throw new ArgumentNullException("Передано пустий список ідентифікаторів");
+
+            var models = await _inventoryRepository.GetByIds(ids);
+            var finded = _inventoryMapper.Map<List<InventoryResponse>>(models);
+            await _inventoryRepository.DeleteByIds(ids);
+
+            return finded;
+
         }
     }
 }
