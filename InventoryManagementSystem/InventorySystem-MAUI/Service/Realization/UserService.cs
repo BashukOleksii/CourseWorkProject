@@ -10,11 +10,11 @@ namespace InventorySystem_MAUI.Service
     public class UserService : IUserService
     {
         private readonly HttpClient _httpClient;
-        private readonly UserContextService _userContext;
+        private readonly IUserContextService _userContext;
 
         public UserService(
             IHttpClientFactory httpClientFactory,
-            UserContextService userContext)
+            IUserContextService userContext)
         {
             _httpClient = httpClientFactory.CreateClient("APIClient");
             _userContext = userContext;

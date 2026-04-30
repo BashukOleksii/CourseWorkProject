@@ -11,10 +11,10 @@ namespace InventorySystem_MAUI.Helper
 {
     public class AuthHandler : DelegatingHandler
     {
-        private readonly UserContextService _userContextService;
+        private readonly IUserContextService _userContextService;
         private readonly IHttpClientFactory _httpClientFactory;
         
-        public AuthHandler(UserContextService userContextService, IHttpClientFactory httpClientFactory)
+        public AuthHandler(IUserContextService userContextService, IHttpClientFactory httpClientFactory)
         {
             _userContextService = userContextService;
             _httpClientFactory = httpClientFactory;

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:InventorySystem_MAUI.ViewModel"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
+             x:Class="InventorySystem_MAUI.View.Manager.InventoryPages.OrderInventoryPickerPage"
+             x:DataType="viewmodel:OrderInventoryPickerViewModel"
+             Title="Вибір товарів">
+
+    <Grid RowDefinitions="Auto, *, Auto">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#4F46E5" Offset="0.0"/>
+                <GradientStop Color="#9333EA" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <VerticalStackLayout Spacing="8">
+            <Border Margin="10" Padding="15" BackgroundColor="White" StrokeShape="RoundRectangle 15">
+                <VerticalStackLayout Spacing="5">
+                    <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="5">
+                        <Button Text="Готово" Command="{Binding SaveAndCloseCommand}" BackgroundColor="Blue"/>
+                        <Entry Grid.Column="1" Text="{Binding SearchText}" Placeholder="Шукати товар на складі" VerticalOptions="Center"/>
+                        <ImageButton Grid.Column="2" Source="filter.png" Command="{Binding ToggleFilterCommand}" WidthRequest="45" HeightRequest="45" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="5">
+                        <Button Text="Вибрати сторінку" Command="{Binding SelectAllOnPageCommand}" FontSize="11" HeightRequest="35"/>
+                        <Button Text="Вибрати весь склад" Grid.Column="1" Command="{Binding SelectAllInWarehouseCommand}" FontSize="11" HeightRequest="35"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border IsVisible="{Binding IsFilterVisible}" Margin="10,1" Padding="15" BackgroundColor="White" StrokeShape="RoundRectangle 15">
+                <ScrollView MaximumHeightRequest="400">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Фільтрація товарів" FontAttributes="Bold" TextColor="#4F46E5"/>
+                        <Entry Placeholder="Пошук за назвою" Text="{Binding Query.Name}"/>
+                        <Entry Placeholder="Частина опису" Text="{Binding Query.Description}"/>
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Entry Placeholder="Мін. ціна" Text="{Binding Query.MinPrice}" Keyboard="Numeric"/>
+                            <Entry Grid.Column="1" Placeholder="Макс. ціна" Text="{Binding Query.MaxPrice}" Keyboard="Numeric"/>
+                        </Grid>
+                        <Picker Title="Категорія" ItemsSource="{Binding InventoryTypes}" SelectedItem="{Binding Query.InventoryType}"/>
+                        <Button Text="Застосувати" Command="{Binding LoadDataCommand}" BackgroundColor="#4F46E5" TextColor="White"/>
+                        <Button Text="Скинути" Command="{Binding ResetFiltersCommand}" BackgroundColor="Transparent" TextColor="Gray"/>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+        </VerticalStackLayout>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Items}" Margin="10,5">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="30">
+                    <Label Text="Товарів не знайдено 🔎" TextColor="White" FontSize="18" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="viewmodel:SelectableInventoryItem">
+                    <Grid Padding="10,5">
+                        <Border StrokeShape="RoundRectangle 15" StrokeThickness="0" Padding="12" BackgroundColor="#CCFFFFFF">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="Stroke" Value="#4F46E5" />
+                                    <Setter Property="StrokeThickness" Value="2" />
+                                    <Setter Property="BackgroundColor" Value="White" />
+                                </DataTrigger>
+                            </Border.Triggers>
+
+                            <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="70, *, Auto" ColumnSpacing="15">
+                                <Border Grid.RowSpan="2" StrokeShape="RoundRectangle 10" HeightRequest="70" WidthRequest="70">
+                                    <Image Source="{Binding Item.PhotoURI, Converter={StaticResource UriConverter}}" Aspect="AspectFill" />
+                                </Border>
+
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding Item.Name}" FontAttributes="Bold" FontSize="16" TextColor="#1F2937" LineBreakMode="TailTruncation" />
+                                    <Label Text="{Binding Item.Quantity, StringFormat='На складі: {0} шт.'}" FontSize="12" TextColor="Gray" />
+                                    <Label Text="{Binding Item.Price, StringFormat='{0:N2} грн'}" TextColor="#4F46E5" FontAttributes="Bold" FontSize="14" />
+                                </VerticalStackLayout>
+
+                                <CheckBox Grid.Column="2" IsChecked="{Binding IsSelected}" Color="#4F46E5" InputTransparent="True" />
+
+                                <HorizontalStackLayout Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" IsVisible="{Binding IsSelected}" Spacing="10" Margin="0,10,0,0">
+                                    <Label Text="К-сть:" VerticalOptions="Center" FontSize="12" TextColor="#4B5563"/>
+                                    <Stepper Minimum="1" Maximum="{Binding Item.Quantity}" Value="{Binding SelectedQuantity, Mode=TwoWay}" />
+                                    <Entry Text="{Binding SelectedQuantity, Mode=TwoWay}" Keyboard="Numeric" WidthRequest="60" HorizontalTextAlignment="Center"/>
+                                </HorizontalStackLayout>
+                            </Grid>
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:OrderInventoryPickerViewModel}}, Path=ToggleSelectionCommand}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <components:PaginationControl Grid.Row="2" PageNumber="{Binding CurrentPage}" CanNext="{Binding CanGoNext}" 
+                                      NextCommand="{Binding NextPageCommand}" PrevCommand="{Binding PreviousPageCommand}"/>
+        <components:LoadingOverlay Grid.RowSpan="3" IsVisible="{Binding IsBusy}"/>
+    </Grid>
+</ContentPage>

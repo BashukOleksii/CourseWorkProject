@@ -4,6 +4,7 @@ using InventorySystem_API.Inventory.Models;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.Inventory;
+using InventorySystem_Shared.Inventory.Manufacturer;
 using System.Collections.ObjectModel;
 
 namespace InventorySystem_MAUI.ViewModel;
@@ -12,9 +13,11 @@ namespace InventorySystem_MAUI.ViewModel;
 public partial class InventoryAggregationViewModel : BaseViewModel
 {
     private readonly IInventoryService _inventoryService;
+    private readonly IManufacturerService _manufacturerService;
 
     [ObservableProperty] private string warehouseId = string.Empty;
     [ObservableProperty] private ObservableCollection<InventoryResponse> items = new();
+    [ObservableProperty] private ObservableCollection<InventoryManufacturer> manufacturers = new();
 
     [ObservableProperty] private InventoryQuery query = new() { Page = 1, PageSize = 10, SortDescending = true };
 
@@ -26,13 +29,27 @@ public partial class InventoryAggregationViewModel : BaseViewModel
         .Prepend(null)
         .ToList();
 
-    public InventoryAggregationViewModel(IInventoryService inventoryService)
+    public InventoryAggregationViewModel(IInventoryService inventoryService, IManufacturerService manufacturerService)
     {
         _inventoryService = inventoryService;
+        _manufacturerService = manufacturerService;
     }
 
     [RelayCommand]
-    private void ToggleFilter() => IsFilterVisible = !IsFilterVisible;
+    private async Task ToggleFilter()
+    {
+        IsFilterVisible = !IsFilterVisible;
+        if (IsFilterVisible && Manufacturers.Count == 0)
+        {
+            await LoadManufacturers();
+        }
+    }
+
+    private async Task LoadManufacturers()
+    {
+        var list = await _manufacturerService.GetManufacturersAsync();
+        Manufacturers = new ObservableCollection<InventoryManufacturer>(list);
+    }
 
     [RelayCommand]
     public async Task LoadData()
@@ -64,7 +81,7 @@ public partial class InventoryAggregationViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task ExportData(string format) 
+    private async Task ExportData(string format)
     {
         await RunBusyTask(async () =>
         {
@@ -94,7 +111,6 @@ public partial class InventoryAggregationViewModel : BaseViewModel
         await Launcher.Default.OpenAsync(new OpenFileRequest("Перегляд файлу", new ReadOnlyFile(path)));
     }
 
-
     [RelayCommand]
     private async Task OpenDetails(InventoryResponse item) =>
         await Shell.Current.GoToAsync(nameof(InventoryDetailsViewModel), new Dictionary<string, object>
@@ -115,7 +131,6 @@ public partial class InventoryAggregationViewModel : BaseViewModel
             });
         }
     }
-
 
     [RelayCommand]
     private async Task NextPage() { Query.Page++; await LoadData(); }

@@ -1,6 +1,7 @@
-﻿using System.Net.Http.Json;
+﻿using InventorySystem_Shared.Company;
 using InventorySystem_Shared.Inventory;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace InventorySystem_MAUI.Service
 {
@@ -20,7 +21,6 @@ namespace InventorySystem_MAUI.Service
 
         Task<byte[]> ExportData(string warehouseId, string format);
         Task ImportData(string warehouseId, FileResult file);
-
-
+        Task<byte[]> GetSalesReport(string warehouseId, InventoryInfo[] items, CompanyDTO provider);
     }
 }

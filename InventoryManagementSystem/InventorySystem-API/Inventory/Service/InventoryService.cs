@@ -237,5 +237,36 @@ namespace InventorySystem_API.Inventory.Service
 
             await _inventoryRepository.CreateMany(models);
         }
+
+        public async Task<List<InventoryResponse>> GetSellReport(InventoryInfo[] inventoryInfos)
+        {
+            var ids = inventoryInfos.Select(i => i.InventoryId).ToArray();
+            if (ids is null || ids.Length == 0)
+                throw new ArgumentNullException("Передано пустий список ідентифікаторів");
+
+            var models = await _inventoryRepository.GetByIds(ids);
+
+            var finded = new List<InventoryResponse>();
+
+            foreach (var i in inventoryInfos)
+            {
+                var model = models.FirstOrDefault(m => m.Id == i.InventoryId);
+                if (model is null)
+                    throw new KeyNotFoundException($"Товару із id:{i.InventoryId} не знайдено");
+                if (model.Quantity < i.Quantity)
+                    throw new InvalidOperationException($"Недостатньо товару '{model.Name}' на складі. Доступно: {model.Quantity}, запрошено: {i.Quantity}");
+
+                var find = _inventoryMapper.Map<InventoryResponse>(model);
+                find.Quantity = i.Quantity;
+                finded.Add(find);
+
+                model.Quantity -= i.Quantity;
+            }
+
+            await _inventoryRepository.UpdateMany(models);
+
+            return finded;
+
+        }
     }
 }

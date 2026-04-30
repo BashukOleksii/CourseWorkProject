@@ -11,9 +11,9 @@ namespace InventorySystem_MAUI.Service
     public class AuthService : IAuthService
     {
         private readonly HttpClient _httpClient;
-        private readonly UserContextService _userContextService;
+        private readonly IUserContextService _userContextService;
 
-        public AuthService(IHttpClientFactory httpClientFactory, UserContextService userContextService)
+        public AuthService(IHttpClientFactory httpClientFactory, IUserContextService userContextService)
         {
             _httpClient = httpClientFactory.CreateClient("APIClient");
             _userContextService = userContextService;

@@ -4,6 +4,7 @@
              x:Class="InventorySystem_MAUI.View.InventoryAggregationPage"
              xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
              xmlns:m="clr-namespace:InventorySystem_Shared.Inventory;assembly=InventorySystem-Shared"
+             xmlns:mf="clr-namespace:InventorySystem_Shared.Inventory.Manufacturer;assembly=InventorySystem-Shared"
              xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="vm:InventoryAggregationViewModel"
@@ -11,8 +12,6 @@
              BackgroundColor="#F3F4F6">
 
     <Grid RowDefinitions="Auto, *">
-
-
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="#4F46E5" Offset="0.0"/>
@@ -33,25 +32,39 @@
 
         <Grid Grid.Row="1" RowDefinitions="Auto, *">
             <Border IsVisible="{Binding IsFilterVisible}" Grid.Row="0" Margin="10" Padding="15" BackgroundColor="White" StrokeShape="RoundRectangle 15">
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="Фільтрація товарів" FontAttributes="Bold" TextColor="#4F46E5"/>
+                <ScrollView MaximumHeightRequest="400">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Фільтрація товарів" FontAttributes="Bold" TextColor="#4F46E5"/>
 
-                    <Entry Placeholder="Пошук за назвою" Text="{Binding Query.Name}"/>
+                        <Entry Placeholder="Пошук за назвою" Text="{Binding Query.Name}"/>
 
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                        <Entry Placeholder="Мін. ціна" Text="{Binding Query.MinPrice}" Keyboard="Numeric"/>
-                        <Entry Grid.Column="1" Placeholder="Макс. ціна" Text="{Binding Query.MaxPrice}" Keyboard="Numeric"/>
-                    </Grid>
+                        <Entry Placeholder="Частина опису" Text="{Binding Query.Description}"/>
 
-                    <Picker Title="Категорія товару" ItemsSource="{Binding InventoryTypes}" SelectedItem="{Binding Query.InventoryType}">
-                        <Picker.ItemDisplayBinding>
-                            <Binding Converter="{StaticResource InventoryTypeToStringConverter}"/>
-                        </Picker.ItemDisplayBinding>
-                    </Picker>
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Entry Placeholder="Мін. ціна" Text="{Binding Query.MinPrice}" Keyboard="Numeric"/>
+                            <Entry Grid.Column="1" Placeholder="Макс. ціна" Text="{Binding Query.MaxPrice}" Keyboard="Numeric"/>
+                        </Grid>
 
-                    <Button Text="Застосувати" Command="{Binding LoadDataCommand}" BackgroundColor="#4F46E5" TextColor="White" CornerRadius="10"/>
-                    <Button Text="Скинути" Command="{Binding ResetFiltersCommand}" BackgroundColor="Transparent" TextColor="Gray"/>
-                </VerticalStackLayout>
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Entry Placeholder="Мін. к-сть" Text="{Binding Query.MinQuantity}" Keyboard="Numeric"/>
+                            <Entry Grid.Column="1" Placeholder="Макс. к-сть" Text="{Binding Query.MaxQuantity}" Keyboard="Numeric"/>
+                        </Grid>
+
+                        <Picker Title="Категорія товару" ItemsSource="{Binding InventoryTypes}" SelectedItem="{Binding Query.InventoryType}">
+                            <Picker.ItemDisplayBinding>
+                                <Binding Converter="{StaticResource InventoryTypeToStringConverter}"/>
+                            </Picker.ItemDisplayBinding>
+                        </Picker>
+
+                        <Picker Title="Виберіть виробника" 
+                                ItemsSource="{Binding Manufacturers}" 
+                                SelectedItem="{Binding Query.Manufacturer}"
+                                ItemDisplayBinding="{Binding Name}"/>
+
+                        <Button Text="Застосувати" Command="{Binding LoadDataCommand}" BackgroundColor="#4F46E5" TextColor="White" CornerRadius="10"/>
+                        <Button Text="Скинути" Command="{Binding ResetFiltersCommand}" BackgroundColor="Transparent" TextColor="Gray"/>
+                    </VerticalStackLayout>
+                </ScrollView>
             </Border>
 
             <CollectionView Grid.Row="1" ItemsSource="{Binding Items}" Margin="10,5">

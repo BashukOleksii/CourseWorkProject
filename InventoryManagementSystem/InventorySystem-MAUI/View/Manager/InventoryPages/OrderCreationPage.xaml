@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:InventorySystem_MAUI.ViewModel"
+             xmlns:components="clr-namespace:InventorySystem_MAUI.View.Components"
+             x:Class="InventorySystem_MAUI.View.Manager.InventoryPages.OrderCreationPage"
+             x:DataType="vm:OrderCreationViewModel"
+             Title="OrderCreationPage">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#4F46E5" Offset="0.0"/>
+            <GradientStop Color="#9333EA" Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid>
+
+        <VerticalStackLayout Spacing="15" Padding="20" VerticalOptions="Center">
+            <Label Margin="0,0,0,20" Text="Оформлення замовлення" TextColor="White" FontSize="32" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+            <Entry Placeholder="Ім'я замовника" Text="{Binding CustomerName}" />
+            <Entry Placeholder="Телефон" Text="{Binding CustomerPhone}" Keyboard="Telephone" />
+
+            <Label Text="Адреса доставки:" FontAttributes="Bold"/>
+            <Border StrokeShape="RoundRectangle 10" Padding="15" BackgroundColor="#F0F0F0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenAddressPickerCommand}"/>
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="📍" VerticalOptions="Center"/>
+                    <Label Text="{Binding AddressSummary}" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Label Text="Склад замовлення:" FontAttributes="Bold"/>
+            <Border StrokeShape="RoundRectangle 10" Padding="15" BackgroundColor="#F0F0F0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenInventoryPickerCommand}"/>
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="📦" VerticalOptions="Center"/>
+                    <Label Text="{Binding ItemsSummary}" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+
+            </Border>
+
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10" Margin="0,20,0,0">
+                <Button Grid.Column="0" BackgroundColor="Red" BorderColor="DarkRed" Text="Скасувати" Command="{Binding CancelCommand}" Style="{StaticResource ButtonSecondary}"/>
+                <Button Grid.Column="1" Text="Створити" BorderColor="Blue" Command="{Binding CreateOrderCommand}" Style="{StaticResource ButtonPrimary}"/>
+            </Grid>
+
+            
+
+        </VerticalStackLayout>
+
+        <components:LoadingOverlay Grid.ColumnSpan="0" IsVisible="{Binding IsBusy}" />
+    </Grid>
+</ContentPage>

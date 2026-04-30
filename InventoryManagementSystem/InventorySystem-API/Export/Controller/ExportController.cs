@@ -1,5 +1,6 @@
 ﻿using InventorySystem_API.Report.Service;
 using InventorySystem_API.User.Extention;
+using InventorySystem_Shared.Company;
 using InventorySystem_Shared.Inventory;
 using InventorySystem_Shared.User;
 using InventorySystem_Shared.Warehouse;
@@ -34,6 +35,22 @@ namespace InventorySystem_API.Report.Controller
                 return File(pdfBytes, "application/pdf", fileName);
             }
             catch(InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [Authorize(Roles = nameof(UserRole.manager))]
+        [HttpPost("sales-report/{warehouseId}")]
+        public async Task<IActionResult> GetSalesReport(string warehouseId, [FromBody] SalesReportRequest salesDTO)
+        {
+            try
+            {
+                var pdfBytes = await _reportService.GetSalesReport(salesDTO, User.GetCompanyId(), warehouseId);
+                var fileName = $"SalesReport_{DateTime.Now:yyyyMMddHHmmss}.pdf";
+                return File(pdfBytes, "application/pdf", fileName);
+            }
+            catch (InvalidOperationException ex)
             {
                 return NotFound(ex.Message);
             }
