@@ -45,12 +45,12 @@ namespace InventorySystem_API.Inventory.Repository
         {
             var query = _collection.Find(filter);
 
-            if(sort is not null)
+            if (sort is not null)
                 query = query.Sort(sort);
 
-            if(pageSize is not null)
+            if (pageSize is not null)
                 query = query.Skip((page - 1 ?? 0) * pageSize.Value).Limit(pageSize.Value);
-            
+
             return await query.ToListAsync();
         }
 
@@ -66,11 +66,19 @@ namespace InventorySystem_API.Inventory.Repository
 
         public async Task<List<InventoryModel>> GetByWarehouseId(string warehouseId) =>
             await _collection.Find(inventory => inventory.WarehouseId == warehouseId).ToListAsync();
-        
+
         public async Task<InventoryModel> Update(InventoryModel model)
         {
             await _collection.ReplaceOneAsync(inventory => inventory.Id == model.Id, model);
             return model;
         }
+
+        public async Task UpdateMany(List<InventoryModel> models) 
+        {
+            var tasks = models.Select(model =>
+                _collection.ReplaceOneAsync(inventory => inventory.Id == model.Id, model));
+        await Task.WhenAll(tasks);
+        }
+
     }
 }

@@ -22,6 +22,6 @@ namespace InventorySystem_API.Inventory.Repository
         Task CreateMany(List<InventoryModel> inventoryModels);
 
         Task<List<InventoryModel>> GetByIds(string[] ids);
-        Task DeleteByIds(string[] ids);
+        Task UpdateMany(List<InventoryModel> models);
     }
 }

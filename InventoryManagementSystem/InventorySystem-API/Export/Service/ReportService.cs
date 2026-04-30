@@ -348,13 +348,13 @@ namespace InventorySystem_API.Report.Service
             return documnent.GeneratePdf();
         }
 
-        public async Task<byte[]> GetSalesReport(string[] inventoryIds, string companyId, string warehouseId, CompanyDTO provider)
+        public async Task<byte[]> GetSalesReport(SalesReportRequest salesDTO, string companyId, string warehouseId)
         {
             var inventories = new List<InventoryResponse>();
             WarehouseResponse warehouse;
             try
             {
-                inventories = await _inventoryService.GetToSellReport(inventoryIds);
+                inventories = await _inventoryService.GetSellReport(salesDTO.InventoryInfo);
                 warehouse = await _warehouseService.GetById(warehouseId, companyId);
             }
             catch (Exception ex)
@@ -394,8 +394,8 @@ namespace InventorySystem_API.Report.Service
                                         warehouse.Address.ToString());
 
                                     table.Cell().Element(Block).Text($"Замовник");
-                                    table.Cell().Element(Block).Text($"{provider.Name}\n" +
-                                        provider.Address.ToString() + $"\n{provider.Phone}");
+                                    table.Cell().Element(Block).Text($"{salesDTO.Provider.Name}\n" +
+                                        salesDTO.Provider.Address.ToString() + $"\n{salesDTO.Provider.Phone}");
                                 });
                                 column.Item().Text($"Видана: {DateTime.Now:f}").FontSize(12);
                             });

@@ -46,7 +46,7 @@ namespace InventorySystem_API.Report.Controller
         {
             try
             {
-                var pdfBytes = await _reportService.GetSalesReport(salesDTO.InventoryIds, User.GetCompanyId(), warehouseId, salesDTO.Provider);
+                var pdfBytes = await _reportService.GetSalesReport(salesDTO, User.GetCompanyId(), warehouseId);
                 var fileName = $"SalesReport_{DateTime.Now:yyyyMMddHHmmss}.pdf";
                 return File(pdfBytes, "application/pdf", fileName);
             }

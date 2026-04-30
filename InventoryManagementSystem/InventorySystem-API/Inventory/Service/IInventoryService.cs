@@ -18,6 +18,6 @@ namespace InventorySystem_API.Inventory.Service
         Task Import(string warehouseId, IFormFile file);    
 
 
-        Task<List<InventoryResponse>> GetToSellReport(string[] ids);
+        Task<List<InventoryResponse>> GetSellReport(InventoryInfo[] inventories);
     }
 }

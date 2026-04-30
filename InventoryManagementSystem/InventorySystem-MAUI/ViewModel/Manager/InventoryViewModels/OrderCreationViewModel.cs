@@ -5,11 +5,12 @@ using InventorySystem_MAUI.Service;
 using InventorySystem_MAUI.View.Manager.InventoryPages;
 using InventorySystem_Shared.AddressClass;
 using InventorySystem_Shared.Company;
+using InventorySystem_Shared.Inventory;
 
 namespace InventorySystem_MAUI.ViewModel;
 
 [QueryProperty(nameof(SelectedAddress), "SelectedAddress")]
-[QueryProperty(nameof(SelectedInventoryIds), "SelectedInventoryIds")]
+[QueryProperty(nameof(SelectedItemsDict), "SelectedItemsDict")] 
 [QueryProperty(nameof(WarehouseId), "WarehouseId")]
 public partial class OrderCreationViewModel : BaseViewModel
 {
@@ -21,7 +22,7 @@ public partial class OrderCreationViewModel : BaseViewModel
     [ObservableProperty] private string customerPhone;
     [ObservableProperty] private Address selectedAddress;
 
-    [ObservableProperty] private List<string> selectedInventoryIds = new();
+    [ObservableProperty] private Dictionary<string, int> selectedItemsDict = new();
 
     [ObservableProperty] private string addressSummary = "Адресу не обрано";
     [ObservableProperty] private string itemsSummary = "Товари не обрано";
@@ -37,12 +38,18 @@ public partial class OrderCreationViewModel : BaseViewModel
             AddressSummary = $"{value.City}, {value.Street} {value.HouseNumber}";
     }
 
-    partial void OnSelectedInventoryIdsChanged(List<string> value)
+    partial void OnSelectedItemsDictChanged(Dictionary<string, int> value)
     {
         if (value != null && value.Any())
-            ItemsSummary = $"Обрано товарів: {value.Count}";
+        {
+            var uniqueItems = value.Count;
+            var totalQuantity = value.Values.Sum();
+            ItemsSummary = $"Товарів: {uniqueItems} (всього одиниць: {totalQuantity})";
+        }
         else
+        {
             ItemsSummary = "Товари не обрано";
+        }
     }
 
     [RelayCommand]
@@ -57,10 +64,10 @@ public partial class OrderCreationViewModel : BaseViewModel
     [RelayCommand]
     private async Task OpenInventoryPicker()
     {
-       await ShellService.NavigateTo(nameof(OrderInventoryPickerPage), new Dictionary<string, object>
+        await ShellService.NavigateTo(nameof(OrderInventoryPickerPage), new Dictionary<string, object>
         {
             { "WarehouseId", WarehouseId },
-            { "ExistingSelection", SelectedInventoryIds }
+            { "ExistingSelection", SelectedItemsDict }
         });
     }
 
@@ -73,7 +80,7 @@ public partial class OrderCreationViewModel : BaseViewModel
             return;
         }
 
-        if (SelectedInventoryIds == null || !SelectedInventoryIds.Any())
+        if (SelectedItemsDict == null || !SelectedItemsDict.Any())
         {
             await ShellService.DisplayAlert("Помилка", "Виберіть хоча б один товар", "OK");
             return;
@@ -89,13 +96,20 @@ public partial class OrderCreationViewModel : BaseViewModel
                 Description = "Замовлення через додаток"
             };
 
-            var pdfBytes = await _inventoryService.GetSalesReport(WarehouseId, SelectedInventoryIds.ToArray(), provider);
+            var itemsToOrder = SelectedItemsDict.Select(kvp => new InventoryInfo
+            {
+                InventoryId = kvp.Key,
+                Quantity = kvp.Value
+            }).ToArray();
+
+            var pdfBytes = await _inventoryService.GetSalesReport(WarehouseId, itemsToOrder, provider);
 
             var fileName = $"Invoice_{DateTime.Now:yyyyMMdd_HHmm}.pdf";
             var path = Path.Combine(FileSystem.CacheDirectory, fileName);
             await File.WriteAllBytesAsync(path, pdfBytes);
+
             await Launcher.Default.OpenAsync(new OpenFileRequest("Накладна", new ReadOnlyFile(path)));
-            
+
             await ShellService.GoBack();
         });
     }

@@ -21,6 +21,6 @@ namespace InventorySystem_MAUI.Service
 
         Task<byte[]> ExportData(string warehouseId, string format);
         Task ImportData(string warehouseId, FileResult file);
-        Task<byte[]> GetSalesReport(string warehouseId, string[] inventoryIds, CompanyDTO provider);
+        Task<byte[]> GetSalesReport(string warehouseId, InventoryInfo[] items, CompanyDTO provider);
     }
 }

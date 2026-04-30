@@ -7,7 +7,13 @@ namespace InventorySystem_Shared.Inventory
 {
     public class SalesReportRequest
     {
-        public string[] InventoryIds { get; set; }
+        public InventoryInfo[] InventoryInfo { get; set; }
         public CompanyDTO Provider { get; set; }
+    }
+
+    public class InventoryInfo
+    {
+        public string InventoryId { get; set; }
+        public int Quantity { get; set; }
     }
 }

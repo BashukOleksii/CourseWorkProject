@@ -4,6 +4,7 @@ using InventorySystem_API.Inventory.Models;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.Inventory;
+using InventorySystem_Shared.Inventory.Manufacturer;
 using System.Collections.ObjectModel;
 
 namespace InventorySystem_MAUI.ViewModel;
@@ -13,72 +14,50 @@ namespace InventorySystem_MAUI.ViewModel;
 public partial class OrderInventoryPickerViewModel : BaseViewModel
 {
     private readonly IInventoryService _inventoryService;
+    private readonly IManufacturerService _manufacturerService;
     private CancellationTokenSource? _debounceTokenSource;
 
     [ObservableProperty] private string warehouseId = string.Empty;
-    [ObservableProperty] private List<string> existingSelection = new();
+    [ObservableProperty] private Dictionary<string, int> existingSelection = new();
     [ObservableProperty] private ObservableCollection<SelectableInventoryItem> items = new();
-
+    [ObservableProperty] private ObservableCollection<InventoryManufacturer> manufacturers = new();
+    [ObservableProperty] private string searchText;
     [ObservableProperty] private InventoryQuery query = new() { Page = 1, PageSize = 10 };
-
     [ObservableProperty] private bool isFilterVisible;
     [ObservableProperty] private bool canGoNext;
     [ObservableProperty] private int currentPage = 1;
 
-    private HashSet<string> _selectedIds = new();
+    private Dictionary<string, int> _selectedItems = new();
 
     public List<InventoryType?> InventoryTypes { get; } = Enum.GetValues(typeof(InventoryType))
         .Cast<InventoryType?>()
         .Prepend(null)
         .ToList();
 
-    public OrderInventoryPickerViewModel(IInventoryService inventoryService)
+    public OrderInventoryPickerViewModel(IInventoryService inventoryService, IManufacturerService manufacturerService)
     {
         _inventoryService = inventoryService;
+        _manufacturerService = manufacturerService;
     }
 
     async partial void OnWarehouseIdChanged(string value) => await LoadData();
 
-    partial void OnExistingSelectionChanged(List<string> value)
+    partial void OnExistingSelectionChanged(Dictionary<string, int> value)
     {
-        if (value != null)
-            _selectedIds = new HashSet<string>(value);
+        if (value != null) _selectedItems = new Dictionary<string, int>(value);
     }
 
-    async partial void OnQueryChanged(InventoryQuery value) => await LoadDataDebounced();
-
-    [RelayCommand]
-    public async Task LoadData()
-    {
-        _debounceTokenSource?.Cancel();
-
-        await RunBusyTask(async () =>
-        {
-            Query.Page = CurrentPage;
-            var result = await _inventoryService.GetItemsByWarehouse(WarehouseId, Query);
-
-            var wrappedItems = result.Select(x => new SelectableInventoryItem
-            {
-                Item = x,
-                IsSelected = _selectedIds.Contains(x.Id)
-            });
-
-            Items = new ObservableCollection<SelectableInventoryItem>(wrappedItems);
-            CanGoNext = result.Count == Query.PageSize;
-        });
-    }
-
-    private async Task LoadDataDebounced()
+    async partial void OnSearchTextChanged(string value)
     {
         _debounceTokenSource?.Cancel();
         _debounceTokenSource = new CancellationTokenSource();
         var token = _debounceTokenSource.Token;
-
         try
         {
-            await Task.Delay(500, token); 
+            await Task.Delay(500, token);
             if (!token.IsCancellationRequested)
             {
+                Query.Name = value;
                 CurrentPage = 1;
                 await LoadData();
             }
@@ -87,20 +66,57 @@ public partial class OrderInventoryPickerViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void ToggleSelection(SelectableInventoryItem selectable)
+    public async Task LoadData()
     {
-        selectable.IsSelected = !selectable.IsSelected;
-        if (selectable.IsSelected) _selectedIds.Add(selectable.Item.Id);
-        else _selectedIds.Remove(selectable.Item.Id);
+        await RunBusyTask(async () =>
+        {
+            Query.Page = CurrentPage;
+            var result = await _inventoryService.GetItemsByWarehouse(WarehouseId, Query);
+
+            var wrappedItems = result.Select(x =>
+            {
+                bool isSelected = _selectedItems.ContainsKey(x.Id);
+                var selectable = new SelectableInventoryItem(this)
+                {
+                    Item = x,
+                    IsSelected = isSelected,
+                    SelectedQuantity = isSelected ? _selectedItems[x.Id] : x.Quantity
+                };
+                return selectable;
+            });
+
+            Items = new ObservableCollection<SelectableInventoryItem>(wrappedItems);
+            CanGoNext = result.Count == Query.PageSize;
+            IsFilterVisible = false;
+        });
+    }
+
+    public void SyncItem(SelectableInventoryItem selectable)
+    {
+        if (selectable.IsSelected)
+            _selectedItems[selectable.Item.Id] = selectable.SelectedQuantity;
+        else
+            _selectedItems.Remove(selectable.Item.Id);
     }
 
     [RelayCommand]
-    private async Task SelectAllOnPage()
+    private void ToggleSelection(SelectableInventoryItem selectable)
+    {
+        selectable.IsSelected = !selectable.IsSelected;
+        if (selectable.IsSelected && !_selectedItems.ContainsKey(selectable.Item.Id))
+            selectable.SelectedQuantity = selectable.Item.Quantity;
+
+        SyncItem(selectable);
+    }
+
+    [RelayCommand]
+    private void SelectAllOnPage()
     {
         foreach (var item in Items)
         {
+            item.SelectedQuantity = item.Item.Quantity;
             item.IsSelected = true;
-            _selectedIds.Add(item.Item.Id);
+            SyncItem(item);
         }
     }
 
@@ -109,16 +125,32 @@ public partial class OrderInventoryPickerViewModel : BaseViewModel
     {
         await RunBusyTask(async () =>
         {
-            var allItemsQuery = new InventoryQuery { Page = 1, PageSize = null };
+            var allItemsQuery = new InventoryQuery
+            {
+                Name = Query.Name,
+                Description = Query.Description,
+                MinPrice = Query.MinPrice,
+                MaxPrice = Query.MaxPrice,
+                InventoryType = Query.InventoryType,
+                Manufacturer = Query.Manufacturer,
+                Page = 1,
+                PageSize = 9999
+            };
+
             var allItems = await _inventoryService.GetItemsByWarehouse(WarehouseId, allItemsQuery);
 
-            foreach (var id in allItems.Select(x => x.Id))
-                _selectedIds.Add(id);
+            foreach (var inv in allItems)
+            {
+                _selectedItems[inv.Id] = inv.Quantity;
+            }
 
             foreach (var item in Items)
+            {
+                item.SelectedQuantity = item.Item.Quantity;
                 item.IsSelected = true;
+            }
 
-            await ShellService.DisplayAlert("Успіх", $"Вибрано всі товари ({allItems.Count})", "OK");
+            await ShellService.DisplayAlert("Успіх", $"Вибрано всі товари за фільтром ({allItems.Count})", "OK");
         });
     }
 
@@ -127,32 +159,53 @@ public partial class OrderInventoryPickerViewModel : BaseViewModel
     {
         var parameters = new Dictionary<string, object>
         {
-            { "SelectedInventoryIds", _selectedIds.ToList() }
+            { "SelectedItemsDict", _selectedItems }
         };
         await ShellService.GoBack(parameters);
     }
 
-    [RelayCommand] private void ToggleFilter() => IsFilterVisible = !IsFilterVisible;
-
     [RelayCommand]
-    private async Task NextPage() { CurrentPage++; await LoadData(); }
-
-    [RelayCommand]
-    private async Task PreviousPage() { if (CurrentPage > 1) { CurrentPage--; await LoadData(); } }
-
-    [RelayCommand]
-    private async Task ResetFilters()
+    private async Task ToggleFilter()
     {
-        Query = new InventoryQuery { Page = 1, PageSize = 10 };
-        CurrentPage = 1;
-        await LoadData();
+        IsFilterVisible = !IsFilterVisible;
+        if (IsFilterVisible && Manufacturers.Count == 0) await LoadManufacturers();
     }
 
+    private async Task LoadManufacturers()
+    {
+        var list = await _manufacturerService.GetManufacturersAsync();
+        Manufacturers = new ObservableCollection<InventoryManufacturer>(list);
+    }
+
+    [RelayCommand] private async Task NextPage() { CurrentPage++; await LoadData(); }
+    [RelayCommand] private async Task PreviousPage() { if (CurrentPage > 1) { CurrentPage--; await LoadData(); } }
+    [RelayCommand] private async Task ResetFilters() { Query = new InventoryQuery { Page = 1, PageSize = 10 }; CurrentPage = 1; await LoadData(); }
     [RelayCommand] private async Task Cancel() => await ShellService.GoBack();
 }
 
 public partial class SelectableInventoryItem : ObservableObject
 {
+    private readonly OrderInventoryPickerViewModel _parent;
     public InventoryResponse Item { get; set; }
+
+    public SelectableInventoryItem(OrderInventoryPickerViewModel parent) => _parent = parent;
+
     [ObservableProperty] private bool isSelected;
+
+    private int _selectedQuantity = 1;
+    public int SelectedQuantity
+    {
+        get => _selectedQuantity;
+        set
+        {
+            var validValue = value;
+            if (validValue > Item.Quantity) validValue = Item.Quantity;
+            if (validValue < 1) validValue = 1;
+
+            if (SetProperty(ref _selectedQuantity, validValue))
+            {
+                _parent.SyncItem(this);
+            }
+        }
+    }
 }

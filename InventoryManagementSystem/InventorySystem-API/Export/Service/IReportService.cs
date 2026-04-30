@@ -12,6 +12,6 @@ namespace InventorySystem_API.Report.Service
         Task<byte[]> GetWarehouseReport(WarehouseQuery? warehouseQuery, string companyId);
         Task<byte[]> GetUserReport(UserQuery? userQuery, string companyId);
 
-        Task<byte[]> GetSalesReport(string[] inventoryIds, string companyId, string warehouseId, CompanyDTO provider);
+        Task<byte[]> GetSalesReport(SalesReportRequest salesDTO, string companyId, string warehouseId);
     }
 }   

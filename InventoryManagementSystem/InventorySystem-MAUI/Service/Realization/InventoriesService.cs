@@ -155,17 +155,16 @@ namespace InventorySystem_MAUI.Service
 
         }
 
-        public async Task<byte[]> GetSalesReport(string warehouseId, string[] inventoryIds, CompanyDTO provider)
+        public async Task<byte[]> GetSalesReport(string warehouseId, InventoryInfo[] items, CompanyDTO provider)
         {
             var requestBody = new SalesReportRequest
             {
-                InventoryIds = inventoryIds,
+                InventoryInfo = items,
                 Provider = provider
             };
 
             var response = await _httpClient.PostAsJsonAsync($"api/Export/sales-report/{warehouseId}", requestBody);
-
-                return await response.Content.ReadAsByteArrayAsync();
+            return await response.Content.ReadAsByteArrayAsync();
         }
 
 
