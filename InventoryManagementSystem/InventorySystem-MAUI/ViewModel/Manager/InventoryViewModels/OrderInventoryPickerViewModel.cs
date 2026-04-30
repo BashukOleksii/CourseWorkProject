@@ -133,8 +133,7 @@ public partial class OrderInventoryPickerViewModel : BaseViewModel
                 MaxPrice = Query.MaxPrice,
                 InventoryType = Query.InventoryType,
                 Manufacturer = Query.Manufacturer,
-                Page = 1,
-                PageSize = 9999
+                Page = 1
             };
 
             var allItems = await _inventoryService.GetItemsByWarehouse(WarehouseId, allItemsQuery);

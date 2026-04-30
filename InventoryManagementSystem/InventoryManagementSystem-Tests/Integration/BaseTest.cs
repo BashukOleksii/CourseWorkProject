@@ -14,6 +14,8 @@ public class BaseTest : IClassFixture<CustomWebApplicationFactory>
     {
         Factory = factory;
         Client = factory.CreateClient();
+
+
     }
 
     protected async Task AuthenticateAsync(UserRole role)
