@@ -94,6 +94,9 @@
 	  <MauiXaml Update="View\Manager\InventoryPages\OrderCreationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\Manager\InventoryPages\OrderInventoryPickerPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\User\RegisterPages\CompanyCreatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

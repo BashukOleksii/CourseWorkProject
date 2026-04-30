@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_MAUI.Service;
+using InventorySystem_MAUI.View.Manager.InventoryPages;
 using InventorySystem_Shared.AddressClass;
 using InventorySystem_Shared.Company;
 
@@ -56,11 +57,11 @@ public partial class OrderCreationViewModel : BaseViewModel
     [RelayCommand]
     private async Task OpenInventoryPicker()
     {
-       /* await ShellService.NavigateTo(nameof(View.OrderInventoryPickerPage), new Dictionary<string, object>
+       await ShellService.NavigateTo(nameof(OrderInventoryPickerPage), new Dictionary<string, object>
         {
             { "WarehouseId", WarehouseId },
             { "ExistingSelection", SelectedInventoryIds }
-        });*/
+        });
     }
 
     [RelayCommand]

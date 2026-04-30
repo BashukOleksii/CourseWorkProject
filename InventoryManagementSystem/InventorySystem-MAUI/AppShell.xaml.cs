@@ -35,6 +35,7 @@ namespace InventorySystem_MAUI
 
 
             Routing.RegisterRoute(nameof(OrderCreationPage), typeof(OrderCreationPage));
+            Routing.RegisterRoute(nameof(OrderInventoryPickerPage), typeof(OrderInventoryPickerPage));
         }
     }
 }
