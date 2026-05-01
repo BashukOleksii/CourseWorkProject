@@ -4,7 +4,7 @@ using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.Warehouse;
 using InventorySystem_Shared.AddressClass;
 
-namespace InventoryManagementSystem_Tests.Unit.ViewModels.Warehouse
+namespace InventoryManagementSystem_Tests.Unit.ViewModels
 {
     public class WarehouseDetailsViewModelTests
     {

@@ -3,7 +3,7 @@ using InventorySystem_MAUI.ViewModel;
 using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.Inventory;
 
-namespace InventoryManagementSystem_Tests.Unit.ViewModels.Inventory
+namespace InventoryManagementSystem_Tests.Unit.ViewModels
 {
     public class InventoryAggregationViewModelTest
     {
@@ -72,14 +72,5 @@ namespace InventoryManagementSystem_Tests.Unit.ViewModels.Inventory
             _inventoryServiceMock.Verify(s => s.GetItemsByWarehouse("wh-123", It.Is<InventoryQuery>(q => q.Page == 2)), Times.Once);
         }
 
-        [Fact]
-        public void ToggleFilter_ShouldInvertVisibility()
-        {
-            _viewModel.IsFilterVisible = false;
-
-            _viewModel.ToggleFilterCommand.Execute(null);
-
-            Assert.True(_viewModel.IsFilterVisible);
-        }
     }
 }

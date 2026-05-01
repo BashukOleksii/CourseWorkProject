@@ -179,7 +179,17 @@ namespace InventoryManagementSystem_Tests.Unit.API
         public async Task Import_ShouldProcessJsonAndSave_WhenValid()
         {
             var warehouseId = "w1";
-            var items = new List<InventoryResponse> { new InventoryResponse { Name = "Imported" } };
+            var items = new List<InventoryResponse> { new InventoryResponse 
+            {
+                Id = "Invent1",
+                WarehouseId = warehouseId,
+                Name = "Imported",
+                Description = "Description",
+                Price = 100,
+                Manufacturer = new InventoryManufacturer { Country = "Country", Name = "Name"},
+                InventoryType = InventoryType.Sports,
+                Quantity = 1,
+            } };
             var json = JsonSerializer.Serialize(items);
             var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
 
@@ -188,8 +198,26 @@ namespace InventoryManagementSystem_Tests.Unit.API
             fileMock.Setup(f => f.Length).Returns(stream.Length);
             fileMock.Setup(f => f.OpenReadStream()).Returns(stream);
 
-            var model = new InventoryModel { Name = "Imported" };
-            var createDto = new InventoryCreate { Name = "Imported" };
+            var model = new InventoryModel
+            {
+                Id = "Invent1",
+                WarehouseId = warehouseId,
+                Name = "Imported",
+                Description = "Description",
+                Price = 100,
+                Manufacturer = new InventoryManufacturer { Country = "Country", Name = "Name" },
+                InventoryType = InventoryType.Sports,
+                Quantity = 1,
+            };
+            var createDto = new InventoryCreate
+            {
+                Name = "Imported",
+                Description = "Description",
+                Price = 100,
+                Manufacturer = new InventoryManufacturer { Country = "Country", Name = "Name" },
+                InventoryType = InventoryType.Sports,
+                Quantity = 1,
+            };
 
             _mapperMock.Setup(m => m.Map<InventoryModel>(It.IsAny<InventoryResponse>())).Returns(model);
             _mapperMock.Setup(m => m.Map<InventoryCreate>(It.IsAny<InventoryModel>())).Returns(createDto);

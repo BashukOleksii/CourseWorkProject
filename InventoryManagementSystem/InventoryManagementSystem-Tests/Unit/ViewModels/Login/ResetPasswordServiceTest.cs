@@ -4,7 +4,7 @@ using InventorySystem_MAUI.ViewModel;
 using InventorySystem_MAUI.Service;
 using System.Threading.Tasks;
 
-namespace InventoryManagementSystem_Tests.Unit.ViewModels.Login
+namespace InventoryManagementSystem_Tests.Unit.ViewModels
 {
     public class ForgotPasswordViewModelTest
     {

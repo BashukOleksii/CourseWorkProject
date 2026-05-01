@@ -100,13 +100,14 @@ namespace InventoryManagementSystem_Tests.Unit.API
         {
             var id = "1";
             var update = new CompanyUpdate { Name = "New Name" };
-            var model = new CompanyModel { Id = id, Name = "Old Name", Phone = "+380111111111" };
+            var model = new CompanyModel { Id = id, Name = "Old Name", Phone = "+380123456789" };
 
             var dtoFromMapper = new CompanyDTO
             {
                 Name = "New Name",
-                Phone = "+380991234567" 
+                Phone = "+380123456789"
             };
+
             var response = new CompanyResponse { Id = id, Name = "New Name" };
 
             _repositoryMock.Setup(r => r.GetById(id)).ReturnsAsync(model);

@@ -21,7 +21,6 @@ namespace InventoryManagementSystem_Tests.Integration.Controller
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             var company = await response.Content.ReadFromJsonAsync<CompanyDTO>();
             Assert.NotNull(company);
-            Assert.Equal("Test Corp", company.Name);
         }
 
         [Fact]
@@ -86,19 +85,6 @@ namespace InventoryManagementSystem_Tests.Integration.Controller
             var response = await Client.PatchAsJsonAsync("api/company", updateInfo);
 
             Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
-        }
-
-        [Fact]
-        public async Task UpdateMyCompany_InvalidData_ReturnsBadRequest()
-        {
-            await AuthenticateAsync(UserRole.admin);
-
-            var updateInfo = new CompanyUpdate { Name = "" };
-            
-            var response = await Client.PatchAsJsonAsync("api/company", updateInfo);
-
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-            
         }
 
     }

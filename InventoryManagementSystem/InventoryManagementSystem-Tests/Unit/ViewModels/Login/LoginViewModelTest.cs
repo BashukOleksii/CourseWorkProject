@@ -5,7 +5,7 @@ using InventorySystem_MAUI.Service;
 using InventorySystem_MAUI.Helper;
 using InventorySystem_Shared.User;
 
-namespace InventoryManagementSystem_Tests.Unit.ViewModels.Login
+namespace InventoryManagementSystem_Tests.Unit.ViewModels
 {
     public class LoginViewModelTest
     {
