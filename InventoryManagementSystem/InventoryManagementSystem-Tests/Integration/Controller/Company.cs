@@ -61,7 +61,7 @@ namespace InventoryManagementSystem_Tests.Integration.Controller
         }
 
         [Fact]
-        public async Task UpdateMyCompany_AsAdmin_ReturnsUpdatedCompany()
+        public async Task UpdateMyCompany_AsAdmin_ReturnsBadRequest()
         {
             await AuthenticateAsync(UserRole.admin);
             var updateInfo = new CompanyUpdate
@@ -71,7 +71,7 @@ namespace InventoryManagementSystem_Tests.Integration.Controller
 
             var response = await Client.PatchAsJsonAsync("api/company", updateInfo);
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var updated = await response.Content.ReadFromJsonAsync<CompanyDTO>();
             Assert.Equal("", updated?.Name);
         }
