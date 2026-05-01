@@ -8,7 +8,7 @@ RUN dotnet restore "InventorySystem-API/InventorySystem-API.csproj"
 
 COPY . .
 
-WORKDIR "/src/InventorySystem-API"
+WORKDIR "/src/InventoryManagementSystem/InventorySystem-API"
 RUN dotnet publish "InventorySystem-API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
