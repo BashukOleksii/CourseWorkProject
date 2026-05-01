@@ -8,7 +8,7 @@ namespace InventorySystem_Shared.Inventory
 {
     public class InventoryQuery
     {
-
+            
         public string? Name { get; set; } 
         public string? Description { get; set; } 
         public InventoryManufacturerDTO? Manufacturer { get; set; }
