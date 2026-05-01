@@ -223,6 +223,7 @@ namespace InventorySystem_API.Inventory.Service
             foreach (var item in items)
             {
                 var model = _inventoryMapper.Map<InventoryModel>(item);
+                model.Id = ObjectId.GenerateNewId().ToString();
                 model.WarehouseId = warehouseId;
                 model.PhotoURI = await _imageService.CopyImage(item.PhotoURI);
 

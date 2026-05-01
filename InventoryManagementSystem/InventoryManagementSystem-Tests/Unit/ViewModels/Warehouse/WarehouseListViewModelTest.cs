@@ -1,13 +1,10 @@
 ﻿using Moq;
-using Xunit;
 using InventorySystem_MAUI.ViewModel;
 using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.Warehouse;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
-namespace InventoryManagementSystem_Tests.Unit.ViewModels.Warehouse
+namespace InventoryManagementSystem_Tests.Unit.ViewModels
 {
     public class WarehouseListViewModelTests
     {

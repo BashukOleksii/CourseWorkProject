@@ -4,7 +4,7 @@ using InventorySystem_Shared.Inventory.Manufacturer;
 
 namespace InventorySystem_Shared.Inventory
 {
-    public class InventoryCreate
+    public class InventoryCreate    
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;

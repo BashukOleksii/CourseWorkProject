@@ -4,7 +4,7 @@ using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.Inventory;
 using InventorySystem_Shared.Inventory.Manufacturer;
 
-namespace InventoryManagementSystem_Tests.Unit.ViewModels.Inventory
+namespace InventoryManagementSystem_Tests.Unit.ViewModels
 {
     public class InventoryDetailsViewModelTests
     {

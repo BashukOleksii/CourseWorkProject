@@ -4,7 +4,7 @@ using InventorySystem_MAUI.ViewModel;
 using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.AddressClass;
 
-namespace InventoryManagementSystem_Tests.Unit.ViewModels.Register
+namespace InventoryManagementSystem_Tests.Unit.ViewModels
 {
     public class AddressCreateViewModelTest
     {

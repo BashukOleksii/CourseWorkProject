@@ -4,7 +4,7 @@ using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.Inventory;
 using System.Collections.ObjectModel;
 
-namespace InventoryManagementSystem_Tests.Unit.ViewModels.Inventory
+namespace InventoryManagementSystem_Tests.Unit.ViewModels
 {
     public class InventoryListViewModelTests
     {

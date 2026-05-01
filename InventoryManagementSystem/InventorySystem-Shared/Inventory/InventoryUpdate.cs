@@ -3,7 +3,7 @@ using InventorySystem_Shared.Inventory.Manufacturer;
 
 namespace InventorySystem_Shared.Inventory
 {
-    public class    InventoryUpdate
+    public class InventoryUpdate
     {
         public string? Name { get; set; } = string.Empty;
         public string? Description { get; set; } = string.Empty;

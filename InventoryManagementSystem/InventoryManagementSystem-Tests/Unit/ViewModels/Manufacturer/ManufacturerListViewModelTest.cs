@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InventoryManagementSystem_Tests.Unit.ViewModels.Manufacturer
+namespace InventoryManagementSystem_Tests.Unit.ViewModels
 {
     public class ManufacturerListViewModelTest
     {

@@ -3,7 +3,7 @@ using InventorySystem_MAUI.ViewModel;
 using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.Loging;
 
-namespace InventoryManagementSystem_Tests.Unit.ViewModels.Logining
+namespace InventoryManagementSystem_Tests.Unit.ViewModels
 {
     public class LogViewModelTests
     {

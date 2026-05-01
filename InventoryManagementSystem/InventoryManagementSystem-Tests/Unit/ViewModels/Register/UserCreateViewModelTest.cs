@@ -5,7 +5,7 @@ using InventorySystem_MAUI.Service;
 using InventorySystem_Shared.User;
 using System.Threading.Tasks;
 
-namespace InventoryManagementSystem_Tests.Unit.ViewModels.Register
+namespace InventoryManagementSystem_Tests.Unit.ViewModels
 {
     public class UserCreateViewModelTest
     {

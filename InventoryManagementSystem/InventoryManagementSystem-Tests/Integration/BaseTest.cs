@@ -7,8 +7,8 @@ public class BaseTest : IClassFixture<CustomWebApplicationFactory>
     protected readonly HttpClient Client;
     protected readonly CustomWebApplicationFactory Factory;
 
-    private static string? _adminToken;
-    private static string? _managerToken;
+    private  string? _adminToken;
+    private  string? _managerToken;
 
     public BaseTest(CustomWebApplicationFactory factory)
     {
@@ -36,5 +36,12 @@ public class BaseTest : IClassFixture<CustomWebApplicationFactory>
         }
 
         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+    }
+
+    protected void ClearAuthentication()
+    {
+        _adminToken = null;
+        _managerToken = null;
+        Client.DefaultRequestHeaders.Authorization = null;
     }
 }

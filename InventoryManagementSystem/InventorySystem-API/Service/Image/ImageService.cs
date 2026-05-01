@@ -41,7 +41,7 @@ namespace InventorySystem_API.Service.Image
 
         public async Task<string> CopyImage(string path)
         {
-            var oldFile = Path.Combine(_env.WebRootPath, path.TrimStart('/'));
+            var oldFile = Path.Combine(_env.WebRootPath, path.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
 
             if(!File.Exists(oldFile))
                 throw new FileNotFoundException($"Не знайдно файлу за вказаним шляхом {oldFile}");
