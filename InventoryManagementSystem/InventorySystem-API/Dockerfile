@@ -1,8 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-COPY ["InventorySystem-API/InventorySystem-API.csproj", "InventorySystem-API/"]
-COPY ["InventorySystem-Shared/InventorySystem-Shared.csproj", "InventorySystem-Shared/"]
+COPY ["/InventoryManagementSystem/InventorySystem-API/InventorySystem-API.csproj", "InventorySystem-API/"]
+COPY ["/InventoryManagementSystem/InventorySystem-Shared/InventorySystem-Shared.csproj", "InventorySystem-Shared/"]
 
 RUN dotnet restore "InventorySystem-API/InventorySystem-API.csproj"
 
