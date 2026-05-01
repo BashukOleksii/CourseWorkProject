@@ -8,12 +8,14 @@ namespace InventoryManagementSystem_Tests.Unit.ViewModels.Inventory
     public class InventoryAggregationViewModelTest
     {
         private readonly Mock<IInventoryService> _inventoryServiceMock;
+        private readonly Mock<IManufacturerService> _manufacturerServiceMock;
         private readonly InventoryAggregationViewModel _viewModel;
 
         public InventoryAggregationViewModelTest()
         {
             _inventoryServiceMock = new Mock<IInventoryService>();
-            _viewModel = new InventoryAggregationViewModel(_inventoryServiceMock.Object);
+            _manufacturerServiceMock = new Mock<IManufacturerService>();
+            _viewModel = new InventoryAggregationViewModel(_inventoryServiceMock.Object, _manufacturerServiceMock.Object);
             _viewModel.WarehouseId = "wh-123";
         }
 

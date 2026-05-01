@@ -18,7 +18,6 @@ namespace InventoryManagementSystem_Tests.Unit.API
         private readonly Mock<IInventoryService> _inventoryServiceMock;
         private readonly Mock<IWarehouseService> _warehouseServiceMock;
         private readonly Mock<IUserService> _userServiceMock;
-        private readonly Mock<ILogService> _logServiceMock;
         private readonly ReportService _reportService;
 
         public ReportServiceTests()
@@ -28,13 +27,11 @@ namespace InventoryManagementSystem_Tests.Unit.API
             _inventoryServiceMock = new Mock<IInventoryService>();
             _warehouseServiceMock = new Mock<IWarehouseService>();
             _userServiceMock = new Mock<IUserService>();
-            _logServiceMock = new Mock<ILogService>();
 
             _reportService = new ReportService(
                 _inventoryServiceMock.Object,
                 _warehouseServiceMock.Object,
-                _userServiceMock.Object,
-                _logServiceMock.Object
+                _userServiceMock.Object
             );
         }
 

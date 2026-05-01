@@ -4,6 +4,7 @@ using InventorySystem_Shared.AddressClass;
 using InventorySystem_Shared.User;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Testcontainers.MongoDb;
@@ -15,8 +16,8 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
     public async Task InitializeAsync()
     {
         await _mongoContainer.StartAsync();
-
-        var client = new MongoClient(_mongoContainer.GetConnectionString());
+        var _connection = _mongoContainer.GetConnectionString();
+        var client = new MongoClient(_connection);
         var database = client.GetDatabase("IntegrationTestDb");
 
         #region CompanySeedData
@@ -35,7 +36,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
         var companies = database.GetCollection<CompanyModel>("Companies");
         var testCompany = new CompanyModel
         {
-            Id = ObjectId.GenerateNewId().ToString(),
             Name = "Test Corp",
             Phone = "+380123456789",
             Description = "A company for integration testing",
@@ -56,7 +56,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
         {
             new UserModel
             {
-                Id = ObjectId.GenerateNewId().ToString(),
                 Email = "admin@test.com",
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
                 UserRole = UserRole.admin,
@@ -66,7 +65,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
             },
             new UserModel
             {
-                Id = ObjectId.GenerateNewId().ToString(),
                 Email = "manager@test.com",
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
                 UserRole = UserRole.manager,
@@ -84,10 +82,19 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureServices(services =>
+        builder.ConfigureTestServices(services =>
         {
+            var descriptor = services.SingleOrDefault(
+                d => d.ServiceType == typeof(IMongoDatabase));
+
+            if (descriptor != null)
+            {
+                services.Remove(descriptor);
+            }
             var mongoClient = new MongoClient(_mongoContainer.GetConnectionString());
-            services.AddSingleton(mongoClient.GetDatabase("IntegrationTestDb"));
+            var database = mongoClient.GetDatabase("IntegrationTestDb");
+
+            services.AddSingleton<IMongoDatabase>(database);
         });
     }
 }
